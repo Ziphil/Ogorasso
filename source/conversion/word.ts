@@ -90,7 +90,7 @@ export function convertThemeWord(rawWord: any): ThemeWord {
     const word = {
       kind: "theme",
       number: +rawWord["number"],
-      form: rawForm
+      theme
     } satisfies ThemeWord;
     return word;
   } else {

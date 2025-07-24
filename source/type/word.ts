@@ -1,6 +1,6 @@
 //
 
-import {Affix, Anatomy, Pattern, Root} from "./anatomy";
+import {Affix, Anatomy, Pattern, Root, Theme} from "./anatomy";
 
 
 interface SuperWord<K extends string> {
@@ -46,7 +46,7 @@ export interface AffixWord extends SuperWord<"affix"> {
 
 export interface ThemeWord extends SuperWord<"theme"> {
 
-  readonly form: string;
+  readonly theme: Theme;
 
 }
 
