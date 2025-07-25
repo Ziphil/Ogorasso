@@ -28,7 +28,7 @@ export function convertNormalWord(rawWord: any): NormalWord {
     form: rawWord["name"],
     anatomy: parseAnatomy(rawWord["name"], rawRelations),
     equivalents: rawWord["equivalents"].map(convertEquivalent),
-    information: rawWord["information"].map(convertInformation),
+    information: rawWord["informations"].map(convertInformation),
     phrases: rawWord["phrases"].map(convertPhrase),
     relations: rawRelations.filter((rawRelation) => !rawRelation["name"].includes("√") && !rawRelation["name"].includes("‹")).map(convertRelation)
   } satisfies NormalWord;
