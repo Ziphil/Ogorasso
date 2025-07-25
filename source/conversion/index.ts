@@ -1,0 +1,3 @@
+//
+
+export {convertWord} from "./word";
