@@ -6,10 +6,14 @@ export const PATTERN_DATA = new Map([
   ["каттө̂п", {category: "verb", type: "doubleMedial"}],
   ["катө̂ппе", {category: "verb", type: "doubleFinal"}],
   ["аккатө̂п", {category: "verb", type: "doubleInitial"}],
+  ["ҫакатө̂п", {category: "verb", type: "quadriliteralGround"}],
+  ["ҫакаттө̂п", {category: "verb", type: "quadriliteralDouble"}],
   ["кө̂тап", {category: "substantive", type: "ground"}],
   ["кө̂ттап", {category: "substantive", type: "doubleMedial"}],
   ["кө̂тaппе", {category: "substantive", type: "doubleFinal"}],
-  ["аккө̂тап", {category: "substantive", type: "doubleInitial"}]
+  ["аккө̂тап", {category: "substantive", type: "doubleInitial"}],
+  ["ҫакө̂тап", {category: "substantive", type: "quadriliteralGround"}],
+  ["ҫакө̂ттап", {category: "substantive", type: "quadriliteralDouble"}]
 ] as const);
 
 
@@ -28,7 +32,7 @@ export type Root = readonly [Radical, Radical, Radical] | readonly [Radical, Rad
 
 export type Pattern = Parameters<(typeof PATTERN_DATA)["get"]>[0];
 export type PatternCategory = "verb" | "substantive";
-export type PatternType = "ground" | "doubleMedial" | "doubleFinal" | "doubleInitial";
+export type PatternType = "ground" | "doubleMedial" | "doubleFinal" | "doubleInitial" | "quadriliteralGround" | "quadriliteralDouble";
 
 export type Affix = string;
 export type AffixType = "prestem" | "prethematic" | "postthematic" | "poststem";
