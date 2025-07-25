@@ -2,6 +2,7 @@
 
 import {AffixWord, NormalWord, PatternWord, RootWord, ThemeWord, Word} from "../type/word";
 import {checkAffix, checkPattern, checkRoot, checkTheme, extractAffix, extractPattern, extractRoot, extractTheme, parseAnatomy} from "./anatomy";
+import {convertEquivalent, convertInformation, convertPhrase, convertRelation} from "./word-content";
 
 
 export function convertWord(rawWord: any): Word {
@@ -20,28 +21,28 @@ export function convertWord(rawWord: any): Word {
 }
 
 export function convertNormalWord(rawWord: any): NormalWord {
-  const rawEquivalents = rawWord["equivalents"] as Array<any>;
   const rawRelations = rawWord["relations"] as Array<any>;
   const word = {
     kind: "normal",
     number: +rawWord["number"],
     form: rawWord["name"],
-    equivalents: rawEquivalents,
-    anatomy: parseAnatomy(rawWord["name"], rawRelations)
+    anatomy: parseAnatomy(rawWord["name"], rawRelations),
+    equivalents: rawWord["equivalents"].map(convertEquivalent),
+    information: rawWord["information"].map(convertInformation),
+    phrases: rawWord["phrases"].map(convertPhrase),
+    relations: rawRelations.filter((rawRelation) => !rawRelation["name"].includes("√") && !rawRelation["name"].includes("‹")).map(convertRelation)
   } satisfies NormalWord;
   return word;
 }
 
 export function convertRootWord(rawWord: any): RootWord {
-  const rawForm = rawWord["name"] as string;
-  const rawEquivalents = rawWord["equivalents"] as Array<any>;
-  const root = extractRoot(rawForm);
+  const root = extractRoot(rawWord["name"]);
   if (root !== null) {
     const word = {
       kind: "root",
       number: +rawWord["number"],
       root,
-      equivalents: rawEquivalents
+      equivalents: rawWord["equivalents"].map(convertEquivalent)
     } satisfies RootWord;
     return word;
   } else {
@@ -50,15 +51,13 @@ export function convertRootWord(rawWord: any): RootWord {
 }
 
 export function convertPatternWord(rawWord: any): PatternWord {
-  const rawForm = rawWord["name"] as string;
-  const rawEquivalents = rawWord["equivalents"] as Array<any>;
-  const pattern = extractPattern(rawForm);
+  const pattern = extractPattern(rawWord["name"]);
   if (pattern !== null) {
     const word = {
       kind: "pattern",
       number: +rawWord["number"],
       pattern,
-      equivalents: rawEquivalents
+      equivalents: rawWord["equivalents"].map(convertEquivalent)
     } satisfies PatternWord;
     return word;
   } else {
@@ -67,15 +66,13 @@ export function convertPatternWord(rawWord: any): PatternWord {
 }
 
 export function convertAffixWord(rawWord: any): AffixWord {
-  const rawForm = rawWord["name"] as string;
-  const rawEquivalents = rawWord["equivalents"] as Array<any>;
-  const affix = extractAffix(rawForm);
+  const affix = extractAffix(rawWord["name"]);
   if (affix !== null) {
     const word = {
       kind: "affix",
       number: +rawWord["number"],
       affix,
-      equivalents: rawEquivalents
+      equivalents: rawWord["equivalents"].map(convertEquivalent)
     } satisfies AffixWord;
     return word;
   } else {
@@ -84,8 +81,7 @@ export function convertAffixWord(rawWord: any): AffixWord {
 }
 
 export function convertThemeWord(rawWord: any): ThemeWord {
-  const rawForm = rawWord["name"] as string;
-  const theme = extractTheme(rawForm);
+  const theme = extractTheme(rawWord["name"]);
   if (theme !== null) {
     const word = {
       kind: "theme",

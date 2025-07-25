@@ -1,6 +1,7 @@
 //
 
 import {Affix, Anatomy, Pattern, Root, Theme} from "./anatomy";
+import {Equivalent, Information, Phrase, Relation} from "./word-content";
 
 
 interface SuperWord<K extends string> {
@@ -14,8 +15,11 @@ interface SuperWord<K extends string> {
 export interface NormalWord extends SuperWord<"normal"> {
 
   readonly form: string;
-  readonly equivalents: ReadonlyArray<Equivalent>;
   readonly anatomy: Anatomy | null;
+  readonly equivalents: ReadonlyArray<Equivalent>;
+  readonly information: ReadonlyArray<Information>;
+  readonly phrases: ReadonlyArray<Phrase>;
+  readonly relations: ReadonlyArray<Relation>;
 
 }
 
@@ -47,16 +51,6 @@ export interface AffixWord extends SuperWord<"affix"> {
 export interface ThemeWord extends SuperWord<"theme"> {
 
   readonly theme: Theme;
-
-}
-
-
-export interface Equivalent {
-
-  readonly titles: ReadonlyArray<string>;
-  readonly terms: ReadonlyArray<string>;
-  readonly termString: string;
-  readonly hidden: boolean;
 
 }
 

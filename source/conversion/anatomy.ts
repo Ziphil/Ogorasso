@@ -58,8 +58,8 @@ export function checkPattern(rawForm: string): boolean {
 
 export function extractPattern(rawForm: string): Pattern | null {
   const match = rawForm.match(/^‹(.*)›$/);
-  if (match !== null && PATTERN_DATA.has(match[1])) {
-    return match[1];
+  if (match !== null && PATTERN_DATA.has(match[1] as any)) {
+    return match[1] as Pattern;
   } else {
     return null;
   }

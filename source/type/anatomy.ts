@@ -1,7 +1,7 @@
 //
 
 
-export const PATTERN_DATA = new Map<string, {category: PatternCategory, type: PatternType}>([
+export const PATTERN_DATA = new Map([
   ["катө̂п", {category: "verb", type: "ground"}],
   ["каттө̂п", {category: "verb", type: "doubleMedial"}],
   ["катө̂ппе", {category: "verb", type: "doubleFinal"}],
@@ -10,7 +10,7 @@ export const PATTERN_DATA = new Map<string, {category: PatternCategory, type: Pa
   ["кө̂ттап", {category: "substantive", type: "doubleMedial"}],
   ["кө̂тaппе", {category: "substantive", type: "doubleFinal"}],
   ["аккө̂тап", {category: "substantive", type: "doubleInitial"}]
-]);
+] as const);
 
 
 export interface Anatomy {
@@ -26,7 +26,7 @@ export interface Anatomy {
 export type Radical = "к" | "г" | "х" | "ҕ" | "т" | "д" | "с" | "з" | "п" | "б" | "ф" | "в" | "ҫ" | "ҙ" | "ш" | "ж" | "ц" | "ӟ" | "ч" | "ӝ" | "ӈ" | "н" | "м" | "л" | "р" | "й" | "ў" | "ъ";
 export type Root = readonly [Radical, Radical, Radical] | readonly [Radical, Radical, Radical, Radical];
 
-export type Pattern = string;
+export type Pattern = Parameters<(typeof PATTERN_DATA)["get"]>[0];
 export type PatternCategory = "verb" | "substantive";
 export type PatternType = "ground" | "doubleMedial" | "doubleFinal" | "doubleInitial";
 
