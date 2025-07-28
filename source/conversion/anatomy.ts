@@ -26,11 +26,11 @@ export function parseRoot(rawRelations: Array<any>): Root | null {
 }
 
 export function checkRoot(rawForm: string): boolean {
-  return rawForm.match(/^√(.+)-(.+)-(.+)(?:-(.+))?$/) !== null;
+  return rawForm.match(/^√(.)-(.)-(.)(?:-(.))?$/) !== null;
 }
 
 export function extractRoot(rawForm: string): Root | null {
-  const match = rawForm.match(/^√(.+)-(.+)-(.+)(?:-(.+))?$/);
+  const match = rawForm.match(/^√(.)-(.)-(.)(?:-(.))?$/);
   if (match !== null) {
     if (match[4] !== undefined) {
       return [match[1].toLowerCase(), match[2].toLowerCase(), match[3].toLowerCase(), match[4].toLowerCase()] as Root;
