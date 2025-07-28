@@ -5,21 +5,28 @@ import {getAffixType} from "../util/anatomy";
 
 
 export function parseAnatomy(rawForm: string, rawRelations: Array<any>): Anatomy | null {
-  const root = parseRoot(rawRelations);
+  const rootSpec = parseRoot(rawRelations);
   const pattern = parsePattern(rawRelations);
   const theme = parseTheme(rawRelations) ?? inferTheme(rawForm);
   const affixes = parseAffixes(rawRelations);
-  if (root !== null && pattern !== null && theme !== null) {
-    return {root, pattern, theme, affixes};
+  if (rootSpec !== null && pattern !== null && theme !== null) {
+    const {number, root} = rootSpec;
+    return {number, root, pattern, theme, affixes};
   } else {
     return null;
   }
 }
 
-export function parseRoot(rawRelations: Array<any>): Root | null {
+export function parseRoot(rawRelations: Array<any>): {number: number, root: Root} | null {
   const rawRootRelation = rawRelations.find((rawRelation) => rawRelation["titles"][0] === "語根" && checkRoot(rawRelation["name"]));
   if (rawRootRelation !== undefined) {
-    return extractRoot(rawRootRelation["name"]);
+    const root = extractRoot(rawRootRelation["name"]);
+    const number = +rawRootRelation["number"];
+    if (root !== null) {
+      return {number, root};
+    } else {
+      return null;
+    }
   } else {
     return null;
   }
