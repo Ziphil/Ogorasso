@@ -20,6 +20,7 @@ export interface NormalWord extends SuperWord<"normal"> {
   readonly information: ReadonlyArray<Information>;
   readonly phrases: ReadonlyArray<Phrase>;
   readonly relations: ReadonlyArray<Relation>;
+  readonly foreign: boolean;
 
 }
 
@@ -28,6 +29,7 @@ export interface RootWord extends SuperWord<"root"> {
 
   readonly root: Root;
   readonly equivalents: ReadonlyArray<Equivalent>;
+  readonly foreign: boolean;
 
 }
 

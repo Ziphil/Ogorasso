@@ -26,6 +26,7 @@ export const AFFIX_TYPES = ["prestem", "prethematic", "postthematic", "poststem"
 
 export interface Anatomy {
 
+  readonly number: number;
   readonly root: Root;
   readonly pattern: Pattern;
   readonly affixes: Record<AffixType, ReadonlyArray<Affix>>;
