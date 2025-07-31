@@ -1,32 +1,27 @@
 //
 
-import {Affix, Anatomy, Pattern, Root, Theme} from "./anatomy";
-import {Equivalent, Information, Phrase, Relation} from "./word-content";
+import {Kind} from "../util/misc";
+import {AffixForm, Anatomy, PatternForm, Root, ThemeForm} from "./anatomy";
+import {Equivalent, Information, NormalRelation, Phrase} from "./word-content";
 
 
-interface SuperWord<K extends string> {
+export interface NormalWord extends Kind<"normal"> {
 
-  readonly kind: K;
   readonly number: number;
-
-}
-
-
-export interface NormalWord extends SuperWord<"normal"> {
-
   readonly form: string;
   readonly anatomy: Anatomy | null;
   readonly equivalents: ReadonlyArray<Equivalent>;
   readonly information: ReadonlyArray<Information>;
   readonly phrases: ReadonlyArray<Phrase>;
-  readonly relations: ReadonlyArray<Relation>;
+  readonly relations: ReadonlyArray<NormalRelation>;
   readonly foreign: boolean;
 
 }
 
 
-export interface RootWord extends SuperWord<"root"> {
+export interface RootWord extends Kind<"root"> {
 
+  readonly number: number;
   readonly root: Root;
   readonly equivalents: ReadonlyArray<Equivalent>;
   readonly foreign: boolean;
@@ -34,25 +29,28 @@ export interface RootWord extends SuperWord<"root"> {
 }
 
 
-export interface PatternWord extends SuperWord<"pattern"> {
+export interface PatternWord extends Kind<"pattern"> {
 
-  readonly pattern: Pattern;
+  readonly number: number;
+  readonly form: PatternForm;
   readonly equivalents: ReadonlyArray<Equivalent>;
 
 }
 
 
-export interface AffixWord extends SuperWord<"affix"> {
+export interface AffixWord extends Kind<"affix"> {
 
-  readonly affix: Affix;
+  readonly number: number;
+  readonly form: AffixForm;
   readonly equivalents: ReadonlyArray<Equivalent>;
 
 }
 
 
-export interface ThemeWord extends SuperWord<"theme"> {
+export interface ThemeWord extends Kind<"theme"> {
 
-  readonly theme: Theme;
+  readonly number: number;
+  readonly form: ThemeForm;
 
 }
 

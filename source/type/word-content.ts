@@ -29,7 +29,7 @@ export interface Phrase {
 }
 
 
-export interface Relation {
+export interface NormalRelation {
 
   readonly title: string;
   readonly number: number;
