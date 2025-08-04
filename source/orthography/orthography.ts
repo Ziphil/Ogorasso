@@ -49,7 +49,7 @@ export function convertCyrillicToLatin(text: string): string {
       result += CYRILLIC_LATIN_MAP.get(twoChars);
       index += 2;
     } else {
-      result += CYRILLIC_LATIN_MAP.get(text[index]) ?? "";
+      result += CYRILLIC_LATIN_MAP.get(text[index]) ?? text[index];
       index ++;
     }
   }
