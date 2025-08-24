@@ -1,19 +1,35 @@
 //
 
 import {getAffixType} from "../function/anatomy";
-import {AffixForm, AffixRelation, AffixType, Anatomy, PATTERN_DATA, PatternForm, PatternRelation, Root, RootRelation, ThemeForm, ThemeRelation} from "../type/anatomy";
+import {AffixSpelling, AffixType, Anatomy, PATTERN_DATA, PatternSpelling, Root, ThemeSpelling} from "../type/anatomy";
+import {AffixRelation, ConstituentRelation, PatternRelation, RootRelation, ThemeRelation} from "../type/relation";
 
 
 export function parseAnatomy(rawForm: string, rawRelations: Array<any>): Anatomy | null {
-  const root = parseRootRelation(rawRelations);
-  const pattern = parsePatternRelation(rawRelations);
-  const theme = parseThemeRelation(rawRelations) ?? inferThemeRelation(rawForm);
-  const affixes = parseAffixeRelations(rawRelations);
-  if (root !== null && pattern !== null && theme !== null) {
-    return {root, pattern, theme, affixes};
+  if (rawRelations.some((rawRelation) => rawRelation["titles"][0] === "合成元")) {
+    const constituents = parseComponentRelations(rawRelations);
+    return {kind: "compound", constituents};
   } else {
-    return null;
+    const root = parseRootRelation(rawRelations);
+    const pattern = parsePatternRelation(rawRelations);
+    const theme = parseThemeRelation(rawRelations) ?? inferThemeRelation(rawForm);
+    const affixes = parseAffixRelations(rawRelations);
+    if (root !== null && pattern !== null && theme !== null) {
+      return {kind: "simplex", root, pattern, theme, affixes};
+    } else {
+      return null;
+    }
   }
+}
+
+export function parseComponentRelations(rawRelations: Array<any>): ReadonlyArray<ConstituentRelation> {
+  const rawComponentRelations = rawRelations.filter((rawRelation) => rawRelation["titles"][0] === "合成元");
+  const componentRelations = rawComponentRelations.map((rawRelation) => ({
+    kind: "constituent",
+    number: +rawRelation["number"],
+    spelling: rawRelation["name"]
+  }) satisfies ConstituentRelation);
+  return componentRelations;
 }
 
 export function parseRootRelation(rawRelations: Array<any>): RootRelation | null {
@@ -32,16 +48,20 @@ export function parseRootRelation(rawRelations: Array<any>): RootRelation | null
 }
 
 export function checkRoot(rawForm: string): boolean {
-  return rawForm.match(/^√(.)-(.)-(.)(?:-(.))?$/) !== null;
+  return rawForm.match(/^√(.)-(.)(?:-(.))?(?:-(.))?$/) !== null;
 }
 
 export function extractRoot(rawForm: string): Root | null {
-  const match = rawForm.match(/^√(.)-(.)-(.)(?:-(.))?$/);
+  const match = rawForm.match(/^√(.)-(.)(?:-(.))?(?:-(.))?$/);
   if (match !== null) {
-    if (match[4] !== undefined) {
-      return [match[1].toLowerCase(), match[2].toLowerCase(), match[3].toLowerCase(), match[4].toLowerCase()] as Root;
+    if (match[3] !== undefined) {
+      if (match[4] !== undefined) {
+        return [match[1].toLowerCase(), match[2].toLowerCase(), match[3].toLowerCase(), match[4].toLowerCase()] as Root;
+      } else {
+        return [match[1].toLowerCase(), match[2].toLowerCase(), match[3].toLowerCase()] as Root;
+      }
     } else {
-      return [match[1].toLowerCase(), match[2].toLowerCase(), match[3].toLowerCase()] as Root;
+      return [match[1].toLowerCase(), match[2].toLowerCase()] as Root;
     }
   } else {
     return null;
@@ -49,12 +69,12 @@ export function extractRoot(rawForm: string): Root | null {
 }
 
 export function parsePatternRelation(rawRelations: Array<any>): PatternRelation | null {
-  const rawPatternRelation = rawRelations.find((rawRelation) => checkPatternForm(rawRelation["name"]));
+  const rawPatternRelation = rawRelations.find((rawRelation) => checkPatternHead(rawRelation["name"]));
   if (rawPatternRelation !== undefined) {
     const number = +rawPatternRelation["number"];
-    const form = extractPatternForm(rawPatternRelation["name"]);
-    if (form !== null) {
-      return {kind: "pattern", number, form};
+    const spelling = extractPatternSpelling(rawPatternRelation["name"]);
+    if (spelling !== null) {
+      return {kind: "pattern", number, spelling};
     } else {
       return null;
     }
@@ -63,46 +83,46 @@ export function parsePatternRelation(rawRelations: Array<any>): PatternRelation 
   }
 }
 
-export function checkPatternForm(rawForm: string): boolean {
-  const match = rawForm.match(/^‹(?!=)(.*)›$/);
+export function checkPatternHead(rawHead: string): boolean {
+  const match = rawHead.match(/^‹(?!=)(.*)›$/);
   return match !== null && !match[1].includes("-");
 }
 
-export function extractPatternForm(rawForm: string): PatternForm | null {
-  const match = rawForm.match(/^‹(.*)›$/);
+export function extractPatternSpelling(rawHead: string): PatternSpelling | null {
+  const match = rawHead.match(/^‹(.*)›$/);
   if (match !== null && PATTERN_DATA.has(match[1] as any)) {
-    return match[1] as PatternForm;
+    return match[1] as PatternSpelling;
   } else {
     return null;
   }
 }
 
-export function parseAffixeRelations(rawRelations: Array<any>): Record<AffixType, ReadonlyArray<AffixRelation>> {
-  const rawAffixRelations = rawRelations.filter((rawRelation) => checkAffixForm(rawRelation["name"]));
+export function parseAffixRelations(rawRelations: Array<any>): Record<AffixType, ReadonlyArray<AffixRelation>> {
+  const rawAffixRelations = rawRelations.filter((rawRelation) => checkAffixHead(rawRelation["name"]));
   const affixes = {
-    prestem: [] as Array<AffixRelation>,
+    prefixal: [] as Array<AffixRelation>,
     prethematic: [] as Array<AffixRelation>,
     postthematic: [] as Array<AffixRelation>,
-    poststem: [] as Array<AffixRelation>
+    suffixal: [] as Array<AffixRelation>
   };
   for (const rawAffixRelation of rawAffixRelations) {
     const number = +rawAffixRelation["number"];
-    const form = extractAffixForm(rawAffixRelation["name"]);
-    const affixType = (form !== null) ? getAffixType(form) : null ;
-    if (form !== null && affixType !== null) {
-      affixes[affixType].push({kind: "affix", number, form});
+    const spelling = extractAffixSpelling(rawAffixRelation["name"]);
+    const affixType = (spelling !== null) ? getAffixType(spelling) : null ;
+    if (spelling !== null && affixType !== null) {
+      affixes[affixType].push({kind: "affix", number, spelling});
     }
   }
   return affixes;
 }
 
-export function checkAffixForm(rawForm: string): boolean {
-  const match = rawForm.match(/^‹(?!=)(.*)›$/);
+export function checkAffixHead(rawHead: string): boolean {
+  const match = rawHead.match(/^‹(?!=)(.*)›$/);
   return match !== null && match[1].includes("-");
 }
 
-export function extractAffixForm(rawForm: string): AffixForm | null {
-  const match = rawForm.match(/^‹(?!=)(.*)›$/);
+export function extractAffixSpelling(rawHead: string): AffixSpelling | null {
+  const match = rawHead.match(/^‹(?!=)(.*)›$/);
   if (match !== null) {
     return match[1];
   } else {
@@ -111,12 +131,12 @@ export function extractAffixForm(rawForm: string): AffixForm | null {
 }
 
 export function parseThemeRelation(rawRelations: Array<any>): ThemeRelation | null {
-  const rawThemeRelation = rawRelations.find((rawRelation) => checkThemeForm(rawRelation["name"]));
+  const rawThemeRelation = rawRelations.find((rawRelation) => checkThemeHead(rawRelation["name"]));
   if (rawThemeRelation !== undefined) {
     const number = +rawThemeRelation["number"];
-    const form = extractThemeForm(rawThemeRelation["name"]);
-    if (form !== null) {
-      return {kind: "theme", number, form};
+    const spelling = extractThemeSpelling(rawThemeRelation["name"]);
+    if (spelling !== null) {
+      return {kind: "theme", number, spelling};
     } else {
       return null;
     }
@@ -126,9 +146,9 @@ export function parseThemeRelation(rawRelations: Array<any>): ThemeRelation | nu
 }
 
 export function inferThemeRelation(rawForm: string): ThemeRelation | null {
-  const form = inferThemeForm(rawForm);
+  const form = inferThemeSpelling(rawForm);
   if (form !== null) {
-    return {kind: "theme", number: -1, form};
+    return {kind: "theme", number: -1, spelling: form};
   } else {
     return null;
   }
@@ -136,22 +156,22 @@ export function inferThemeRelation(rawForm: string): ThemeRelation | null {
 
 /** 辞書の見出し語から幹母音を推定します。
  * 弱子音の消失が起こっている場合は正しい幹母音を推定できない場合があるので注意してください。 */
-export function inferThemeForm(rawForm: string): ThemeForm | null {
-  if (rawForm.includes("е̂") || rawForm.includes("и̂")) {
+export function inferThemeSpelling(spelling: string): ThemeSpelling | null {
+  if (spelling.includes("е̂") || spelling.includes("и̂")) {
     return "е";
-  } else if (rawForm.includes("о̂") || rawForm.includes("у̂")) {
+  } else if (spelling.includes("о̂") || spelling.includes("у̂")) {
     return "о";
   } else {
     return null;
   }
 }
 
-export function checkThemeForm(rawForm: string): boolean {
-  return rawForm.match(/^‹=(.)›$/) !== null;
+export function checkThemeHead(rawHead: string): boolean {
+  return rawHead.match(/^‹=(.)›$/) !== null;
 }
 
-export function extractThemeForm(rawForm: string): ThemeForm | null {
-  const match = rawForm.match(/^‹=(.)›$/);
+export function extractThemeSpelling(rawHead: string): ThemeSpelling | null {
+  const match = rawHead.match(/^‹=(.)›$/);
   if (match !== null && (match[1] === "е" || match[1] === "о")) {
     return match[1];
   } else {

@@ -22,17 +22,8 @@ export interface Information {
 
 export interface Phrase {
 
-  readonly form: string;
+  readonly spelling: string;
   readonly terms: ReadonlyArray<string>;
   readonly termString: string;
-
-}
-
-
-export interface NormalRelation {
-
-  readonly title: string;
-  readonly number: number;
-  readonly form: string;
 
 }

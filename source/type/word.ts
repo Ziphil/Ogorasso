@@ -1,14 +1,15 @@
 //
 
-import {Kind} from "../util/misc";
-import {AffixForm, Anatomy, PatternForm, Root, ThemeForm} from "./anatomy";
-import {Equivalent, Information, NormalRelation, Phrase} from "./word-content";
+import type {Kind} from "../util/misc";
+import type {AffixSpelling, Anatomy, PatternSpelling, Root, ThemeSpelling} from "./anatomy";
+import type {NormalRelation} from "./relation";
+import type {Equivalent, Information, Phrase} from "./word-content";
 
 
 export interface NormalWord extends Kind<"normal"> {
 
   readonly number: number;
-  readonly form: string;
+  readonly spelling: string;
   readonly anatomy: Anatomy | null;
   readonly equivalents: ReadonlyArray<Equivalent>;
   readonly information: ReadonlyArray<Information>;
@@ -32,7 +33,7 @@ export interface RootWord extends Kind<"root"> {
 export interface PatternWord extends Kind<"pattern"> {
 
   readonly number: number;
-  readonly form: PatternForm;
+  readonly spelling: PatternSpelling;
   readonly equivalents: ReadonlyArray<Equivalent>;
 
 }
@@ -41,7 +42,7 @@ export interface PatternWord extends Kind<"pattern"> {
 export interface AffixWord extends Kind<"affix"> {
 
   readonly number: number;
-  readonly form: AffixForm;
+  readonly spelling: AffixSpelling;
   readonly equivalents: ReadonlyArray<Equivalent>;
 
 }
@@ -50,7 +51,7 @@ export interface AffixWord extends Kind<"affix"> {
 export interface ThemeWord extends Kind<"theme"> {
 
   readonly number: number;
-  readonly form: ThemeForm;
+  readonly spelling: ThemeSpelling;
 
 }
 

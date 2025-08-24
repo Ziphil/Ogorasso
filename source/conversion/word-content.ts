@@ -1,6 +1,7 @@
 //
 
-import {Equivalent, Information, NormalRelation, Phrase} from "source/type/word-content";
+import {NormalRelation} from "../type/relation";
+import {Equivalent, Information, Phrase} from "../type/word-content";
 
 
 export function convertEquivalent(rawEquivalent: any): Equivalent {
@@ -24,7 +25,7 @@ export function convertInformation(rawInformation: any): Information {
 
 export function convertPhrase(rawPhrase: any): Phrase {
   const phrase = {
-    form: rawPhrase["form"],
+    spelling: rawPhrase["form"],
     terms: rawPhrase["names"],
     termString: rawPhrase["nameString"]
   } satisfies Phrase;
@@ -35,7 +36,7 @@ export function convertRelation(rawRelation: any): NormalRelation {
   const relation = {
     title: rawRelation["titles"][0] ?? "関連語",
     number: rawRelation["number"],
-    form: rawRelation["name"]
+    spelling: rawRelation["name"]
   } satisfies NormalRelation;
   return relation;
 }

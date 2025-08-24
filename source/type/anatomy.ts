@@ -1,6 +1,7 @@
 //
 
-import {Kind} from "../util/misc";
+import type {Kind} from "../util/misc";
+import type {AffixRelation, ConstituentRelation, PatternRelation, RootRelation, ThemeRelation} from "./relation";
 
 
 export const RADICALS = ["к", "г", "х", "ҕ", "т", "д", "с", "з", "п", "б", "ф", "в", "ҫ", "ҙ", "ш", "ж", "ц", "ӟ", "ч", "ӝ", "ӈ", "н", "м", "л", "р", "й", "ў", "ъ"] as const;
@@ -23,10 +24,10 @@ export const PATTERN_DATA = new Map([
   ["ҫакө̂ттап", {category: "substantive", type: "doubleMedial"}]
 ] as const);
 
-export const AFFIX_TYPES = ["prestem", "prethematic", "postthematic", "poststem"] as const;
+export const AFFIX_TYPES = ["prefixal", "prethematic", "postthematic", "suffixal"] as const;
 
 
-export interface Anatomy {
+export interface SimplexAnatomy extends Kind<"simplex"> {
 
   readonly root: RootRelation;
   readonly pattern: PatternRelation;
@@ -36,46 +37,23 @@ export interface Anatomy {
 }
 
 
-export interface RootRelation extends Kind<"root"> {
+export interface CompoundAnatomy extends Kind<"compound"> {
 
-  readonly number: number;
-  readonly root: Root;
-
-}
-
-
-export interface PatternRelation extends Kind<"pattern"> {
-
-  readonly number: number;
-  readonly form: PatternForm;
+  readonly constituents: ReadonlyArray<ConstituentRelation>;
 
 }
 
 
-export interface AffixRelation extends Kind<"affix"> {
-
-  readonly number: number;
-  readonly form: AffixForm;
-
-}
-
-
-export interface ThemeRelation extends Kind<"theme"> {
-
-  readonly number: number;
-  readonly form: ThemeForm;
-
-}
-
+export type Anatomy = SimplexAnatomy | CompoundAnatomy;
 
 export type Radical = (typeof RADICALS)[number];
-export type Root = readonly [Radical, Radical, Radical] | readonly [Radical, Radical, Radical, Radical];
+export type Root = readonly [Radical, Radical] | readonly [Radical, Radical, Radical] | readonly [Radical, Radical, Radical, Radical];
 
-export type PatternForm = Parameters<(typeof PATTERN_DATA.get)>[0];
+export type PatternSpelling = Parameters<(typeof PATTERN_DATA.get)>[0];
 export type PatternCategory = (typeof PATTERN_CATEGORIES)[number];
 export type PatternType = (typeof PATTERN_TYPES)[number];
 
-export type AffixForm = string;
+export type AffixSpelling = string;
 export type AffixType = (typeof AFFIX_TYPES)[number];
 
-export type ThemeForm = (typeof THEME_CHARS)[number];
+export type ThemeSpelling = (typeof THEME_CHARS)[number];
