@@ -1,8 +1,11 @@
 //
 
+import type {Kind} from "../util/misc";
+import type {AffixRelation, ConstituentRelation, PatternRelation, RootRelation, ThemeRelation} from "./relation";
+
 
 export const RADICALS = ["к", "г", "х", "ҕ", "т", "д", "с", "з", "п", "б", "ф", "в", "ҫ", "ҙ", "ш", "ж", "ц", "ӟ", "ч", "ӝ", "ӈ", "н", "м", "л", "р", "й", "ў", "ъ"] as const;
-export const THEMES = ["е", "о"] as const;
+export const THEME_CHARS = ["е", "о"] as const;
 
 export const PATTERN_CATEGORIES = ["verb", "substantive"] as const;
 export const PATTERN_TYPES = ["ground", "doubleMedial", "doubleFinal", "doubleInitial"] as const;
@@ -21,28 +24,36 @@ export const PATTERN_DATA = new Map([
   ["ҫакө̂ттап", {category: "substantive", type: "doubleMedial"}]
 ] as const);
 
-export const AFFIX_TYPES = ["prestem", "prethematic", "postthematic", "poststem"] as const;
+export const AFFIX_TYPES = ["prefixal", "prethematic", "postthematic", "suffixal"] as const;
 
 
-export interface Anatomy {
+export interface SimplexAnatomy extends Kind<"simplex"> {
 
-  readonly number: number;
-  readonly root: Root;
-  readonly pattern: Pattern;
-  readonly affixes: Record<AffixType, ReadonlyArray<Affix>>;
-  readonly theme: Theme;
+  readonly root: RootRelation;
+  readonly pattern: PatternRelation;
+  readonly affixes: Record<AffixType, ReadonlyArray<AffixRelation>>;
+  readonly theme: ThemeRelation;
 
 }
 
 
-export type Radical = (typeof RADICALS)[number];
-export type Root = readonly [Radical, Radical, Radical] | readonly [Radical, Radical, Radical, Radical];
+export interface CompoundAnatomy extends Kind<"compound"> {
 
-export type Pattern = Parameters<(typeof PATTERN_DATA)["get"]>[0];
+  readonly constituents: ReadonlyArray<ConstituentRelation>;
+
+}
+
+
+export type Anatomy = SimplexAnatomy | CompoundAnatomy;
+
+export type Radical = (typeof RADICALS)[number];
+export type Root = readonly [Radical, Radical] | readonly [Radical, Radical, Radical] | readonly [Radical, Radical, Radical, Radical];
+
+export type PatternSpelling = Parameters<(typeof PATTERN_DATA.get)>[0];
 export type PatternCategory = (typeof PATTERN_CATEGORIES)[number];
 export type PatternType = (typeof PATTERN_TYPES)[number];
 
-export type Affix = string;
+export type AffixSpelling = string;
 export type AffixType = (typeof AFFIX_TYPES)[number];
 
-export type Theme = (typeof THEMES)[number];
+export type ThemeSpelling = (typeof THEME_CHARS)[number];

@@ -1,58 +1,52 @@
 //
 
-import {Affix, Anatomy, Pattern, Root, Theme} from "./anatomy";
-import {Equivalent, Information, Phrase, Relation} from "./word-content";
+import type {Kind} from "../util/misc";
+import type {AffixSpelling, Anatomy, PatternSpelling, Root, ThemeSpelling} from "./anatomy";
+import type {Section} from "./word-content";
 
 
-interface SuperWord<K extends string> {
+export interface NormalWord extends Kind<"normal"> {
 
-  readonly kind: K;
   readonly number: number;
-
-}
-
-
-export interface NormalWord extends SuperWord<"normal"> {
-
-  readonly form: string;
+  readonly spelling: string;
+  readonly sections: ReadonlyArray<Section>;
   readonly anatomy: Anatomy | null;
-  readonly equivalents: ReadonlyArray<Equivalent>;
-  readonly information: ReadonlyArray<Information>;
-  readonly phrases: ReadonlyArray<Phrase>;
-  readonly relations: ReadonlyArray<Relation>;
   readonly foreign: boolean;
 
 }
 
 
-export interface RootWord extends SuperWord<"root"> {
+export interface RootWord extends Kind<"root"> {
 
+  readonly number: number;
   readonly root: Root;
-  readonly equivalents: ReadonlyArray<Equivalent>;
+  readonly sections: ReadonlyArray<Section>;
   readonly foreign: boolean;
 
 }
 
 
-export interface PatternWord extends SuperWord<"pattern"> {
+export interface PatternWord extends Kind<"pattern"> {
 
-  readonly pattern: Pattern;
-  readonly equivalents: ReadonlyArray<Equivalent>;
-
-}
-
-
-export interface AffixWord extends SuperWord<"affix"> {
-
-  readonly affix: Affix;
-  readonly equivalents: ReadonlyArray<Equivalent>;
+  readonly number: number;
+  readonly spelling: PatternSpelling;
 
 }
 
 
-export interface ThemeWord extends SuperWord<"theme"> {
+export interface AffixWord extends Kind<"affix"> {
 
-  readonly theme: Theme;
+  readonly number: number;
+  readonly spelling: AffixSpelling;
+  readonly sections: ReadonlyArray<Section>;
+
+}
+
+
+export interface ThemeWord extends Kind<"theme"> {
+
+  readonly number: number;
+  readonly spelling: ThemeSpelling;
 
 }
 

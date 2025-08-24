@@ -1,5 +1,16 @@
 //
 
+import {NormalRelation} from "./relation";
+
+
+export interface Section {
+
+  readonly equivalents: ReadonlyArray<Equivalent>;
+  readonly information: ReadonlyArray<Information>;
+  readonly phrases: ReadonlyArray<Phrase>;
+  readonly relations: ReadonlyArray<NormalRelation>;
+
+}
 
 export interface Equivalent {
 
@@ -22,17 +33,8 @@ export interface Information {
 
 export interface Phrase {
 
-  readonly form: string;
+  readonly spelling: string;
   readonly terms: ReadonlyArray<string>;
   readonly termString: string;
-
-}
-
-
-export interface Relation {
-
-  readonly title: string;
-  readonly number: number;
-  readonly form: string;
 
 }
