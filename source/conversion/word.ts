@@ -2,7 +2,7 @@
 
 import {AffixWord, NormalWord, PatternWord, RootWord, ThemeWord, Word} from "../type/word";
 import {checkAffixHead, checkPatternHead, checkRoot, checkThemeHead, extractAffixSpelling, extractPatternSpelling, extractRoot, extractThemeSpelling, parseAnatomy} from "./anatomy";
-import {convertEquivalent, convertSection} from "./word-content";
+import {convertSection} from "./word-content";
 
 
 export function convertWord(rawWord: any): Word {
@@ -42,7 +42,7 @@ export function convertRootWord(rawWord: any): RootWord {
       kind: "root",
       number: +rawWord["number"],
       root,
-      equivalents: (rawSections[0] !== undefined) ? rawSections[0]["equivalents"].map(convertEquivalent) : [],
+      sections: rawSections.map(convertSection),
       foreign: rawWord["tags"].includes("外来語")
     } satisfies RootWord;
     return word;
@@ -54,12 +54,10 @@ export function convertRootWord(rawWord: any): RootWord {
 export function convertPatternWord(rawWord: any): PatternWord {
   const spelling = extractPatternSpelling(rawWord["spelling"]);
   if (spelling !== null) {
-    const rawSections = rawWord["sections"] as Array<any>;
     const word = {
       kind: "pattern",
       number: +rawWord["number"],
-      spelling,
-      equivalents: (rawSections[0] !== undefined) ? rawSections[0]["equivalents"].map(convertEquivalent) : []
+      spelling
     } satisfies PatternWord;
     return word;
   } else {
@@ -75,7 +73,7 @@ export function convertAffixWord(rawWord: any): AffixWord {
       kind: "affix",
       number: +rawWord["number"],
       spelling,
-      equivalents: (rawSections[0] !== undefined) ? rawSections[0]["equivalents"].map(convertEquivalent) : []
+      sections: rawSections.map(convertSection)
     } satisfies AffixWord;
     return word;
   } else {
