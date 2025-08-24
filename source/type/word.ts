@@ -2,19 +2,15 @@
 
 import type {Kind} from "../util/misc";
 import type {AffixSpelling, Anatomy, PatternSpelling, Root, ThemeSpelling} from "./anatomy";
-import type {NormalRelation} from "./relation";
-import type {Equivalent, Information, Phrase} from "./word-content";
+import type {Equivalent, Section} from "./word-content";
 
 
 export interface NormalWord extends Kind<"normal"> {
 
   readonly number: number;
   readonly spelling: string;
+  readonly sections: ReadonlyArray<Section>;
   readonly anatomy: Anatomy | null;
-  readonly equivalents: ReadonlyArray<Equivalent>;
-  readonly information: ReadonlyArray<Information>;
-  readonly phrases: ReadonlyArray<Phrase>;
-  readonly relations: ReadonlyArray<NormalRelation>;
   readonly foreign: boolean;
 
 }
