@@ -6,21 +6,17 @@ export const RADICALS = ["к", "г", "х", "ҕ", "т", "д", "с", "з", "п", "
 export type Radical = (typeof RADICALS)[number];
 export type Radicals = readonly [Radical, Radical] | readonly [Radical, Radical, Radical] | readonly [Radical, Radical, Radical, Radical];
 
-export const PATTERN_CATEGORIES = ["verb", "substantive"] as const;
+export const PATTERN_CATEGORIES = ["verbal", "substantive"] as const;
 export const PATTERN_TYPES = ["ground", "doubleMedial", "doubleFinal", "doubleInitial"] as const;
 export const PATTERN_DATA = new Map([
-  ["катө̂п", {category: "verb", type: "ground"}],
-  ["каттө̂п", {category: "verb", type: "doubleMedial"}],
-  ["катө̂ппе", {category: "verb", type: "doubleFinal"}],
-  ["аккатө̂п", {category: "verb", type: "doubleInitial"}],
-  ["ҫакатө̂п", {category: "verb", type: "ground"}],
-  ["ҫакаттө̂п", {category: "verb", type: "doubleMedial"}],
+  ["катө̂п", {category: "verbal", type: "ground"}],
+  ["каттө̂п", {category: "verbal", type: "doubleMedial"}],
+  ["катө̂ппе", {category: "verbal", type: "doubleFinal"}],
+  ["аккатө̂п", {category: "verbal", type: "doubleInitial"}],
   ["кө̂тап", {category: "substantive", type: "ground"}],
   ["кө̂ттап", {category: "substantive", type: "doubleMedial"}],
   ["кө̂тaппе", {category: "substantive", type: "doubleFinal"}],
-  ["аккө̂тап", {category: "substantive", type: "doubleInitial"}],
-  ["ҫакө̂тап", {category: "substantive", type: "ground"}],
-  ["ҫакө̂ттап", {category: "substantive", type: "doubleMedial"}]
+  ["аккө̂тап", {category: "substantive", type: "doubleInitial"}]
 ] as const);
 
 export type PatternSpelling = Parameters<(typeof PATTERN_DATA.get)>[0];
