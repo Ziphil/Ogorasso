@@ -1,4 +1,4 @@
 //
 
 export * from "./anatomy";
-export * from "./word";
+export * from "./entry";

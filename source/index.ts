@@ -1,7 +1,6 @@
 //
 
 export * from "./conversion";
-export * from "./function";
 export * from "./orthography";
 export * from "./type";
 
