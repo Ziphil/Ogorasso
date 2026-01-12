@@ -1,96 +1,161 @@
 //
 
-import {AffixWord, NormalWord, PatternWord, RootWord, ThemeWord, Word} from "../type/word";
-import {checkAffixHead, checkPatternHead, checkRoot, checkThemeHead, extractAffixSpelling, extractPatternSpelling, extractRoot, extractThemeSpelling, parseAnatomy} from "./anatomy";
-import {convertSection} from "./word-content";
+import {
+  Affix,
+  Entry,
+  Equivalent,
+  Information,
+  Pattern,
+  Phrase,
+  Relation,
+  Root,
+  Section,
+  Theme,
+  Word
+} from "../type";
+import {
+  checkAffixSpelling,
+  checkPatternSpelling,
+  checkRootSpelling,
+  checkThemeSpelling,
+  extractAffixSpelling,
+  extractPatternSpelling,
+  extractRadicals,
+  extractThemeSpelling,
+  parseAnatomy
+} from "./anatomy";
 
 
-export function convertWord(rawWord: any): Word {
-  const rawHead = rawWord["spelling"] as string;
-  if (checkRoot(rawHead)) {
-    return convertRootWord(rawWord);
-  } else if (checkThemeHead(rawHead)) {
-    return convertThemeWord(rawWord);
-  } else if (checkAffixHead(rawHead)) {
-    return convertAffixWord(rawWord);
-  } else if (checkPatternHead(rawHead)) {
-    return convertPatternWord(rawWord);
+/** ZpDIC Online API (v1) から返される単語エントリーを、このライブラリが提供するクラスのインスタンスに変換します。 */
+export function convertEntry(rawEntry: any): Entry {
+  const rawSpelling = rawEntry["spelling"] as string;
+  if (checkRootSpelling(rawSpelling)) {
+    return convertRoot(rawEntry);
+  } else if (checkThemeSpelling(rawSpelling)) {
+    return convertTheme(rawEntry);
+  } else if (checkAffixSpelling(rawSpelling)) {
+    return convertAffix(rawEntry);
+  } else if (checkPatternSpelling(rawSpelling)) {
+    return convertPattern(rawEntry);
   } else {
-    return convertNormalWord(rawWord);
+    return convertWord(rawEntry);
   }
 }
 
-export function convertNormalWord(rawWord: any): NormalWord {
-  const rawSections = rawWord["sections"] as Array<any>;
+export function convertWord(rawEntry: any): Word {
+  const rawSections = rawEntry["sections"] as Array<any>;
   const rawAnatomyRelations = rawSections[rawSections.length - 1]["relations"] as Array<any>;
-  const word = {
-    kind: "normal",
-    number: +rawWord["number"],
-    spelling: rawWord["spelling"],
-    anatomy: parseAnatomy(rawWord["spelling"], rawAnatomyRelations),
-    sections: rawWord["sections"].map(convertSection),
-    foreign: rawWord["tags"].includes("外来語")
-  } satisfies NormalWord;
+  const word = new Word({
+    number: +rawEntry["number"],
+    spelling: rawEntry["spelling"],
+    anatomy: parseAnatomy(rawEntry["spelling"], rawAnatomyRelations),
+    sections: rawEntry["sections"].map(convertSection),
+    borrowed: rawEntry["tags"].includes("借用語")
+  });
   return word;
 }
 
-export function convertRootWord(rawWord: any): RootWord {
-  const root = extractRoot(rawWord["spelling"]);
-  if (root !== null) {
-    const rawSections = rawWord["sections"] as Array<any>;
-    const word = {
-      kind: "root",
-      number: +rawWord["number"],
-      root,
+export function convertRoot(rawEntry: any): Root {
+  const radicals = extractRadicals(rawEntry["spelling"]);
+  if (radicals !== null) {
+    const rawSections = rawEntry["sections"] as Array<any>;
+    const root = new Root({
+      number: +rawEntry["number"],
+      radicals,
       sections: rawSections.map(convertSection),
-      foreign: rawWord["tags"].includes("外来語")
-    } satisfies RootWord;
-    return word;
+      borrowed: rawEntry["tags"].includes("借用語")
+    });
+    return root;
   } else {
-    throw new Error("invalid root word");
+    throw new Error("invalid root entry");
   }
 }
 
-export function convertPatternWord(rawWord: any): PatternWord {
-  const spelling = extractPatternSpelling(rawWord["spelling"]);
+export function convertPattern(rawEntry: any): Pattern {
+  const spelling = extractPatternSpelling(rawEntry["spelling"]);
   if (spelling !== null) {
-    const word = {
-      kind: "pattern",
-      number: +rawWord["number"],
+    const pattern = new Pattern({
+      number: +rawEntry["number"],
       spelling
-    } satisfies PatternWord;
-    return word;
+    });
+    return pattern;
   } else {
-    throw new Error("invalid pattern word");
+    throw new Error("invalid pattern entry");
   }
 }
 
-export function convertAffixWord(rawWord: any): AffixWord {
-  const spelling = extractAffixSpelling(rawWord["spelling"]);
+export function convertAffix(rawEntry: any): Affix {
+  const spelling = extractAffixSpelling(rawEntry["spelling"]);
   if (spelling !== null) {
-    const rawSections = rawWord["sections"] as Array<any>;
-    const word = {
-      kind: "affix",
-      number: +rawWord["number"],
+    const rawSections = rawEntry["sections"] as Array<any>;
+    const affix = new Affix({
+      number: +rawEntry["number"],
       spelling,
       sections: rawSections.map(convertSection)
-    } satisfies AffixWord;
-    return word;
+    });
+    return affix;
   } else {
-    throw new Error("invalid affix word");
+    throw new Error("invalid affix entry");
   }
 }
 
-export function convertThemeWord(rawWord: any): ThemeWord {
-  const spelling = extractThemeSpelling(rawWord["spelling"]);
+export function convertTheme(rawEntry: any): Theme {
+  const spelling = extractThemeSpelling(rawEntry["spelling"]);
   if (spelling !== null) {
-    const word = {
-      kind: "theme",
-      number: +rawWord["number"],
+    const theme = new Theme({
+      number: +rawEntry["number"],
       spelling
-    } satisfies ThemeWord;
-    return word;
+    });
+    return theme;
   } else {
-    throw new Error("invalid theme word");
+    throw new Error("invalid theme entry");
   }
+}
+
+export function convertSection(rawSection: any): Section {
+  const rawRelations = rawSection["relations"] as Array<any>;
+  const section = {
+    equivalents: rawSection["equivalents"].map(convertEquivalent),
+    information: rawSection["informations"].map(convertInformation),
+    phrases: rawSection["phrases"].map(convertPhrase),
+    relations: rawRelations.filter((rawRelation) => !rawRelation["spelling"].includes("√") && !rawRelation["spelling"].includes("‹")).map(convertRelation)
+  } satisfies Section;
+  return section;
+}
+
+export function convertEquivalent(rawEquivalent: any): Equivalent {
+  const equivalent = {
+    titles: rawEquivalent["titles"],
+    terms: rawEquivalent["terms"],
+    termString: rawEquivalent["termString"],
+    hidden: rawEquivalent["hidden"]
+  } satisfies Equivalent;
+  return equivalent;
+}
+
+export function convertInformation(rawInformation: any): Information {
+  const information = {
+    title: rawInformation["title"],
+    text: rawInformation["text"],
+    hidden: rawInformation["hidden"]
+  } satisfies Information;
+  return information;
+}
+
+export function convertPhrase(rawPhrase: any): Phrase {
+  const phrase = {
+    spelling: rawPhrase["form"],
+    terms: rawPhrase["terms"],
+    termString: rawPhrase["termString"]
+  } satisfies Phrase;
+  return phrase;
+}
+
+export function convertRelation(rawRelation: any): Relation {
+  const relation = {
+    title: rawRelation["titles"][0] ?? "関連語",
+    number: rawRelation["number"],
+    spelling: rawRelation["spelling"]
+  } satisfies Relation;
+  return relation;
 }

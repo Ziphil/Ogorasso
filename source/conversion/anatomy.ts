@@ -1,44 +1,57 @@
 //
 
-import {getAffixType} from "../function/anatomy";
-import {AffixSpelling, AffixType, Anatomy, PATTERN_DATA, PatternSpelling, Root, ThemeSpelling} from "../type/anatomy";
-import {AffixRelation, ConstituentRelation, PatternRelation, RootRelation, ThemeRelation} from "../type/relation";
+import {
+  AffixSpelling,
+  AffixType,
+  Anatomy,
+  CompoundAnatomy,
+  Constituent,
+  PATTERN_DATA,
+  PatternSpelling,
+  Radicals,
+  SimpleAffix,
+  SimplePattern,
+  SimpleRoot,
+  SimpleTheme,
+  SimplexAnatomy,
+  ThemeSpelling,
+  getAffixType
+} from "../type";
 
 
 export function parseAnatomy(rawSpelling: string, rawRelations: Array<any>): Anatomy | null {
   if (rawRelations.some((rawRelation) => rawRelation["titles"][0] === "合成元")) {
-    const constituents = parseComponentRelations(rawRelations);
-    return {kind: "compound", constituents};
+    const constituents = parseConstituents(rawRelations);
+    return new CompoundAnatomy({constituents});
   } else {
-    const root = parseRootRelation(rawRelations);
-    const pattern = parsePatternRelation(rawRelations);
-    const theme = parseThemeRelation(rawRelations) ?? inferThemeRelation(rawSpelling);
+    const root = parseSimpleRoot(rawRelations);
+    const pattern = parseSimplePattern(rawRelations);
+    const theme = parseSimpleTheme(rawRelations) ?? inferSimpleTheme(rawSpelling);
     const affixes = parseAffixRelations(rawRelations);
     if (root !== null && pattern !== null && theme !== null) {
-      return {kind: "simplex", root, pattern, theme, affixes};
+      return new SimplexAnatomy({root, pattern, theme, affixes});
     } else {
       return null;
     }
   }
 }
 
-export function parseComponentRelations(rawRelations: Array<any>): ReadonlyArray<ConstituentRelation> {
-  const rawComponentRelations = rawRelations.filter((rawRelation) => rawRelation["titles"][0] === "合成元");
-  const componentRelations = rawComponentRelations.map((rawRelation) => ({
-    kind: "constituent",
+export function parseConstituents(rawRelations: Array<any>): ReadonlyArray<Constituent> {
+  const rawConstituents = rawRelations.filter((rawRelation) => rawRelation["titles"][0] === "合成元");
+  const constituents = rawConstituents.map((rawRelation) => ({
     number: +rawRelation["number"],
     spelling: rawRelation["spelling"]
-  }) satisfies ConstituentRelation);
-  return componentRelations;
+  }) satisfies Constituent);
+  return constituents;
 }
 
-export function parseRootRelation(rawRelations: Array<any>): RootRelation | null {
-  const rawRootRelation = rawRelations.find((rawRelation) => rawRelation["titles"][0] === "語根" && checkRoot(rawRelation["spelling"]));
-  if (rawRootRelation !== undefined) {
-    const number = +rawRootRelation["number"];
-    const root = extractRoot(rawRootRelation["spelling"]);
-    if (root !== null) {
-      return {kind: "root", number, root};
+export function parseSimpleRoot(rawRelations: Array<any>): SimpleRoot | null {
+  const rawRootRelations = rawRelations.find((rawRelation) => rawRelation["titles"][0] === "語根" && checkRootSpelling(rawRelation["spelling"]));
+  if (rawRootRelations !== undefined) {
+    const number = +rawRootRelations["number"];
+    const radicals = extractRadicals(rawRootRelations["spelling"]);
+    if (radicals !== null) {
+      return new SimpleRoot({number, radicals});
     } else {
       return null;
     }
@@ -47,34 +60,34 @@ export function parseRootRelation(rawRelations: Array<any>): RootRelation | null
   }
 }
 
-export function checkRoot(rawForm: string): boolean {
-  return rawForm.match(/^√(.)-(.)(?:-(.))?(?:-(.))?$/) !== null;
+export function checkRootSpelling(rawSpelling: string): boolean {
+  return rawSpelling.match(/^√(.)-(.)(?:-(.))?(?:-(.))?$/) !== null;
 }
 
-export function extractRoot(rawForm: string): Root | null {
-  const match = rawForm.match(/^√(.)-(.)(?:-(.))?(?:-(.))?$/);
+export function extractRadicals(rawSpelling: string): Radicals | null {
+  const match = rawSpelling.match(/^√(.)-(.)(?:-(.))?(?:-(.))?$/);
   if (match !== null) {
     if (match[3] !== undefined) {
       if (match[4] !== undefined) {
-        return [match[1].toLowerCase(), match[2].toLowerCase(), match[3].toLowerCase(), match[4].toLowerCase()] as Root;
+        return [match[1].toLowerCase(), match[2].toLowerCase(), match[3].toLowerCase(), match[4].toLowerCase()] as Radicals;
       } else {
-        return [match[1].toLowerCase(), match[2].toLowerCase(), match[3].toLowerCase()] as Root;
+        return [match[1].toLowerCase(), match[2].toLowerCase(), match[3].toLowerCase()] as Radicals;
       }
     } else {
-      return [match[1].toLowerCase(), match[2].toLowerCase()] as Root;
+      return [match[1].toLowerCase(), match[2].toLowerCase()] as Radicals;
     }
   } else {
     return null;
   }
 }
 
-export function parsePatternRelation(rawRelations: Array<any>): PatternRelation | null {
-  const rawPatternRelation = rawRelations.find((rawRelation) => checkPatternHead(rawRelation["spelling"]));
-  if (rawPatternRelation !== undefined) {
-    const number = +rawPatternRelation["number"];
-    const spelling = extractPatternSpelling(rawPatternRelation["spelling"]);
+export function parseSimplePattern(rawRelations: Array<any>): SimplePattern | null {
+  const rawPatternRelations = rawRelations.find((rawRelation) => checkPatternSpelling(rawRelation["spelling"]));
+  if (rawPatternRelations !== undefined) {
+    const number = +rawPatternRelations["number"];
+    const spelling = extractPatternSpelling(rawPatternRelations["spelling"]);
     if (spelling !== null) {
-      return {kind: "pattern", number, spelling};
+      return new SimplePattern({number, spelling});
     } else {
       return null;
     }
@@ -83,13 +96,13 @@ export function parsePatternRelation(rawRelations: Array<any>): PatternRelation 
   }
 }
 
-export function checkPatternHead(rawHead: string): boolean {
-  const match = rawHead.match(/^‹(?!=)(.*)›$/);
+export function checkPatternSpelling(rawSpelling: string): boolean {
+  const match = rawSpelling.match(/^‹(?!=)(.*)›$/);
   return match !== null && !match[1].includes("-");
 }
 
-export function extractPatternSpelling(rawHead: string): PatternSpelling | null {
-  const match = rawHead.match(/^‹(.*)›$/);
+export function extractPatternSpelling(rawSpelling: string): PatternSpelling | null {
+  const match = rawSpelling.match(/^‹(.*)›$/);
   if (match !== null && PATTERN_DATA.has(match[1] as any)) {
     return match[1] as PatternSpelling;
   } else {
@@ -97,32 +110,32 @@ export function extractPatternSpelling(rawHead: string): PatternSpelling | null 
   }
 }
 
-export function parseAffixRelations(rawRelations: Array<any>): Record<AffixType, ReadonlyArray<AffixRelation>> {
-  const rawAffixRelations = rawRelations.filter((rawRelation) => checkAffixHead(rawRelation["spelling"]));
+export function parseAffixRelations(rawRelations: Array<any>): Record<AffixType, ReadonlyArray<SimpleAffix>> {
+  const rawAffixRelations = rawRelations.filter((rawRelation) => checkAffixSpelling(rawRelation["spelling"]));
   const affixes = {
-    prefixal: [] as Array<AffixRelation>,
-    prethematic: [] as Array<AffixRelation>,
-    postthematic: [] as Array<AffixRelation>,
-    suffixal: [] as Array<AffixRelation>
+    prefixal: [] as Array<SimpleAffix>,
+    infixal: [] as Array<SimpleAffix>,
+    suffixal: [] as Array<SimpleAffix>,
+    terminal: [] as Array<SimpleAffix>
   };
   for (const rawAffixRelation of rawAffixRelations) {
     const number = +rawAffixRelation["number"];
     const spelling = extractAffixSpelling(rawAffixRelation["spelling"]);
     const affixType = (spelling !== null) ? getAffixType(spelling) : null ;
     if (spelling !== null && affixType !== null) {
-      affixes[affixType].push({kind: "affix", number, spelling});
+      affixes[affixType].push(new SimpleAffix({number, spelling}));
     }
   }
   return affixes;
 }
 
-export function checkAffixHead(rawHead: string): boolean {
-  const match = rawHead.match(/^‹(?!=)(.*)›$/);
+export function checkAffixSpelling(rawSpelling: string): boolean {
+  const match = rawSpelling.match(/^‹(?!=)(.*)›$/);
   return match !== null && match[1].includes("-");
 }
 
-export function extractAffixSpelling(rawHead: string): AffixSpelling | null {
-  const match = rawHead.match(/^‹(?!=)(.*)›$/);
+export function extractAffixSpelling(rawSpelling: string): AffixSpelling | null {
+  const match = rawSpelling.match(/^‹(?!=)(.*)›$/);
   if (match !== null) {
     return match[1];
   } else {
@@ -130,13 +143,13 @@ export function extractAffixSpelling(rawHead: string): AffixSpelling | null {
   }
 }
 
-export function parseThemeRelation(rawRelations: Array<any>): ThemeRelation | null {
-  const rawThemeRelation = rawRelations.find((rawRelation) => checkThemeHead(rawRelation["spelling"]));
+export function parseSimpleTheme(rawRelations: Array<any>): SimpleTheme | null {
+  const rawThemeRelation = rawRelations.find((rawRelation) => checkThemeSpelling(rawRelation["spelling"]));
   if (rawThemeRelation !== undefined) {
     const number = +rawThemeRelation["number"];
     const spelling = extractThemeSpelling(rawThemeRelation["spelling"]);
     if (spelling !== null) {
-      return {kind: "theme", number, spelling};
+      return new SimpleTheme({number, spelling});
     } else {
       return null;
     }
@@ -145,10 +158,10 @@ export function parseThemeRelation(rawRelations: Array<any>): ThemeRelation | nu
   }
 }
 
-export function inferThemeRelation(rawSpelling: string): ThemeRelation | null {
-  const form = inferThemeSpelling(rawSpelling);
-  if (form !== null) {
-    return {kind: "theme", number: -1, spelling: form};
+export function inferSimpleTheme(rawSpelling: string): SimpleTheme | null {
+  const spelling = inferThemeSpelling(rawSpelling);
+  if (spelling !== null) {
+    return new SimpleTheme({number: -1, spelling});
   } else {
     return null;
   }
@@ -166,12 +179,12 @@ export function inferThemeSpelling(rawSpelling: string): ThemeSpelling | null {
   }
 }
 
-export function checkThemeHead(rawHead: string): boolean {
-  return rawHead.match(/^‹=(.)›$/) !== null;
+export function checkThemeSpelling(rawSpelling: string): boolean {
+  return rawSpelling.match(/^‹=(.)›$/) !== null;
 }
 
-export function extractThemeSpelling(rawHead: string): ThemeSpelling | null {
-  const match = rawHead.match(/^‹=(.)›$/);
+export function extractThemeSpelling(rawSpelling: string): ThemeSpelling | null {
+  const match = rawSpelling.match(/^‹=(.)›$/);
   if (match !== null && (match[1] === "е" || match[1] === "о")) {
     return match[1];
   } else {
