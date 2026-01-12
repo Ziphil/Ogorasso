@@ -4,9 +4,9 @@ import type {Kind} from "../../util/misc";
 import type {Anatomy} from "../anatomy/index";
 
 
-export class Word implements Kind<"normal"> {
+export class Word implements Kind<"word"> {
 
-  public readonly kind: "normal";
+  public readonly kind: "word";
   public readonly number: number;
   public readonly spelling: string;
   public readonly sections: ReadonlyArray<Section>;
@@ -14,7 +14,7 @@ export class Word implements Kind<"normal"> {
   public readonly borrowed: boolean;
 
   public constructor(initializer: Pick<Word, "number" | "spelling" | "sections" | "anatomy" | "borrowed">) {
-    this.kind = "normal";
+    this.kind = "word";
     this.number = initializer.number;
     this.spelling = initializer.spelling;
     this.sections = initializer.sections;
