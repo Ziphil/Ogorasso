@@ -50,7 +50,7 @@ export function convertWord(rawEntry: any): Word {
     spelling: rawEntry["spelling"],
     anatomy: parseAnatomy(rawEntry["spelling"], rawAnatomyRelations),
     sections: rawEntry["sections"].map(convertSection),
-    borrowed: rawEntry["tags"].includes("借用語")
+    origin: (rawEntry["tags"].includes("借用語")) ? "loan" : (rawEntry["tags"].includes("外来語")) ? "foreign" : "proper"
   });
   return word;
 }
@@ -63,7 +63,7 @@ export function convertRoot(rawEntry: any): Root {
       number: +rawEntry["number"],
       radicals,
       sections: rawSections.map(convertSection),
-      borrowed: rawEntry["tags"].includes("借用語")
+      origin: (rawEntry["tags"].includes("借用語")) ? "loan" : (rawEntry["tags"].includes("外来語")) ? "foreign" : "proper"
     });
     return root;
   } else {

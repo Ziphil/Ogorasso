@@ -4,22 +4,32 @@ import type {Kind} from "../../util/misc";
 import type {Anatomy} from "../anatomy/index";
 
 
-export class Word implements Kind<"word"> {
+export class SimpleWord implements Kind<"word"> {
 
   public readonly kind: "word";
   public readonly number: number;
   public readonly spelling: string;
-  public readonly sections: ReadonlyArray<Section>;
-  public readonly anatomy: Anatomy | null;
-  public readonly borrowed: boolean;
 
-  public constructor(initializer: Pick<Word, "number" | "spelling" | "sections" | "anatomy" | "borrowed">) {
+  public constructor(initializer: Pick<SimpleWord, "number" | "spelling">) {
     this.kind = "word";
     this.number = initializer.number;
     this.spelling = initializer.spelling;
+  }
+
+}
+
+
+export class Word extends SimpleWord implements Kind<"word"> {
+
+  public readonly sections: ReadonlyArray<Section>;
+  public readonly anatomy: Anatomy | null;
+  public readonly origin: Origin;
+
+  public constructor(initializer: Pick<Word, "number" | "spelling" | "sections" | "anatomy" | "origin">) {
+    super(initializer);
     this.sections = initializer.sections;
     this.anatomy = initializer.anatomy;
-    this.borrowed = initializer.borrowed;
+    this.origin = initializer.origin;
   }
 
 }
@@ -33,6 +43,7 @@ export interface Section {
   readonly relations: ReadonlyArray<Relation>;
 
 }
+
 
 export interface Equivalent {
 
@@ -69,3 +80,6 @@ export interface Relation {
   readonly spelling: string;
 
 }
+
+
+export type Origin = "proper" | "loan" | "foreign";

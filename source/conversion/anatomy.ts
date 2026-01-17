@@ -5,7 +5,6 @@ import {
   AffixType,
   Anatomy,
   CompoundAnatomy,
-  Constituent,
   PATTERN_DATA,
   PatternSpelling,
   Radicals,
@@ -13,6 +12,7 @@ import {
   SimplePattern,
   SimpleRoot,
   SimpleTheme,
+  SimpleWord,
   SimplexAnatomy,
   ThemeSpelling,
   getAffixType
@@ -36,12 +36,12 @@ export function parseAnatomy(rawSpelling: string, rawRelations: Array<any>): Ana
   }
 }
 
-export function parseConstituents(rawRelations: Array<any>): ReadonlyArray<Constituent> {
+export function parseConstituents(rawRelations: Array<any>): ReadonlyArray<SimpleWord> {
   const rawConstituents = rawRelations.filter((rawRelation) => rawRelation["titles"][0] === "合成元");
-  const constituents = rawConstituents.map((rawRelation) => ({
+  const constituents = rawConstituents.map((rawRelation) => new SimpleWord({
     number: +rawRelation["number"],
     spelling: rawRelation["spelling"]
-  }) satisfies Constituent);
+  }));
   return constituents;
 }
 
