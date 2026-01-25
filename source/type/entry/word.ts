@@ -24,12 +24,16 @@ export class Word extends SimpleWord implements Kind<"word"> {
   public readonly sections: ReadonlyArray<Section>;
   public readonly anatomy: Anatomy | null;
   public readonly origin: Origin;
+  public readonly oldSpellings: ReadonlyArray<string>;
+  public readonly separatedSpellings: ReadonlyArray<string>;
 
-  public constructor(initializer: Pick<Word, "number" | "spelling" | "sections" | "anatomy" | "origin">) {
+  public constructor(initializer: Pick<Word, "number" | "spelling" | "sections" | "anatomy" | "origin" | "oldSpellings" | "separatedSpellings">) {
     super(initializer);
     this.sections = initializer.sections;
     this.anatomy = initializer.anatomy;
     this.origin = initializer.origin;
+    this.oldSpellings = initializer.oldSpellings;
+    this.separatedSpellings = initializer.separatedSpellings;
   }
 
 }

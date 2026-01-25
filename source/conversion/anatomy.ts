@@ -45,6 +45,11 @@ export function parseConstituents(rawRelations: Array<any>): ReadonlyArray<Simpl
   return constituents;
 }
 
+export function checkAnatomySection(rawSection: any): boolean {
+  const rawEquivalents = rawSection["equivalents"] as Array<any>;
+  return rawEquivalents.length <= 0;
+}
+
 export function parseSimpleRoot(rawRelations: Array<any>): SimpleRoot | null {
   const rawRootRelations = rawRelations.find((rawRelation) => rawRelation["titles"][0] === "語根" && checkRootSpelling(rawRelation["spelling"]));
   if (rawRootRelations !== undefined) {
@@ -190,4 +195,16 @@ export function extractThemeSpelling(rawSpelling: string): ThemeSpelling | null 
   } else {
     return null;
   }
+}
+
+export function extractOldSpellings(rawSection: any): Array<string> {
+  const rawVariants = rawSection["variants"] as Array<any>;
+  const rawOldSpellingVariants = rawVariants.filter((rawVariant) => rawVariant["title"] === "旧綴り");
+  return rawOldSpellingVariants.map((rawVariant) => rawVariant["spelling"]);
+}
+
+export function extractSeparatedSpellings(rawSection: any): Array<string> {
+  const rawVariants = rawSection["variants"] as Array<any>;
+  const rawSeparatedSpellingVariants = rawVariants.filter((rawVariant) => rawVariant["title"] === "分離形");
+  return rawSeparatedSpellingVariants.map((rawVariant) => rawVariant["spelling"]);
 }
