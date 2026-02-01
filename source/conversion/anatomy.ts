@@ -5,7 +5,6 @@ import {
   AffixType,
   Anatomy,
   CompoundAnatomy,
-  Constituent,
   PATTERN_DATA,
   PatternSpelling,
   Radicals,
@@ -13,6 +12,7 @@ import {
   SimplePattern,
   SimpleRoot,
   SimpleTheme,
+  SimpleWord,
   SimplexAnatomy,
   ThemeSpelling,
   getAffixType
@@ -36,13 +36,18 @@ export function parseAnatomy(rawSpelling: string, rawRelations: Array<any>): Ana
   }
 }
 
-export function parseConstituents(rawRelations: Array<any>): ReadonlyArray<Constituent> {
+export function parseConstituents(rawRelations: Array<any>): ReadonlyArray<SimpleWord> {
   const rawConstituents = rawRelations.filter((rawRelation) => rawRelation["titles"][0] === "合成元");
-  const constituents = rawConstituents.map((rawRelation) => ({
+  const constituents = rawConstituents.map((rawRelation) => new SimpleWord({
     number: +rawRelation["number"],
     spelling: rawRelation["spelling"]
-  }) satisfies Constituent);
+  }));
   return constituents;
+}
+
+export function checkAnatomySection(rawSection: any): boolean {
+  const rawEquivalents = rawSection["equivalents"] as Array<any>;
+  return rawEquivalents.length <= 0;
 }
 
 export function parseSimpleRoot(rawRelations: Array<any>): SimpleRoot | null {
@@ -171,9 +176,9 @@ export function inferSimpleTheme(rawSpelling: string): SimpleTheme | null {
  * 弱子音の消失が起こっている場合は正しい幹母音を推定できない場合があるので注意してください。 */
 export function inferThemeSpelling(rawSpelling: string): ThemeSpelling | null {
   if (rawSpelling.includes("е̂") || rawSpelling.includes("и̂")) {
-    return "е";
+    return "и";
   } else if (rawSpelling.includes("о̂") || rawSpelling.includes("у̂")) {
-    return "о";
+    return "у";
   } else {
     return null;
   }
@@ -185,9 +190,21 @@ export function checkThemeSpelling(rawSpelling: string): boolean {
 
 export function extractThemeSpelling(rawSpelling: string): ThemeSpelling | null {
   const match = rawSpelling.match(/^‹=(.)›$/);
-  if (match !== null && (match[1] === "е" || match[1] === "о")) {
+  if (match !== null && (match[1] === "и" || match[1] === "у")) {
     return match[1];
   } else {
     return null;
   }
+}
+
+export function extractOldSpellings(rawSection: any): Array<string> {
+  const rawVariants = rawSection["variants"] as Array<any>;
+  const rawOldSpellingVariants = rawVariants.filter((rawVariant) => rawVariant["title"] === "旧綴り");
+  return rawOldSpellingVariants.map((rawVariant) => rawVariant["spelling"]);
+}
+
+export function extractSeparatedSpellings(rawSection: any): Array<string> {
+  const rawVariants = rawSection["variants"] as Array<any>;
+  const rawSeparatedSpellingVariants = rawVariants.filter((rawVariant) => rawVariant["title"] === "分離形");
+  return rawSeparatedSpellingVariants.map((rawVariant) => rawVariant["spelling"]);
 }

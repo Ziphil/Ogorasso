@@ -2,7 +2,7 @@
 
 import type {Kind} from "../../util/misc";
 import type {Radicals} from "../anatomy/core";
-import type {Section} from "./word";
+import type {Origin, Section} from "./word";
 
 
 export class SimpleRoot implements Kind<"root"> {
@@ -23,12 +23,12 @@ export class SimpleRoot implements Kind<"root"> {
 export class Root extends SimpleRoot implements Kind<"root"> {
 
   public readonly sections: ReadonlyArray<Section>;
-  public readonly borrowed: boolean;
+  public readonly origin: Origin;
 
-  public constructor(initializer: Pick<Root, "number" | "radicals" | "sections" | "borrowed">) {
+  public constructor(initializer: Pick<Root, "number" | "radicals" | "sections" | "origin">) {
     super(initializer);
     this.sections = initializer.sections;
-    this.borrowed = initializer.borrowed;
+    this.origin = initializer.origin;
   }
 
 }

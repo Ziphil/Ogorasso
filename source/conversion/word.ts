@@ -15,12 +15,15 @@ import {
 } from "../type";
 import {
   checkAffixSpelling,
+  checkAnatomySection,
   checkPatternSpelling,
   checkRootSpelling,
   checkThemeSpelling,
   extractAffixSpelling,
+  extractOldSpellings,
   extractPatternSpelling,
   extractRadicals,
+  extractSeparatedSpellings,
   extractThemeSpelling,
   parseAnatomy
 } from "./anatomy";
@@ -44,13 +47,17 @@ export function convertEntry(rawEntry: any): Entry {
 
 export function convertWord(rawEntry: any): Word {
   const rawSections = rawEntry["sections"] as Array<any>;
-  const rawAnatomyRelations = rawSections[rawSections.length - 1]["relations"] as Array<any>;
+  const lastRawSection = rawSections[rawSections.length - 1];
+  const concreteRawSections = (checkAnatomySection(lastRawSection)) ? rawSections.slice(0, -1) : rawSections;
+  const rawAnatomyRelations = (checkAnatomySection(lastRawSection)) ? lastRawSection["relations"] as Array<any> : null;
   const word = new Word({
     number: +rawEntry["number"],
     spelling: rawEntry["spelling"],
-    anatomy: parseAnatomy(rawEntry["spelling"], rawAnatomyRelations),
-    sections: rawEntry["sections"].map(convertSection),
-    borrowed: rawEntry["tags"].includes("借用語")
+    anatomy: (rawAnatomyRelations !== null) ? parseAnatomy(rawEntry["spelling"], rawAnatomyRelations) : null,
+    sections: concreteRawSections.map(convertSection),
+    origin: (rawEntry["tags"].includes("借用語")) ? "loan" : (rawEntry["tags"].includes("外来語")) ? "foreign" : "proper",
+    oldSpellings: (rawAnatomyRelations !== null) ? extractOldSpellings(lastRawSection) : [],
+    separatedSpellings: (rawAnatomyRelations !== null) ? extractSeparatedSpellings(lastRawSection) : []
   });
   return word;
 }
@@ -63,7 +70,7 @@ export function convertRoot(rawEntry: any): Root {
       number: +rawEntry["number"],
       radicals,
       sections: rawSections.map(convertSection),
-      borrowed: rawEntry["tags"].includes("借用語")
+      origin: (rawEntry["tags"].includes("借用語")) ? "loan" : (rawEntry["tags"].includes("外来語")) ? "foreign" : "proper"
     });
     return root;
   } else {

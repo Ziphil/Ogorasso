@@ -28,6 +28,6 @@ export const AFFIX_TYPES = ["prefixal", "infixal", "suffixal", "terminal"] as co
 export type AffixSpelling = string;
 export type AffixType = (typeof AFFIX_TYPES)[number];
 
-export const THEME_CHARS = ["е", "о"] as const;
+export const THEME_CHARS = ["и", "у"] as const;
 
 export type ThemeSpelling = (typeof THEME_CHARS)[number];
