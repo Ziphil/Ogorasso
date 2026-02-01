@@ -48,16 +48,16 @@ export function convertEntry(rawEntry: any): Entry {
 export function convertWord(rawEntry: any): Word {
   const rawSections = rawEntry["sections"] as Array<any>;
   const lastRawSection = rawSections[rawSections.length - 1];
-  const concreteRawSections = (checkAnatomySection(lastRawSection)) ? rawSections.slice(0, -1) : rawSections;
-  const rawAnatomyRelations = (checkAnatomySection(lastRawSection)) ? lastRawSection["relations"] as Array<any> : null;
+  const concreteRawSections = (lastRawSection !== undefined && checkAnatomySection(lastRawSection)) ? rawSections.slice(0, -1) : rawSections;
+  const rawAnatomyRelations = (lastRawSection !== undefined && checkAnatomySection(lastRawSection)) ? lastRawSection["relations"] as Array<any> : null;
   const word = new Word({
     number: +rawEntry["number"],
     spelling: rawEntry["spelling"],
     anatomy: (rawAnatomyRelations !== null) ? parseAnatomy(rawEntry["spelling"], rawAnatomyRelations) : null,
     sections: concreteRawSections.map(convertSection),
     origin: (rawEntry["tags"].includes("借用語")) ? "loan" : (rawEntry["tags"].includes("外来語")) ? "foreign" : "proper",
-    oldSpellings: (rawAnatomyRelations !== null) ? extractOldSpellings(lastRawSection) : [],
-    separatedSpellings: (rawAnatomyRelations !== null) ? extractSeparatedSpellings(lastRawSection) : []
+    oldSpellings: (lastRawSection !== undefined && rawAnatomyRelations !== null) ? extractOldSpellings(lastRawSection) : [],
+    separatedSpellings: (lastRawSection !== undefined && rawAnatomyRelations !== null) ? extractSeparatedSpellings(lastRawSection) : []
   });
   return word;
 }

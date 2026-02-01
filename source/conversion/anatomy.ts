@@ -198,13 +198,13 @@ export function extractThemeSpelling(rawSpelling: string): ThemeSpelling | null 
 }
 
 export function extractOldSpellings(rawSection: any): Array<string> {
-  const rawVariants = rawSection["variants"] as Array<any>;
-  const rawOldSpellingVariants = rawVariants.filter((rawVariant) => rawVariant["title"] === "旧綴り");
-  return rawOldSpellingVariants.map((rawVariant) => rawVariant["spelling"]);
+  const rawVariations = rawSection["variations"] as Array<any>;
+  const rawOldSpellingVariations = rawVariations.filter((rawVariation) => rawVariation["title"] === "旧綴り");
+  return rawOldSpellingVariations.map((rawVariation) => rawVariation["spelling"]);
 }
 
 export function extractSeparatedSpellings(rawSection: any): Array<string> {
-  const rawVariants = rawSection["variants"] as Array<any>;
-  const rawSeparatedSpellingVariants = rawVariants.filter((rawVariant) => rawVariant["title"] === "分離形");
-  return rawSeparatedSpellingVariants.map((rawVariant) => rawVariant["spelling"]);
+  const rawVariations = rawSection["variations"] as Array<any>;
+  const rawSeparatedSpellingVariations = rawVariations.filter((rawVariation) => rawVariation["title"] === "分離形");
+  return rawSeparatedSpellingVariations.map((rawVariation) => rawVariation["spelling"]);
 }
