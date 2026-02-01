@@ -176,9 +176,9 @@ export function inferSimpleTheme(rawSpelling: string): SimpleTheme | null {
  * 弱子音の消失が起こっている場合は正しい幹母音を推定できない場合があるので注意してください。 */
 export function inferThemeSpelling(rawSpelling: string): ThemeSpelling | null {
   if (rawSpelling.includes("е̂") || rawSpelling.includes("и̂")) {
-    return "е";
+    return "и";
   } else if (rawSpelling.includes("о̂") || rawSpelling.includes("у̂")) {
-    return "о";
+    return "у";
   } else {
     return null;
   }
@@ -190,7 +190,7 @@ export function checkThemeSpelling(rawSpelling: string): boolean {
 
 export function extractThemeSpelling(rawSpelling: string): ThemeSpelling | null {
   const match = rawSpelling.match(/^‹=(.)›$/);
-  if (match !== null && (match[1] === "е" || match[1] === "о")) {
+  if (match !== null && (match[1] === "и" || match[1] === "у")) {
     return match[1];
   } else {
     return null;
