@@ -1,5 +1,5 @@
 <div align="center">
-<h1>Ogôraššo / Ого̂рашшо</h1>
+<h1>Eguraššo / Егурашшо</h1>
 </div>
 
 ![](https://img.shields.io/github/package-json/v/Ziphil/Ogorasso)
