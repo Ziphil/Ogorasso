@@ -19,6 +19,7 @@
   },
   "include": [
     "source/**/*",
-    "test/**/*"
+    "test/**/*",
+    "vitest.config.mts"
   ]
 }
