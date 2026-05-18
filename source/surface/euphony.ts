@@ -41,10 +41,10 @@ export function transformEuphony(text: string): string {
   const graphemes = [...toGraphemes(text)];
   let index = 0;
   while (index < graphemes.length - 1) {
-    const left = graphemes[index];
-    const right = graphemes[index + 1];
-    if (isConsonant(left) && isConsonant(right)) {
-      const replacement = EUPHONY_MAP.get(left + right);
+    const leftGrapheme = graphemes[index];
+    const rightGrapheme = graphemes[index + 1];
+    if (isConsonant(leftGrapheme) && isConsonant(rightGrapheme)) {
+      const replacement = EUPHONY_MAP.get(leftGrapheme + rightGrapheme);
       if (replacement !== undefined) {
         graphemes.splice(index, 2, replacement[0], replacement[1]);
       }

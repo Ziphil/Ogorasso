@@ -4,7 +4,7 @@ import {Grapheme, extractDiacritic, extractLetter, isSolidLongVowel, isSolidWeak
 
 
 export function transformWeakConsonants(text: string): string {
-  const graphemes = [...toGraphemes(text)];
+  const graphemes = desactivateGeminatedWeakConsonant([...toGraphemes(text)]);
   let index = 0;
   while (index < graphemes.length) {
     const mergingGraphemes = getMergingGraphemes(graphemes, index);
@@ -20,6 +20,25 @@ export function transformWeakConsonants(text: string): string {
     index ++;
   }
   return graphemes.join("");
+}
+
+function desactivateGeminatedWeakConsonant(graphemes: Array<Grapheme>): Array<Grapheme> {
+  let index = 0;
+  while (index < graphemes.length) {
+    const leftGrapheme = graphemes[index];
+    const rightGrapheme = graphemes[index + 1];
+    if (isWeakConsonant(leftGrapheme) && isWeakConsonant(rightGrapheme) && leftGrapheme === rightGrapheme) {
+      const precedingGraphemes = graphemes.slice(0, index);
+      const followingGraphemes = graphemes.slice(index + 2);
+      if (precedingGraphemes.some((grapheme) => isSolidLongVowel(grapheme))) {
+        graphemes.splice(index, 2, leftGrapheme, "ъ");
+      } else if (followingGraphemes.some((grapheme) => isSolidLongVowel(grapheme))) {
+        graphemes.splice(index, 2, "ъ", rightGrapheme);
+      }
+    }
+    index ++;
+  }
+  return graphemes;
 }
 
 function getMergingGraphemes(graphemes: Array<Grapheme>, from: number): Array<Grapheme> {

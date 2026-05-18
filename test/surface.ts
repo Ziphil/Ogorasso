@@ -77,4 +77,11 @@ describe("transform weak consonants", () => {
     expect(transformWeakConsonants("е̂йоў")).toBe("е̂");
     expect(transformWeakConsonants("ейоў")).toBe("о");
   });
+  test("geminated weak consonant", () => {
+    expect(transformWeakConsonants("у̂ййо")).toBe("о̂о");
+    expect(transformWeakConsonants("аўўи̂")).toBe("ае̂");
+    expect(transformWeakConsonants("у̂йўо")).toBe("о̂у");
+    expect(transformWeakConsonants("аўъи̂")).toBe("ои̂");
+
+  });
 });
