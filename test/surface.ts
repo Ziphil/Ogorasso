@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 
 import {describe, expect, test} from "vitest";
-import {transformLightSyllables} from "../source";
+import {transformEuphony, transformLightSyllables} from "../source";
 
 
 describe("transform consecutive light syllables", () => {
@@ -16,5 +16,37 @@ describe("transform consecutive light syllables", () => {
     expect(transformLightSyllables("ӈи̂латтароӟам")).toBe("ӈи̂латтароӟам");
     expect(transformLightSyllables("ди̂ссакареваўат")).toBe("ди̂ссакревўат");
     expect(transformLightSyllables("асси̂мараревах")).toBe("асси̂мраревах");
+  });
+});
+
+describe("transform according to consonant euphony", () => {
+  test("direct", () => {
+    expect(transformEuphony("кх")).toBe("хх");
+    expect(transformEuphony("гҕ")).toBe("ҕҕ");
+    expect(transformEuphony("тд")).toBe("дд");
+    expect(transformEuphony("тс")).toBe("сс");
+    expect(transformEuphony("тҫ")).toBe("цц");
+    expect(transformEuphony("тз")).toBe("зз");
+    expect(transformEuphony("ст")).toBe("тт");
+    expect(transformEuphony("ҫт")).toBe("ҫт");
+    expect(transformEuphony("сҫ")).toBe("цц");
+    expect(transformEuphony("пв")).toBe("вв");
+    expect(transformEuphony("фп")).toBe("пп");
+    expect(transformEuphony("шҫ")).toBe("ҫҫ");
+    expect(transformEuphony("цс")).toBe("цс");
+    expect(transformEuphony("цҫ")).toBe("цц");
+    expect(transformEuphony("чҙ")).toBe("ӟӟ");
+    expect(transformEuphony("ӈз")).toBe("нз");
+    expect(transformEuphony("нх")).toBe("ӈх");
+    expect(transformEuphony("мҙ")).toBe("нҙ");
+    expect(transformEuphony("лд")).toBe("дд");
+    expect(transformEuphony("рд")).toBe("рд");
+    expect(transformEuphony("лн")).toBe("нн");
+    expect(transformEuphony("лр")).toBe("рр");
+  });
+  test("practical", () => {
+    expect(transformEuphony("ўеду̂зца")).toBe("ўеду̂цца");
+    expect(transformEuphony("тевфамми̂с")).toBe("теффамми̂с");
+    expect(transformEuphony("саъи̂мла")).toBe("саъи̂нла");
   });
 });
