@@ -5,12 +5,12 @@ import {Grapheme, isConsonant, isVowel, toGraphemes} from "./grapheme";
 
 export function transformLightSyllables(text: string): string {
   let graphemes = toGraphemes(text);
-  graphemes = dropRedundantA(graphemes);
-  graphemes = dropRedundantEo(graphemes);
+  graphemes = dropRedundantHollowVowels(graphemes);
+  graphemes = dropRedundantSolidVowels(graphemes);
   return graphemes.join("");
 }
 
-function dropRedundantA(graphemes: Array<Grapheme>): Array<Grapheme> {
+function dropRedundantHollowVowels(graphemes: Array<Grapheme>): Array<Grapheme> {
   let resultGraphemes = [...graphemes];
   let index = 0;
   while (index < resultGraphemes.length - 4) {
@@ -22,7 +22,7 @@ function dropRedundantA(graphemes: Array<Grapheme>): Array<Grapheme> {
   return resultGraphemes;
 }
 
-function dropRedundantEo(graphemes: Array<Grapheme>): Array<Grapheme> {
+function dropRedundantSolidVowels(graphemes: Array<Grapheme>): Array<Grapheme> {
   let resultGraphemes = [...graphemes];
   let index = 0;
   while (index < resultGraphemes.length - 3) {

@@ -5,7 +5,6 @@ const VOWEL_CHARS = new Set(["е", "и", "о", "у", "а"]);
 const WEAK_CONSONANT_CHARS = new Set(["й", "ў", "ъ"]);
 const LONG_DIACTIRICS = new Set(["\u0302", "\u0300"]);
 
-
 export type Grapheme = string;
 
 export function toGraphemes(text: string): Array<Grapheme> {

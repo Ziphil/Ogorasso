@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 
 import {describe, expect, test} from "vitest";
-import {transformEuphony, transformLightSyllables, transformWeakConsonants} from "../source";
+import {transformEuphony, transformLightSyllables, transformMerger, transformWeakConsonants} from "../source";
 
 
 describe("transform consecutive light syllables", () => {
@@ -82,6 +82,14 @@ describe("transform weak consonants", () => {
     expect(transformWeakConsonants("аўўи̂")).toBe("ае̂");
     expect(transformWeakConsonants("у̂йўо")).toBe("о̂у");
     expect(transformWeakConsonants("аўъи̂")).toBe("ои̂");
+  });
+});
 
+describe("transform consonantal mergers", () => {
+  test("basic", () => {
+    expect(transformMerger("ҫ")).toBe("с");
+    expect(transformMerger("ҙ")).toBe("з");
+    expect(transformMerger("ӟ")).toBe("з");
+    expect(transformMerger("ӝ")).toBe("ж");
   });
 });

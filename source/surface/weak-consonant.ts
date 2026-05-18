@@ -7,14 +7,14 @@ export function transformWeakConsonants(text: string): string {
   const graphemes = desactivateGeminatedWeakConsonant([...toGraphemes(text)]);
   let index = 0;
   while (index < graphemes.length) {
-    const mergingGraphemes = getMergingGraphemes(graphemes, index);
-    if (mergingGraphemes.length > 1) {
-      const mergedVowel = getMergedVowel(mergingGraphemes);
-      const diacritic = getMergedDiactiric(mergingGraphemes);
-      if (diacritic !== null) {
-        graphemes.splice(index, mergingGraphemes.length, mergedVowel + diacritic);
+    const fusingGraphemes = getFusingGraphemes(graphemes, index);
+    if (fusingGraphemes.length > 1) {
+      const fusedVowel = getFusedVowel(fusingGraphemes);
+      const fusedDiacritic = getFusedDiactiric(fusingGraphemes);
+      if (fusedDiacritic !== null) {
+        graphemes.splice(index, fusingGraphemes.length, fusedVowel + fusedDiacritic);
       } else {
-        graphemes.splice(index, mergingGraphemes.length, mergedVowel);
+        graphemes.splice(index, fusingGraphemes.length, fusedVowel);
       }
     }
     index ++;
@@ -41,28 +41,28 @@ function desactivateGeminatedWeakConsonant(graphemes: Array<Grapheme>): Array<Gr
   return graphemes;
 }
 
-function getMergingGraphemes(graphemes: Array<Grapheme>, from: number): Array<Grapheme> {
+function getFusingGraphemes(graphemes: Array<Grapheme>, from: number): Array<Grapheme> {
   let type = (isWeakConsonant(graphemes[from])) ? "weak" : (isVowel(graphemes[from])) ? "vowel" : null;
   if (type !== null) {
     let index = from;
-    const mergingGraphemes = [];
+    const fusingGraphemes = [];
     while (index < graphemes.length) {
       const grapheme = graphemes[index];
       if ((type === "weak" && isWeakConsonant(grapheme)) || (type === "vowel" && isVowel(grapheme))) {
-        mergingGraphemes.push(grapheme);
+        fusingGraphemes.push(grapheme);
         type = (type === "weak") ? "vowel" : "weak";
         index ++;
       } else {
         break;
       }
     }
-    return mergingGraphemes;
+    return fusingGraphemes;
   } else {
     return [];
   }
 }
 
-function getMergedVowel(graphemes: Array<Grapheme>): string {
+function getFusedVowel(graphemes: Array<Grapheme>): string {
   let consonantScore = 0;
   let vowelScore = 0;
   for (const grapheme of graphemes) {
@@ -152,7 +152,7 @@ function getScores(grapheme: Grapheme): [number, number] {
   }
 }
 
-function getMergedDiactiric(graphemes: Array<Grapheme>): string | null {
+function getFusedDiactiric(graphemes: Array<Grapheme>): string | null {
   const diacriticGrapheme = graphemes.find((grapheme) => extractDiacritic(grapheme) !== null);
   return diacriticGrapheme !== undefined ? extractDiacritic(diacriticGrapheme)! : null;
 }
