@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 
 import {describe, expect, test} from "vitest";
-import {transformEuphony, transformLightSyllables} from "../source";
+import {transformEuphony, transformLightSyllables, transformWeakConsonants} from "../source";
 
 
 describe("transform consecutive light syllables", () => {
@@ -20,7 +20,7 @@ describe("transform consecutive light syllables", () => {
 });
 
 describe("transform according to consonant euphony", () => {
-  test("direct", () => {
+  test("basic", () => {
     expect(transformEuphony("кх")).toBe("хх");
     expect(transformEuphony("гҕ")).toBe("ҕҕ");
     expect(transformEuphony("тд")).toBe("дд");
@@ -48,5 +48,33 @@ describe("transform according to consonant euphony", () => {
     expect(transformEuphony("ўеду̂зца")).toBe("ўеду̂цца");
     expect(transformEuphony("тевфамми̂с")).toBe("теффамми̂с");
     expect(transformEuphony("саъи̂мла")).toBe("саъи̂нла");
+  });
+});
+
+describe("transform weak consonants", () => {
+  test("basic, CV", () => {
+    expect(transformWeakConsonants("йа")).toBe("е");
+  });
+  test("basic, VC", () => {
+    expect(transformWeakConsonants("аъ")).toBe("а");
+  });
+  test("basic, VCV", () => {
+    expect(transformWeakConsonants("аъа")).toBe("а");
+    expect(transformWeakConsonants("ейо")).toBe("и");
+    expect(transformWeakConsonants("ойи̂")).toBe("и̂");
+    expect(transformWeakConsonants("и̂ўа")).toBe("е̂");
+    expect(transformWeakConsonants("оўи̂")).toBe("е̂");
+    expect(transformWeakConsonants("еъо̀")).toBe("о̀");
+    expect(transformWeakConsonants("ѐъо")).toBe("ѐ");
+    expect(transformWeakConsonants("еъо")).toBe("о");
+  });
+  test("basic, VCVC", () => {
+    expect(transformWeakConsonants("ойо̂й")).toBe("и̂");
+    expect(transformWeakConsonants("уйей")).toBe("и");
+    expect(transformWeakConsonants("у̂йеў")).toBe("у̂");
+    expect(transformWeakConsonants("иўеў")).toBe("о");
+    expect(transformWeakConsonants("ейо̂ў")).toBe("о̂");
+    expect(transformWeakConsonants("е̂йоў")).toBe("е̂");
+    expect(transformWeakConsonants("ейоў")).toBe("о");
   });
 });

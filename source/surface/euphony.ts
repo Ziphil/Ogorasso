@@ -1,6 +1,6 @@
 //
 
-import {toGraphemes} from "./grapheme";
+import {isConsonant, toGraphemes} from "./grapheme";
 
 
 const EUPHONY_MAP = new Map<string, string>([
@@ -43,14 +43,13 @@ export function transformEuphony(text: string): string {
   while (index < graphemes.length - 1) {
     const left = graphemes[index];
     const right = graphemes[index + 1];
-    if (left.isConsonant() && right.isConsonant()) {
-      const key = left.text.toLowerCase() + right.text.toLowerCase();
-      const replacement = EUPHONY_MAP.get(key);
+    if (isConsonant(left) && isConsonant(right)) {
+      const replacement = EUPHONY_MAP.get(left + right);
       if (replacement !== undefined) {
-        graphemes.splice(index, 2, ...toGraphemes(replacement));
+        graphemes.splice(index, 2, replacement[0], replacement[1]);
       }
     }
     index ++;
   }
-  return graphemes.map((grapheme) => grapheme.text).join("");
+  return graphemes.join("");
 }
