@@ -2,6 +2,7 @@
 
 export * from "./conversion";
 export * from "./orthography";
+export * from "./surface";
 export * from "./type";
 
 

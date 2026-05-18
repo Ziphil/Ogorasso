@@ -3,6 +3,7 @@
 import {describe, expect, test} from "vitest";
 import {convertCyrillicToLatin} from "../source";
 
+
 describe("orthography", () => {
   test("convert cyrillic to latin", () => {
     expect(convertCyrillicToLatin("еди̂лат")).toBe("edîlat");
