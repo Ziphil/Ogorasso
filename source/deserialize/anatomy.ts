@@ -70,16 +70,12 @@ export function checkRootSpelling(rawSpelling: string): boolean {
 }
 
 export function extractRadicals(rawSpelling: string): Radicals | null {
-  const match = rawSpelling.match(/^√(.)-(.)(?:-(.))?(?:-(.))?$/);
+  const match = rawSpelling.match(/^√(.)-(.)-(.)(?:-(.))?$/);
   if (match !== null) {
-    if (match[3] !== undefined) {
-      if (match[4] !== undefined) {
-        return [match[1].toLowerCase(), match[2].toLowerCase(), match[3].toLowerCase(), match[4].toLowerCase()] as Radicals;
-      } else {
-        return [match[1].toLowerCase(), match[2].toLowerCase(), match[3].toLowerCase()] as Radicals;
-      }
+    if (match[4] !== undefined) {
+      return [match[1].toLowerCase(), match[2].toLowerCase(), match[3].toLowerCase(), match[4].toLowerCase()] as Radicals;
     } else {
-      return [match[1].toLowerCase(), match[2].toLowerCase()] as Radicals;
+      return [match[1].toLowerCase(), match[2].toLowerCase(), match[3].toLowerCase()] as Radicals;
     }
   } else {
     return null;

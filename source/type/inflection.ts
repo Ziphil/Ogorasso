@@ -22,7 +22,7 @@ export const PERSONS = ["thirdDefinite", "thirdIndefinite", "second", "firstPlur
 export type Person = (typeof PERSONS)[number];
 
 export type SubstantiveInflection = {
-  type: "substantive",
+  sort: "substantive",
   category: "base" | "adjective",
   adhesivity: Adhesivity,
   gender: Gender,
@@ -31,17 +31,19 @@ export type SubstantiveInflection = {
 };
 
 export type VerbalInflection = {
-  type: "verbal",
+  sort: "verbal",
   category: "base",
   voice: Voice,
   tense: Tense,
   person: Person,
   gender: Gender
 } | {
-  type: "verbal",
-  category: "participle",
+  sort: "verbal",
+  category: "adjective" | "noun",
   adhesivity: Adhesivity,
   gender: Gender,
   case: Case,
   definiteness: Definiteness
 };
+
+export type Inflection = SubstantiveInflection | VerbalInflection;

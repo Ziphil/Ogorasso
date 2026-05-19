@@ -1,7 +1,7 @@
 //
 
 import type {Kind} from "../../util/misc";
-import type {PatternCategory, PatternSpelling, PatternType} from "../anatomy/core";
+import type {PatternSort, PatternSpelling, PatternType} from "../anatomy/core";
 import {PATTERN_DATA} from "../anatomy/core";
 
 
@@ -17,8 +17,8 @@ export class SimplePattern implements Kind<"pattern"> {
     this.spelling = initializer.spelling;
   }
 
-  public get category(): PatternCategory | null {
-    return getPatternCategory(this.spelling);
+  public get sort(): PatternSort | null {
+    return getPatternSort(this.spelling);
   }
 
   public get type(): PatternType | null {
@@ -37,9 +37,9 @@ export class Pattern extends SimplePattern implements Kind<"pattern"> {
 }
 
 
-export function getPatternCategory(spelling: PatternSpelling): PatternCategory | null {
-  const category = PATTERN_DATA.get(spelling)?.category ?? null;
-  return category;
+export function getPatternSort(spelling: PatternSpelling): PatternSort | null {
+  const sort = PATTERN_DATA.get(spelling)?.sort ?? null;
+  return sort;
 }
 
 export function getPatternType(spelling: PatternSpelling): PatternType | null {
