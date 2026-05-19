@@ -5,7 +5,7 @@ import {getRealization} from "../source";
 
 
 describe("inflection", () => {
-  test("substantive, G-type", () => {
+  test("substantive, G pattern", () => {
     const radicals = ["ц", "н", "т"] as const;
     const pattern = {sort: "substantive", type: "ground"} as const;
     const theme = "и";
@@ -25,7 +25,7 @@ describe("inflection", () => {
     expect(getRealization(radicals, pattern, theme, patternAffixes, {sort: "substantive", category: "adjective", adhesivity: "adverbial", gender: "water", case: "nominative", definiteness: "indefinite"})).toBe("ци̂нтар");
     expect(getRealization(radicals, pattern, theme, patternAffixes, {sort: "substantive", category: "adjective", adhesivity: "adverbial", gender: "fire", case: "ablative", definiteness: "indefinite"})).toBe("ци̂нтарозам");
   });
-  test("substantive, Dm-type", () => {
+  test("substantive, Dm pattern", () => {
     const radicals = ["г", "б", "ш"] as const;
     const pattern = {sort: "substantive", type: "doubleMedial"} as const;
     const theme = "у";
@@ -45,7 +45,7 @@ describe("inflection", () => {
     expect(getRealization(radicals, pattern, theme, patternAffixes, {sort: "substantive", category: "adjective", adhesivity: "adverbial", gender: "water", case: "nominative", definiteness: "indefinite"})).toBe("гу̂ббашар");
     expect(getRealization(radicals, pattern, theme, patternAffixes, {sort: "substantive", category: "adjective", adhesivity: "adverbial", gender: "fire", case: "ablative", definiteness: "indefinite"})).toBe("гу̂ббашрозам");
   });
-  test("substantive, Df-type", () => {
+  test("substantive, Df pattern", () => {
     const radicals = ["х", "л", "ф"] as const;
     const pattern = {sort: "substantive", type: "doubleFinal"} as const;
     const theme = "и";
@@ -65,7 +65,7 @@ describe("inflection", () => {
     expect(getRealization(radicals, pattern, theme, patternAffixes, {sort: "substantive", category: "adjective", adhesivity: "adverbial", gender: "water", case: "nominative", definiteness: "indefinite"})).toBe("хи̂лаффар");
     expect(getRealization(radicals, pattern, theme, patternAffixes, {sort: "substantive", category: "adjective", adhesivity: "adverbial", gender: "fire", case: "ablative", definiteness: "indefinite"})).toBe("хи̂лаффарозам");
   });
-  test("substantive, Di-type", () => {
+  test("substantive, Di pattern", () => {
     const radicals = ["ӝ", "б", "ӈ"] as const;
     const pattern = {sort: "substantive", type: "doubleInitial"} as const;
     const theme = "и";
@@ -85,7 +85,7 @@ describe("inflection", () => {
     expect(getRealization(radicals, pattern, theme, patternAffixes, {sort: "substantive", category: "adjective", adhesivity: "adverbial", gender: "water", case: "nominative", definiteness: "indefinite"})).toBe("ажжи̂бӈар");
     expect(getRealization(radicals, pattern, theme, patternAffixes, {sort: "substantive", category: "adjective", adhesivity: "adverbial", gender: "fire", case: "ablative", definiteness: "indefinite"})).toBe("ажжи̂бӈарозам");
   });
-  test("verbal, G-type", () => {
+  test("verbal, G pattern", () => {
     const radicals = ["ҙ", "м", "к"] as const;
     const pattern = {sort: "verbal", type: "ground"} as const;
     const theme = "у";
@@ -106,7 +106,7 @@ describe("inflection", () => {
     expect(getRealization(radicals, pattern, theme, patternAffixes, {sort: "verbal", category: "base", voice: "passive", tense: "past", person: "firstPlural", gender: "water"})).toBe("бамедо̀зму̂кан");
     expect(getRealization(radicals, pattern, theme, patternAffixes, {sort: "verbal", category: "base", voice: "passive", tense: "past", person: "firstSingular", gender: "fire"})).toBe("едо̀зму̂кно");
   });
-  test("verbal, Dm-type", () => {
+  test("verbal, Dm pattern", () => {
     const radicals = ["т", "л", "г"] as const;
     const pattern = {sort: "verbal", type: "doubleMedial"} as const;
     const theme = "у";
@@ -127,7 +127,7 @@ describe("inflection", () => {
     expect(getRealization(radicals, pattern, theme, patternAffixes, {sort: "verbal", category: "base", voice: "passive", tense: "past", person: "firstPlural", gender: "water"})).toBe("бамедо̀таллу̂ган");
     expect(getRealization(radicals, pattern, theme, patternAffixes, {sort: "verbal", category: "base", voice: "passive", tense: "past", person: "firstSingular", gender: "fire"})).toBe("едо̀таллу̂гно");
   });
-  test("verbal, Df-type", () => {
+  test("verbal, Df pattern", () => {
     const radicals = ["ӟ", "с", "б"] as const;
     const pattern = {sort: "verbal", type: "doubleFinal"} as const;
     const theme = "и";
@@ -148,7 +148,7 @@ describe("inflection", () => {
     expect(getRealization(radicals, pattern, theme, patternAffixes, {sort: "verbal", category: "base", voice: "passive", tense: "past", person: "firstPlural", gender: "water"})).toBe("бамедо̀зси̂ббан");
     expect(getRealization(radicals, pattern, theme, patternAffixes, {sort: "verbal", category: "base", voice: "passive", tense: "past", person: "firstSingular", gender: "fire"})).toBe("едо̀зси̂ббано");
   });
-  test("verbal, Di-type", () => {
+  test("verbal, Di pattern", () => {
     const radicals = ["ҕ", "в", "ц"] as const;
     const pattern = {sort: "verbal", type: "doubleInitial"} as const;
     const theme = "у";
