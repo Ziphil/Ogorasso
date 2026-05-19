@@ -1,6 +1,6 @@
 //
 
-export * from "./conversion";
+export * from "./deserialize";
 export * from "./orthography";
 export * from "./surface";
 export * from "./type";

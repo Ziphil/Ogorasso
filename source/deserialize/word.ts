@@ -30,22 +30,22 @@ import {
 
 
 /** ZpDIC Online API (v1) から返される単語エントリーを、このライブラリが提供するクラスのインスタンスに変換します。 */
-export function convertEntry(rawEntry: any): Entry {
+export function deserializeEntry(rawEntry: any): Entry {
   const rawSpelling = rawEntry["spelling"] as string;
   if (checkRootSpelling(rawSpelling)) {
-    return convertRoot(rawEntry);
+    return deserializeRoot(rawEntry);
   } else if (checkThemeSpelling(rawSpelling)) {
-    return convertTheme(rawEntry);
+    return deserializeTheme(rawEntry);
   } else if (checkAffixSpelling(rawSpelling)) {
-    return convertAffix(rawEntry);
+    return deserializeAffix(rawEntry);
   } else if (checkPatternSpelling(rawSpelling)) {
-    return convertPattern(rawEntry);
+    return deserializePattern(rawEntry);
   } else {
-    return convertWord(rawEntry);
+    return deserializeWord(rawEntry);
   }
 }
 
-export function convertWord(rawEntry: any): Word {
+export function deserializeWord(rawEntry: any): Word {
   const rawSections = rawEntry["sections"] as Array<any>;
   const lastRawSection = rawSections[rawSections.length - 1];
   const concreteRawSections = (lastRawSection !== undefined && checkAnatomySection(lastRawSection)) ? rawSections.slice(0, -1) : rawSections;
@@ -54,7 +54,7 @@ export function convertWord(rawEntry: any): Word {
     number: +rawEntry["number"],
     spelling: rawEntry["spelling"],
     anatomy: (rawAnatomyRelations !== null) ? parseAnatomy(rawEntry["spelling"], rawAnatomyRelations) : null,
-    sections: concreteRawSections.map(convertSection),
+    sections: concreteRawSections.map(deserializeSection),
     origin: (rawEntry["tags"].includes("借用語")) ? "loan" : (rawEntry["tags"].includes("外来語")) ? "foreign" : "proper",
     oldSpellings: (lastRawSection !== undefined && rawAnatomyRelations !== null) ? extractOldSpellings(lastRawSection) : [],
     separatedSpellings: (lastRawSection !== undefined && rawAnatomyRelations !== null) ? extractSeparatedSpellings(lastRawSection) : []
@@ -62,14 +62,14 @@ export function convertWord(rawEntry: any): Word {
   return word;
 }
 
-export function convertRoot(rawEntry: any): Root {
+export function deserializeRoot(rawEntry: any): Root {
   const radicals = extractRadicals(rawEntry["spelling"]);
   if (radicals !== null) {
     const rawSections = rawEntry["sections"] as Array<any>;
     const root = new Root({
       number: +rawEntry["number"],
       radicals,
-      sections: rawSections.map(convertSection),
+      sections: rawSections.map(deserializeSection),
       origin: (rawEntry["tags"].includes("借用語")) ? "loan" : (rawEntry["tags"].includes("外来語")) ? "foreign" : "proper"
     });
     return root;
@@ -78,7 +78,7 @@ export function convertRoot(rawEntry: any): Root {
   }
 }
 
-export function convertPattern(rawEntry: any): Pattern {
+export function deserializePattern(rawEntry: any): Pattern {
   const spelling = extractPatternSpelling(rawEntry["spelling"]);
   if (spelling !== null) {
     const pattern = new Pattern({
@@ -91,14 +91,14 @@ export function convertPattern(rawEntry: any): Pattern {
   }
 }
 
-export function convertAffix(rawEntry: any): Affix {
+export function deserializeAffix(rawEntry: any): Affix {
   const spelling = extractAffixSpelling(rawEntry["spelling"]);
   if (spelling !== null) {
     const rawSections = rawEntry["sections"] as Array<any>;
     const affix = new Affix({
       number: +rawEntry["number"],
       spelling,
-      sections: rawSections.map(convertSection)
+      sections: rawSections.map(deserializeSection)
     });
     return affix;
   } else {
@@ -106,7 +106,7 @@ export function convertAffix(rawEntry: any): Affix {
   }
 }
 
-export function convertTheme(rawEntry: any): Theme {
+export function deserializeTheme(rawEntry: any): Theme {
   const spelling = extractThemeSpelling(rawEntry["spelling"]);
   if (spelling !== null) {
     const theme = new Theme({
@@ -119,18 +119,18 @@ export function convertTheme(rawEntry: any): Theme {
   }
 }
 
-export function convertSection(rawSection: any): Section {
+export function deserializeSection(rawSection: any): Section {
   const rawRelations = rawSection["relations"] as Array<any>;
   const section = {
-    equivalents: rawSection["equivalents"].map(convertEquivalent),
-    information: rawSection["informations"].map(convertInformation),
-    phrases: rawSection["phrases"].map(convertPhrase),
-    relations: rawRelations.filter((rawRelation) => !rawRelation["spelling"].includes("√") && !rawRelation["spelling"].includes("‹")).map(convertRelation)
+    equivalents: rawSection["equivalents"].map(deserializeEquivalent),
+    information: rawSection["informations"].map(deserializeInformation),
+    phrases: rawSection["phrases"].map(deserializePhrase),
+    relations: rawRelations.filter((rawRelation) => !rawRelation["spelling"].includes("√") && !rawRelation["spelling"].includes("‹")).map(deserializeRelation)
   } satisfies Section;
   return section;
 }
 
-export function convertEquivalent(rawEquivalent: any): Equivalent {
+export function deserializeEquivalent(rawEquivalent: any): Equivalent {
   const equivalent = {
     titles: rawEquivalent["titles"],
     terms: rawEquivalent["terms"],
@@ -140,7 +140,7 @@ export function convertEquivalent(rawEquivalent: any): Equivalent {
   return equivalent;
 }
 
-export function convertInformation(rawInformation: any): Information {
+export function deserializeInformation(rawInformation: any): Information {
   const information = {
     title: rawInformation["title"],
     text: rawInformation["text"],
@@ -149,7 +149,7 @@ export function convertInformation(rawInformation: any): Information {
   return information;
 }
 
-export function convertPhrase(rawPhrase: any): Phrase {
+export function deserializePhrase(rawPhrase: any): Phrase {
   const phrase = {
     spelling: rawPhrase["form"],
     terms: rawPhrase["terms"],
@@ -158,7 +158,7 @@ export function convertPhrase(rawPhrase: any): Phrase {
   return phrase;
 }
 
-export function convertRelation(rawRelation: any): Relation {
+export function deserializeRelation(rawRelation: any): Relation {
   const relation = {
     title: rawRelation["titles"][0] ?? "関連語",
     number: rawRelation["number"],
