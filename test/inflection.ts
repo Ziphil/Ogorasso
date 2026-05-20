@@ -204,6 +204,13 @@ describe("inflection", () => {
       {sort: "substantive", category: "base", adhesivity: "adverbial", gender: "water", case: "nominative", definiteness: "definite"}
     )).toBe("лебогги̂так");
   });
+  test("failed 3", () => {
+    expect(getForm(
+      ["в", "й", "д"], {sort: "verbal", type: "ground"}, "у",
+      {prefixal: ["бо-"], infixal: [], suffixal: [], terminal: []},
+      {sort: "verbal", category: "noun", adhesivity: "adverbial", gender: "fire", case: "accusative", definiteness: "definite"}
+    )).toBe("лобово̂лла");
+  });
   test("random", () => {
     expect(getForm(
       ["ў", "з", "ц"], {sort: "substantive", type: "ground"}, "у",
