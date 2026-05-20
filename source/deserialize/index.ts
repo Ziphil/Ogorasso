@@ -1,3 +1,4 @@
 //
 
-export {deserializeEntry as convertEntry} from "./word";
+export {deserializeEntry} from "./entry";
+export {readEntries} from "./dictionary";
