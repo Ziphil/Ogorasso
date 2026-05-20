@@ -190,6 +190,20 @@ describe("inflection", () => {
     expect(getForm(radicals, pattern, theme, patternAffixes, {sort: "verbal", category: "base", voice: "passive", tense: "past", person: "firstPlural", gender: "water"})).toBe("бамедо̀ҕҕаву̂цан");
     expect(getForm(radicals, pattern, theme, patternAffixes, {sort: "verbal", category: "base", voice: "passive", tense: "past", person: "firstSingular", gender: "fire"})).toBe("едо̀ҕҕаву̂цно");
   });
+  test("failed 1", () => {
+    expect(getForm(
+      ["ҙ", "р", "с"], {sort: "substantive", type: "doubleFinal"}, "и",
+      {prefixal: [], infixal: ["-еб-"], suffixal: [], terminal: []},
+      {sort: "substantive", category: "base", adhesivity: "adverbial", gender: "water", case: "nominative", definiteness: "definite"}
+    )).toBe("лезби̂рассе");
+  });
+  test("failed 2", () => {
+    expect(getForm(
+      ["г", "т", "к"], {sort: "substantive", type: "doubleInitial"}, "и",
+      {prefixal: ["бо-"], infixal: [], suffixal: [], terminal: []},
+      {sort: "substantive", category: "base", adhesivity: "adverbial", gender: "water", case: "nominative", definiteness: "definite"}
+    )).toBe("лебогги̂так");
+  });
   test("random", () => {
     expect(getForm(
       ["ў", "з", "ц"], {sort: "substantive", type: "ground"}, "у",
