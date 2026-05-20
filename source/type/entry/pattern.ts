@@ -1,7 +1,7 @@
 //
 
 import type {Kind} from "../../util/misc";
-import type {PatternSort, PatternSpelling, PatternType} from "../anatomy/core";
+import type {Pattern, PatternSort, PatternSpelling, PatternType} from "../anatomy/core";
 import {PATTERN_DATA} from "../anatomy/core";
 
 
@@ -23,6 +23,14 @@ export class SimplePatternEntry implements Kind<"pattern"> {
 
   public get type(): PatternType | null {
     return getPatternType(this.spelling);
+  }
+
+  public get pattern(): Pattern | null {
+    if (this.sort !== null && this.type !== null) {
+      return {sort: this.sort, type: this.type};
+    } else {
+      return null;
+    }
   }
 
 }

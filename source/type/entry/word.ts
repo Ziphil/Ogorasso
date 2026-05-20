@@ -1,7 +1,10 @@
 //
 
+import {getRealization} from "../../morphology";
+import {mapObject} from "../../util/misc";
 import type {Kind} from "../../util/misc";
 import type {Anatomy} from "../anatomy";
+import type {Inflection} from "../inflection";
 
 
 export class SimpleWord implements Kind<"word"> {
@@ -34,6 +37,22 @@ export class Word extends SimpleWord implements Kind<"word"> {
     this.origin = initializer.origin;
     this.oldSpellings = initializer.oldSpellings;
     this.separatedSpellings = initializer.separatedSpellings;
+  }
+
+  public getRealization(inflection: Inflection): string | null {
+    if (this.anatomy !== null && this.anatomy.kind === "simplex") {
+      const root = this.anatomy.root.root;
+      const pattern = this.anatomy.pattern.pattern ?? {sort: "substantive", type: "ground"};
+      const theme = this.anatomy.theme.spelling;
+      const patternAffixes = mapObject(this.anatomy.affixes, (key, value) => value.map((affix) => affix.spelling));
+      if (pattern.sort === inflection.sort) {
+        return getRealization(root, pattern, theme, patternAffixes, inflection);
+      } else {
+        return null;
+      }
+    } else {
+      return null;
+    }
   }
 
 }
