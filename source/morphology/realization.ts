@@ -1,24 +1,21 @@
 //
 
 import {transformEuphony, transformLightSyllables, transformMerger, transformWeakConsonants} from "../surface";
-import {AffixType, Inflection, PatternSort, PatternType, Radicals, ThemeSpelling} from "../type";
-import {InflectionAffixInventory, getInflectionAffixes} from "./inflection";
+import {AffixType, Inflection, Pattern, Root, Theme} from "../type";
+import {InflectionAffixes, getInflectionAffixes} from "./inflection";
 
 
-type PatternSpec = {
-  sort: PatternSort,
-  type: PatternType
-};
+export type PatternAffixes = Record<AffixType, ReadonlyArray<string>>;
 
-export function getRealization(radicals: Radicals, pattern: PatternSpec, theme: ThemeSpelling, patternAffixes: Record<AffixType, ReadonlyArray<string>>, inflection: Inflection): string {
-  const inflextionAffixes = getInflectionAffixes(inflection);
-  const coreUnderlyingRealization = transformLightSyllables(getCoreUnderlyingRealization(radicals, pattern, theme, patternAffixes));
-  const underlyingRealization = getUnderlyingRealization(coreUnderlyingRealization, pattern, patternAffixes, inflextionAffixes);
+export function getRealization(root: Root, pattern: Pattern, theme: Theme, patternAffixes: PatternAffixes, inflection: Inflection): string {
+  const inflectionAffixes = getInflectionAffixes(inflection);
+  const coreUnderlyingRealization = transformLightSyllables(getCoreUnderlyingRealization(root, pattern, theme, patternAffixes));
+  const underlyingRealization = getUnderlyingRealization(coreUnderlyingRealization, pattern, patternAffixes, inflectionAffixes);
   const surfaceRealization = transformMerger(transformWeakConsonants(transformEuphony(transformLightSyllables(underlyingRealization))));
   return surfaceRealization;
 }
 
-export function getUnderlyingRealization(coreUnderlyingRealization: string, pattern: PatternSpec, patternAffixes: Record<AffixType, ReadonlyArray<string>>, inflectionAffixes: InflectionAffixInventory): string {
+export function getUnderlyingRealization(coreUnderlyingRealization: string, pattern: Pattern, patternAffixes: PatternAffixes, inflectionAffixes: InflectionAffixes): string {
   let underlyingRealization = "";
   underlyingRealization += inflectionAffixes.prefixal.join("");
   underlyingRealization += (pattern.type === "doubleInitial" && patternAffixes.prefixal.length <= 0 && inflectionAffixes.prefixal.length <= 0) ? "а" : "";
@@ -28,28 +25,28 @@ export function getUnderlyingRealization(coreUnderlyingRealization: string, patt
   return underlyingRealization;
 }
 
-export function getCoreUnderlyingRealization(radicals: Radicals, pattern: PatternSpec, theme: ThemeSpelling, patternAffixes: Record<AffixType, ReadonlyArray<string>>): string {
-  if (radicals.length === 3) {
+export function getCoreUnderlyingRealization(root: Root, pattern: Pattern, theme: Theme, patternAffixes: PatternAffixes): string {
+  if (root.length === 3) {
     if (pattern.sort === "verbal") {
       let coreUnderlyingRealization = "";
       coreUnderlyingRealization += patternAffixes.prefixal.join("");
-      coreUnderlyingRealization += (pattern.type === "doubleInitial") ? radicals[0] + radicals[0] : radicals[0];
+      coreUnderlyingRealization += (pattern.type === "doubleInitial") ? root[0] + root[0] : root[0];
       coreUnderlyingRealization += "а";
-      coreUnderlyingRealization += (pattern.type === "doubleMedial") ? radicals[1] + radicals[1] : radicals[1];
+      coreUnderlyingRealization += (pattern.type === "doubleMedial") ? root[1] + root[1] : root[1];
       coreUnderlyingRealization += patternAffixes.infixal.join("");
       coreUnderlyingRealization += theme + "\u0302";
-      coreUnderlyingRealization += (pattern.type === "doubleFinal") ? radicals[2] + radicals[2] : radicals[2];
+      coreUnderlyingRealization += (pattern.type === "doubleFinal") ? root[2] + root[2] : root[2];
       coreUnderlyingRealization += patternAffixes.suffixal.join("");
       return coreUnderlyingRealization;
     } else {
       let coreUnderlyingRealization = "";
       coreUnderlyingRealization += patternAffixes.prefixal.join("");
-      coreUnderlyingRealization += (pattern.type === "doubleInitial") ? radicals[0] + radicals[0] : radicals[0];
+      coreUnderlyingRealization += (pattern.type === "doubleInitial") ? root[0] + root[0] : root[0];
       coreUnderlyingRealization += patternAffixes.infixal.join("");
       coreUnderlyingRealization += theme + "\u0302";
-      coreUnderlyingRealization += (pattern.type === "doubleMedial") ? radicals[1] + radicals[1] : radicals[1];
+      coreUnderlyingRealization += (pattern.type === "doubleMedial") ? root[1] + root[1] : root[1];
       coreUnderlyingRealization += "а";
-      coreUnderlyingRealization += (pattern.type === "doubleFinal") ? radicals[2] + radicals[2] : radicals[2];
+      coreUnderlyingRealization += (pattern.type === "doubleFinal") ? root[2] + root[2] : root[2];
       coreUnderlyingRealization += patternAffixes.suffixal.join("");
       return coreUnderlyingRealization;
     }
@@ -57,27 +54,27 @@ export function getCoreUnderlyingRealization(radicals: Radicals, pattern: Patter
     if (pattern.sort === "verbal") {
       let coreUnderlyingRealization = "";
       coreUnderlyingRealization += patternAffixes.prefixal.join("");
-      coreUnderlyingRealization += radicals[0];
+      coreUnderlyingRealization += root[0];
       coreUnderlyingRealization += "а";
-      coreUnderlyingRealization += radicals[1];
+      coreUnderlyingRealization += root[1];
       coreUnderlyingRealization += "а";
-      coreUnderlyingRealization += radicals[2];
+      coreUnderlyingRealization += root[2];
       coreUnderlyingRealization += patternAffixes.infixal.join("");
       coreUnderlyingRealization += theme + "\u0302";
-      coreUnderlyingRealization += radicals[3];
+      coreUnderlyingRealization += root[3];
       coreUnderlyingRealization += patternAffixes.suffixal.join("");
       return coreUnderlyingRealization;
     } else {
       let coreUnderlyingRealization = "";
       coreUnderlyingRealization += patternAffixes.prefixal.join("");
-      coreUnderlyingRealization += radicals[0];
+      coreUnderlyingRealization += root[0];
       coreUnderlyingRealization += patternAffixes.infixal.join("");
       coreUnderlyingRealization += theme + "\u0302";
-      coreUnderlyingRealization += radicals[1];
+      coreUnderlyingRealization += root[1];
       coreUnderlyingRealization += "а";
-      coreUnderlyingRealization += radicals[2];
+      coreUnderlyingRealization += root[2];
       coreUnderlyingRealization += "а";
-      coreUnderlyingRealization += radicals[3];
+      coreUnderlyingRealization += root[3];
       coreUnderlyingRealization += patternAffixes.suffixal.join("");
       return coreUnderlyingRealization;
     }

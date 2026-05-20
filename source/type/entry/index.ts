@@ -1,9 +1,9 @@
 //
 
-import type {Affix} from "./affix";
-import type {Pattern} from "./pattern";
-import type {Root} from "./root";
-import type {Theme} from "./theme";
+import type {AffixEntry} from "./affix";
+import type {PatternEntry} from "./pattern";
+import type {RootEntry} from "./root";
+import type {ThemeEntry} from "./theme";
 import type {Word} from "./word";
 
 export * from "./affix";
@@ -13,4 +13,4 @@ export * from "./theme";
 export * from "./word";
 
 
-export type Entry = Word | Root | Pattern | Affix | Theme;
+export type Entry = Word | RootEntry | PatternEntry | AffixEntry | ThemeEntry;

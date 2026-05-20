@@ -5,13 +5,13 @@ import type {AffixSpelling, AffixType} from "../anatomy/core";
 import type {Section} from "./word";
 
 
-export class SimpleAffix implements Kind<"affix"> {
+export class SimpleAffixEntry implements Kind<"affix"> {
 
   public readonly kind: "affix";
   public readonly number: number;
   public readonly spelling: AffixSpelling;
 
-  public constructor(initializer: Pick<SimpleAffix, "number" | "spelling">) {
+  public constructor(initializer: Pick<SimpleAffixEntry, "number" | "spelling">) {
     this.kind = "affix";
     this.number = initializer.number;
     this.spelling = initializer.spelling;
@@ -24,11 +24,11 @@ export class SimpleAffix implements Kind<"affix"> {
 }
 
 
-export class Affix extends SimpleAffix implements Kind<"affix"> {
+export class AffixEntry extends SimpleAffixEntry implements Kind<"affix"> {
 
   public readonly sections: ReadonlyArray<Section>;
 
-  public constructor(initializer: Pick<Affix, "number" | "spelling" | "sections">) {
+  public constructor(initializer: Pick<AffixEntry, "number" | "spelling" | "sections">) {
     super(initializer);
     this.sections = initializer.sections;
   }

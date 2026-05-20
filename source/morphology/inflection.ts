@@ -4,12 +4,12 @@ import {Adhesivity, Case, Definiteness, Gender, Inflection, Person, Tense, Voice
 import {isTruthy} from "../util/misc";
 
 
-export type InflectionAffixInventory = {
+export type InflectionAffixes = {
   prefixal: ReadonlyArray<string>,
   suffixal: ReadonlyArray<string>
 };
 
-export function getInflectionAffixes(inflection: Inflection): InflectionAffixInventory {
+export function getInflectionAffixes(inflection: Inflection): InflectionAffixes {
   if (inflection.sort === "substantive") {
     const baseAffixes = getSubstantiveBaseInflectionAffixes(inflection);
     const categoryAffixes = getCategoryInflectionAffixes(inflection.category);
@@ -54,7 +54,7 @@ const SUBSTANTIVE_INFLECTION_SUFFIXES = new Map<`${Adhesivity}.${Gender}.${Case}
   ["adjectival.water.locative", "евай"], ["adjectival.fire.locative", "овай"]
 ]);
 
-export function getSubstantiveBaseInflectionAffixes(inflection: {adhesivity: Adhesivity, gender: Gender, case: Case, definiteness: Definiteness}): InflectionAffixInventory {
+export function getSubstantiveBaseInflectionAffixes(inflection: {adhesivity: Adhesivity, gender: Gender, case: Case, definiteness: Definiteness}): InflectionAffixes {
   const prefixal = [
     SUBSTANTIVE_INFLECTION_PREFIXES.get(`${inflection.definiteness}.${inflection.gender}`)
   ].filter(isTruthy);
@@ -81,7 +81,7 @@ const GENDER_INFLECTION_SUFFIXES = new Map<`${Gender}`, string>([
   ["water", ""], ["fire", "о"]
 ]);
 
-export function getVerbalBaseInflectionAffixes(inflection: {voice: Voice, tense: Tense, person: Person, gender: Gender}): InflectionAffixInventory {
+export function getVerbalBaseInflectionAffixes(inflection: {voice: Voice, tense: Tense, person: Person, gender: Gender}): InflectionAffixes {
   const prefixal = [
     PERSON_INFLECTION_PREFIXES.get(`${inflection.person}.${inflection.gender}`),
     VOICE_INFLECTION_PREFIXES.get(inflection.voice)
@@ -93,7 +93,7 @@ export function getVerbalBaseInflectionAffixes(inflection: {voice: Voice, tense:
   return {prefixal, suffixal};
 }
 
-export function getCategoryInflectionAffixes(category: Inflection["category"]): InflectionAffixInventory {
+export function getCategoryInflectionAffixes(category: Inflection["category"]): InflectionAffixes {
   if (category === "adjective") {
     return {prefixal: [], suffixal: ["ар"]};
   } else if (category === "noun") {

@@ -1,7 +1,7 @@
 //
 
 import type {Kind} from "../../util/misc";
-import type {Anatomy} from "../anatomy/index";
+import type {Anatomy} from "../anatomy";
 
 
 export class SimpleWord implements Kind<"word"> {

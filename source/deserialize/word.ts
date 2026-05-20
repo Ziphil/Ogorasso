@@ -1,16 +1,16 @@
 //
 
 import {
-  Affix,
+  AffixEntry,
   Entry,
   Equivalent,
   Information,
-  Pattern,
+  PatternEntry,
   Phrase,
   Relation,
-  Root,
+  RootEntry,
   Section,
-  Theme,
+  ThemeEntry,
   Word
 } from "../type";
 import {
@@ -62,13 +62,13 @@ export function deserializeWord(rawEntry: any): Word {
   return word;
 }
 
-export function deserializeRoot(rawEntry: any): Root {
+export function deserializeRoot(rawEntry: any): RootEntry {
   const radicals = extractRadicals(rawEntry["spelling"]);
   if (radicals !== null) {
     const rawSections = rawEntry["sections"] as Array<any>;
-    const root = new Root({
+    const root = new RootEntry({
       number: +rawEntry["number"],
-      radicals,
+      root: radicals,
       sections: rawSections.map(deserializeSection),
       origin: (rawEntry["tags"].includes("借用語")) ? "loan" : (rawEntry["tags"].includes("外来語")) ? "foreign" : "proper"
     });
@@ -78,10 +78,10 @@ export function deserializeRoot(rawEntry: any): Root {
   }
 }
 
-export function deserializePattern(rawEntry: any): Pattern {
+export function deserializePattern(rawEntry: any): PatternEntry {
   const spelling = extractPatternSpelling(rawEntry["spelling"]);
   if (spelling !== null) {
-    const pattern = new Pattern({
+    const pattern = new PatternEntry({
       number: +rawEntry["number"],
       spelling
     });
@@ -91,11 +91,11 @@ export function deserializePattern(rawEntry: any): Pattern {
   }
 }
 
-export function deserializeAffix(rawEntry: any): Affix {
+export function deserializeAffix(rawEntry: any): AffixEntry {
   const spelling = extractAffixSpelling(rawEntry["spelling"]);
   if (spelling !== null) {
     const rawSections = rawEntry["sections"] as Array<any>;
-    const affix = new Affix({
+    const affix = new AffixEntry({
       number: +rawEntry["number"],
       spelling,
       sections: rawSections.map(deserializeSection)
@@ -106,10 +106,10 @@ export function deserializeAffix(rawEntry: any): Affix {
   }
 }
 
-export function deserializeTheme(rawEntry: any): Theme {
+export function deserializeTheme(rawEntry: any): ThemeEntry {
   const spelling = extractThemeSpelling(rawEntry["spelling"]);
   if (spelling !== null) {
-    const theme = new Theme({
+    const theme = new ThemeEntry({
       number: +rawEntry["number"],
       spelling
     });
