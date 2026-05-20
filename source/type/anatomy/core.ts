@@ -1,6 +1,8 @@
 //
 
 
+export type Sort = "verbal" | "substantive";
+
 export const RADICALS = ["к", "г", "х", "ҕ", "т", "д", "с", "з", "п", "б", "ф", "в", "ҫ", "ҙ", "ш", "ж", "ц", "ӟ", "ч", "ӝ", "ӈ", "н", "м", "л", "р", "й", "ў", "ъ"] as const;
 
 export type Radical = (typeof RADICALS)[number];
@@ -22,7 +24,7 @@ export const PATTERN_DATA = new Map([
 export type PatternSpelling = Parameters<(typeof PATTERN_DATA.get)>[0];
 export type PatternSort = (typeof PATTERN_SORTS)[number];
 export type PatternType = (typeof PATTERN_TYPES)[number];
-export type Pattern = {sort: PatternSort, type: PatternType};
+export type Pattern = {sort: "verbal", type: PatternType} | {sort: "substantive", type: PatternType};
 
 export const AFFIX_TYPES = ["prefixal", "infixal", "suffixal", "terminal"] as const;
 

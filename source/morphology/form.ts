@@ -1,25 +1,103 @@
 //
 
 import {transformEuphony, transformLightSyllables, transformMerger, transformWeakConsonants} from "../surface";
-import {AffixType, Inflection, Pattern, Root, Theme} from "../type";
+import {
+  ADHESIVITIES,
+  AffixType,
+  CASES,
+  DEFINITENESSES,
+  GENDERS,
+  Inflection,
+  PERSONS,
+  Pattern,
+  Root,
+  Sort,
+  SubstantiveInflectionSpecifier,
+  TENSES,
+  Theme,
+  VOICES,
+  VerbalInflectionSpecifier
+} from "../type";
 import {getInflectionAffixes} from "./inflection";
 
 
 export type PatternAffixes = Record<AffixType, ReadonlyArray<string>>;
 
-export function getRealization(root: Root, pattern: Pattern, theme: Theme, patternAffixes: PatternAffixes, inflection: Inflection): string {
-  const coreUnderlyingRealization = transformLightSyllables(getCoreUnderlyingRealization(root, pattern, theme, patternAffixes));
-  const underlyingRealization = getUnderlyingRealization(coreUnderlyingRealization, pattern, patternAffixes, inflection);
-  const surfaceRealization = transformMerger(transformWeakConsonants(transformEuphony(transformLightSyllables(underlyingRealization))));
-  return surfaceRealization;
+export function getForm(root: Root, pattern: Pattern, theme: Theme, patternAffixes: PatternAffixes, inflection: Inflection): string {
+  const coreUnderlyingForm = transformLightSyllables(getCoreUnderlyingForm(root, pattern, theme, patternAffixes));
+  const underlyingForm = getUnderlyingForm(coreUnderlyingForm, pattern, patternAffixes, inflection);
+  const surfaceForm = transformMerger(transformWeakConsonants(transformEuphony(transformLightSyllables(underlyingForm))));
+  return surfaceForm;
 }
 
-export function getUnderlyingRealization(coreUnderlyingRealization: string, pattern: Pattern, patternAffixes: PatternAffixes, inflection: Inflection): string {
+export function getAllForms(root: Root, pattern: Pattern, theme: Theme, patternAffixes: PatternAffixes): Record<SubstantiveInflectionSpecifier, string> | Record<VerbalInflectionSpecifier, string> {
+  const sort = getInflectionSort(pattern, patternAffixes);
+  if (sort === "substantive") {
+    const forms = {} as Record<SubstantiveInflectionSpecifier, string>;
+    for (const category of ["base", "adjective"] as const) {
+      for (const adhesivity of ADHESIVITIES) {
+        for (const gender of GENDERS) {
+          for (const caze of CASES) {
+            for (const definiteness of DEFINITENESSES) {
+              const inflection = {sort, category, adhesivity, gender, case: caze, definiteness};
+              const form = getForm(root, pattern, theme, patternAffixes, inflection);
+              forms[`${sort}.${category}.${adhesivity}.${gender}.${caze}.${definiteness}`] = form;
+            }
+          }
+        }
+      }
+    }
+    return forms;
+  } else {
+    const forms = {} as Record<VerbalInflectionSpecifier, string>;
+    for (const category of ["base"] as const) {
+      for (const voice of VOICES) {
+        for (const tense of TENSES) {
+          for (const person of PERSONS) {
+            for (const gender of GENDERS) {
+              const inflection = {sort, category, voice, tense, person, gender};
+              const form = getForm(root, pattern, theme, patternAffixes, inflection);
+              forms[`${sort}.${category}.${voice}.${tense}.${person}.${gender}`] = form;
+            }
+          }
+        }
+      }
+    }
+    for (const category of ["adjective", "noun"] as const) {
+      for (const adhesivity of ADHESIVITIES) {
+        for (const gender of GENDERS) {
+          for (const caze of CASES) {
+            for (const definiteness of DEFINITENESSES) {
+              const inflection = {sort, category, adhesivity, gender, case: caze, definiteness} as const;
+              const form = getForm(root, pattern, theme, patternAffixes, inflection);
+              forms[`${sort}.${category}.${adhesivity}.${gender}.${caze}.${definiteness}`] = form;
+            }
+          }
+        }
+      }
+    }
+    return forms;
+  }
+}
+
+export function getInflectionSort(pattern: Pattern, patternAffixes: PatternAffixes): Sort {
+  if (pattern.sort === "verbal") {
+    if (patternAffixes.suffixal.length > 0) {
+      return "substantive";
+    } else {
+      return "verbal";
+    }
+  } else {
+    return "substantive";
+  }
+}
+
+function getUnderlyingForm(coreUnderlyingForm: string, pattern: Pattern, patternAffixes: PatternAffixes, inflection: Inflection): string {
   const inflectionAffixes = getInflectionAffixes(inflection);
   let underlyingRealization = "";
   underlyingRealization += inflectionAffixes.prefixal.map((affix) => affix.replace(/-/g, "")).join("");
   underlyingRealization += (pattern.type === "doubleInitial" && patternAffixes.prefixal.length <= 0 && inflectionAffixes.prefixal.length <= 0) ? "а" : "";
-  underlyingRealization += coreUnderlyingRealization;
+  underlyingRealization += coreUnderlyingForm;
   underlyingRealization += (pattern.type === "doubleFinal" && patternAffixes.suffixal.length <= 0 && inflectionAffixes.suffixal.length <= 0 && patternAffixes.terminal.length <= 0) ? "е" : "";
   underlyingRealization += inflectionAffixes.suffixal.map((affix) => affix.replace(/-/g, "")).join("");
   if (patternAffixes.terminal.length > 0) {
@@ -36,7 +114,7 @@ export function getUnderlyingRealization(coreUnderlyingRealization: string, patt
   return underlyingRealization;
 }
 
-export function getCoreUnderlyingRealization(root: Root, pattern: Pattern, theme: Theme, patternAffixes: PatternAffixes): string {
+function getCoreUnderlyingForm(root: Root, pattern: Pattern, theme: Theme, patternAffixes: PatternAffixes): string {
   if (root.length === 3) {
     if (pattern.sort === "verbal") {
       let coreUnderlyingRealization = "";

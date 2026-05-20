@@ -1,5 +1,8 @@
 //
 
+import {Sort} from "./anatomy";
+
+
 export const ADHESIVITIES = ["adverbial", "adjectival"] as const;
 export type Adhesivity = (typeof ADHESIVITIES)[number];
 
@@ -29,6 +32,7 @@ export type SubstantiveInflection = {
   case: Case,
   definiteness: Definiteness
 };
+export type SubstantiveInflectionSpecifier = `substantive.${"base" | "adjective"}.${Adhesivity}.${Gender}.${Case}.${Definiteness}`;
 
 export type VerbalInflection = {
   sort: "verbal",
@@ -45,5 +49,10 @@ export type VerbalInflection = {
   case: Case,
   definiteness: Definiteness
 };
+export type VerbalInflectionSpecifier = `verbal.${"base"}.${Voice}.${Tense}.${Person}.${Gender}` | `verbal.${"adjective" | "noun"}.${Adhesivity}.${Gender}.${Case}.${Definiteness}`;
 
-export type Inflection = SubstantiveInflection | VerbalInflection;
+export type Inflection = VerbalInflection | SubstantiveInflection;
+export type InflectionOf<S extends Sort> = S extends "verbal" ? VerbalInflection : SubstantiveInflection;
+
+export type InflectionSpecifier = VerbalInflectionSpecifier | SubstantiveInflectionSpecifier;
+export type InflectionSpecifierOf<S extends Sort> = S extends "verbal" ? VerbalInflectionSpecifier : SubstantiveInflectionSpecifier;
