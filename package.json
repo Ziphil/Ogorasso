@@ -12,6 +12,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
+    "exec:serialize": "ts-node script/serialize.ts",
     "lint": "eslint source/**/*.ts test/**/*.ts",
     "lint:fix": "eslint --fix source/**/*.ts test/**/*.ts"
   },

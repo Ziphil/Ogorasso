@@ -1,0 +1,3 @@
+//
+
+export {writeEntries} from "./dictionary";

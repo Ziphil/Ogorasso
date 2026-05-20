@@ -16,7 +16,7 @@ import {
   SimplexAnatomy,
   ThemeSpelling,
   getAffixType
-} from "../type";
+} from "../../type";
 
 
 export function parseAnatomy(rawSpelling: string, rawRelations: Array<any>): Anatomy | null {

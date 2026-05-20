@@ -1,6 +1,7 @@
 //
 
-export * from "./deserialize";
+export * from "./io/deserialize";
+export * from "./io/serialize";
 export * from "./morphology";
 export * from "./orthography";
 export * from "./surface";

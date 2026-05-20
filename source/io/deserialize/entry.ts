@@ -12,7 +12,7 @@ import {
   Section,
   ThemeEntry,
   Word
-} from "../type";
+} from "../../type";
 import {
   checkAffixSpelling,
   checkAnatomySection,

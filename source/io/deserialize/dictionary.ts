@@ -1,6 +1,6 @@
 //
 
-import {Entry} from "../type";
+import {Entry} from "../../type";
 import {deserializeEntry} from "./entry";
 
 
