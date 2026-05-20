@@ -106,6 +106,27 @@ describe("inflection", () => {
     expect(getRealization(radicals, pattern, theme, patternAffixes, {sort: "verbal", category: "base", voice: "passive", tense: "past", person: "firstPlural", gender: "water"})).toBe("бамедо̀зму̂кан");
     expect(getRealization(radicals, pattern, theme, patternAffixes, {sort: "verbal", category: "base", voice: "passive", tense: "past", person: "firstSingular", gender: "fire"})).toBe("едо̀зму̂кно");
   });
+  test("verbal, G pattern, reflexive", () => {
+    const radicals = ["в", "л", "к"] as const;
+    const pattern = {sort: "verbal", type: "ground"} as const;
+    const theme = "и";
+    const patternAffixes = {prefixal: [], infixal: [], suffixal: [], terminal: ["-ҙ"]};
+    expect(getRealization(radicals, pattern, theme, patternAffixes, {sort: "verbal", category: "base", voice: "active", tense: "present", person: "thirdDefinite", gender: "water"})).toBe("вали̂кез");
+    expect(getRealization(radicals, pattern, theme, patternAffixes, {sort: "verbal", category: "base", voice: "active", tense: "present", person: "thirdIndefinite", gender: "fire"})).toBe("авли̂коз");
+    expect(getRealization(radicals, pattern, theme, patternAffixes, {sort: "verbal", category: "base", voice: "active", tense: "present", person: "second", gender: "fire"})).toBe("товли̂коз");
+    expect(getRealization(radicals, pattern, theme, patternAffixes, {sort: "verbal", category: "base", voice: "active", tense: "present", person: "firstPlural", gender: "water"})).toBe("бамевли̂кез");
+    expect(getRealization(radicals, pattern, theme, patternAffixes, {sort: "verbal", category: "base", voice: "active", tense: "present", person: "firstSingular", gender: "fire"})).toBe("евли̂коз");
+    expect(getRealization(radicals, pattern, theme, patternAffixes, {sort: "verbal", category: "base", voice: "active", tense: "past", person: "thirdDefinite", gender: "fire"})).toBe("вали̂кноз");
+    expect(getRealization(radicals, pattern, theme, patternAffixes, {sort: "verbal", category: "base", voice: "active", tense: "past", person: "thirdIndefinite", gender: "water"})).toBe("авли̂кнез");
+    expect(getRealization(radicals, pattern, theme, patternAffixes, {sort: "verbal", category: "base", voice: "active", tense: "past", person: "second", gender: "water"})).toBe("тевли̂кнез");
+    expect(getRealization(radicals, pattern, theme, patternAffixes, {sort: "verbal", category: "base", voice: "active", tense: "past", person: "firstPlural", gender: "fire"})).toBe("бамовли̂кноз");
+    expect(getRealization(radicals, pattern, theme, patternAffixes, {sort: "verbal", category: "base", voice: "active", tense: "past", person: "firstSingular", gender: "water"})).toBe("ивли̂кнез");
+    expect(getRealization(radicals, pattern, theme, patternAffixes, {sort: "verbal", category: "base", voice: "passive", tense: "present", person: "thirdDefinite", gender: "water"})).toBe("до̀вли̂кез");
+    expect(getRealization(radicals, pattern, theme, patternAffixes, {sort: "verbal", category: "base", voice: "passive", tense: "past", person: "thirdIndefinite", gender: "fire"})).toBe("адо̀вли̂кноз");
+    expect(getRealization(radicals, pattern, theme, patternAffixes, {sort: "verbal", category: "base", voice: "passive", tense: "present", person: "second", gender: "fire"})).toBe("тодо̀вли̂коз");
+    expect(getRealization(radicals, pattern, theme, patternAffixes, {sort: "verbal", category: "base", voice: "passive", tense: "past", person: "firstPlural", gender: "water"})).toBe("бамедо̀вли̂кнез");
+    expect(getRealization(radicals, pattern, theme, patternAffixes, {sort: "verbal", category: "base", voice: "passive", tense: "past", person: "firstSingular", gender: "fire"})).toBe("едо̀вли̂кноз");
+  });
   test("verbal, Dm pattern", () => {
     const radicals = ["т", "л", "г"] as const;
     const pattern = {sort: "verbal", type: "doubleMedial"} as const;
@@ -172,13 +193,18 @@ describe("inflection", () => {
   test("random", () => {
     expect(getRealization(
       ["ў", "з", "ц"], {sort: "substantive", type: "ground"}, "у",
-      {prefixal: [], infixal: ["ед"], suffixal: [], terminal: []},
+      {prefixal: [], infixal: ["-ед-"], suffixal: [], terminal: []},
       {sort: "substantive", category: "base", adhesivity: "adverbial", gender: "water", case: "accusative", definiteness: "indefinite"}
     )).toBe("оду̂цца");
     expect(getRealization(
       ["ў", "з", "ц"], {sort: "substantive", type: "ground"}, "у",
-      {prefixal: [], infixal: ["ед"], suffixal: [], terminal: []},
+      {prefixal: [], infixal: ["-ед-"], suffixal: [], terminal: []},
       {sort: "substantive", category: "base", adhesivity: "adjectival", gender: "water", case: "dative", definiteness: "definite"}
     )).toBe("лоду̂ццевас");
+    expect(getRealization(
+      ["т", "б", "ҙ"], {sort: "verbal", type: "doubleFinal"}, "у",
+      {prefixal: [], infixal: [], suffixal: ["-ал-"], terminal: ["-ҙ"]},
+      {sort: "substantive", category: "base", adhesivity: "adverbial", gender: "fire", case: "ablative", definiteness: "definite"}
+    )).toBe("лотбу̂ззалозмаз");
   });
 });
