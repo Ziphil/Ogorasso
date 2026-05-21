@@ -10,7 +10,7 @@ export type Root = readonly [Radical, Radical, Radical] | readonly [Radical, Rad
 
 export const PATTERN_SORTS = ["verbal", "substantive"] as const;
 export const PATTERN_TYPES = ["ground", "doubleMedial", "doubleFinal", "doubleInitial"] as const;
-export const PATTERN_DATA = new Map([
+export const PATTERN_DATA = new Map<string, Pattern>([
   ["катө̂п", {sort: "verbal", type: "ground"}],
   ["каттө̂п", {sort: "verbal", type: "doubleMedial"}],
   ["катө̂ппе", {sort: "verbal", type: "doubleFinal"}],
