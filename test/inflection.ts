@@ -26,6 +26,10 @@ describe("inflection", () => {
     expect(getForm(anatomy, {sort: "substantive", category: "base", adhesivity: "adjectival", gender: "fire", case: "instrumental", definiteness: "definite"})).toBe("лоци̂нтовот");
     expect(getForm(anatomy, {sort: "substantive", category: "adjective", adhesivity: "adverbial", gender: "water", case: "nominative", definiteness: "indefinite"})).toBe("ци̂нтар");
     expect(getForm(anatomy, {sort: "substantive", category: "adjective", adhesivity: "adverbial", gender: "fire", case: "ablative", definiteness: "indefinite"})).toBe("ци̂нтарозам");
+    expect(getForm(anatomy, {sort: "substantive", category: "adverb", type: "simple"})).toBe("ци̂нто̀ӈ");
+    expect(getForm(anatomy, {sort: "substantive", category: "adverb", type: "k"})).toBe("ци̂нту̀к");
+    expect(getForm(anatomy, {sort: "substantive", category: "adpredicative", gender: "water"})).toBe("ци̂нтѐ");
+    expect(getForm(anatomy, {sort: "substantive", category: "adpredicative", gender: "fire"})).toBe("ци̂нто̀");
   });
   test("substantive, Dm pattern", () => {
     const anatomy = {
@@ -48,6 +52,10 @@ describe("inflection", () => {
     expect(getForm(anatomy, {sort: "substantive", category: "base", adhesivity: "adjectival", gender: "fire", case: "instrumental", definiteness: "definite"})).toBe("логу̂ббашовот");
     expect(getForm(anatomy, {sort: "substantive", category: "adjective", adhesivity: "adverbial", gender: "water", case: "nominative", definiteness: "indefinite"})).toBe("гу̂ббашар");
     expect(getForm(anatomy, {sort: "substantive", category: "adjective", adhesivity: "adverbial", gender: "fire", case: "ablative", definiteness: "indefinite"})).toBe("гу̂ббашрозам");
+    expect(getForm(anatomy, {sort: "substantive", category: "adverb", type: "simple"})).toBe("гу̂ббашо̀ӈ");
+    expect(getForm(anatomy, {sort: "substantive", category: "adverb", type: "k"})).toBe("гу̂ббашу̀к");
+    expect(getForm(anatomy, {sort: "substantive", category: "adpredicative", gender: "water"})).toBe("гу̂ббашѐ");
+    expect(getForm(anatomy, {sort: "substantive", category: "adpredicative", gender: "fire"})).toBe("гу̂ббашо̀");
   });
   test("substantive, Df pattern", () => {
     const anatomy = {
@@ -70,6 +78,10 @@ describe("inflection", () => {
     expect(getForm(anatomy, {sort: "substantive", category: "base", adhesivity: "adjectival", gender: "fire", case: "instrumental", definiteness: "definite"})).toBe("лохи̂лаффовот");
     expect(getForm(anatomy, {sort: "substantive", category: "adjective", adhesivity: "adverbial", gender: "water", case: "nominative", definiteness: "indefinite"})).toBe("хи̂лаффар");
     expect(getForm(anatomy, {sort: "substantive", category: "adjective", adhesivity: "adverbial", gender: "fire", case: "ablative", definiteness: "indefinite"})).toBe("хи̂лаффарозам");
+    expect(getForm(anatomy, {sort: "substantive", category: "adverb", type: "simple"})).toBe("хи̂лаффо̀ӈ");
+    expect(getForm(anatomy, {sort: "substantive", category: "adverb", type: "k"})).toBe("хи̂лаффу̀к");
+    expect(getForm(anatomy, {sort: "substantive", category: "adpredicative", gender: "water"})).toBe("хи̂лаффѐ");
+    expect(getForm(anatomy, {sort: "substantive", category: "adpredicative", gender: "fire"})).toBe("хи̂лаффо̀");
   });
   test("substantive, Di pattern", () => {
     const anatomy = {
@@ -92,6 +104,10 @@ describe("inflection", () => {
     expect(getForm(anatomy, {sort: "substantive", category: "base", adhesivity: "adjectival", gender: "fire", case: "instrumental", definiteness: "definite"})).toBe("ложжи̂бӈовот");
     expect(getForm(anatomy, {sort: "substantive", category: "adjective", adhesivity: "adverbial", gender: "water", case: "nominative", definiteness: "indefinite"})).toBe("ажжи̂бӈар");
     expect(getForm(anatomy, {sort: "substantive", category: "adjective", adhesivity: "adverbial", gender: "fire", case: "ablative", definiteness: "indefinite"})).toBe("ажжи̂бӈарозам");
+    expect(getForm(anatomy, {sort: "substantive", category: "adverb", type: "simple"})).toBe("ажжи̂бӈо̀ӈ");
+    expect(getForm(anatomy, {sort: "substantive", category: "adverb", type: "k"})).toBe("ажжи̂бӈу̀к");
+    expect(getForm(anatomy, {sort: "substantive", category: "adpredicative", gender: "water"})).toBe("ажжи̂бӈѐ");
+    expect(getForm(anatomy, {sort: "substantive", category: "adpredicative", gender: "fire"})).toBe("ажжи̂бӈо̀");
   });
   test("verbal, G pattern", () => {
     const anatomy = {
@@ -226,7 +242,7 @@ describe("inflection", () => {
       {sort: "verbal", category: "noun", adhesivity: "adverbial", gender: "fire", case: "accusative", definiteness: "definite"}
     )).toBe("лобово̂лла");
   });
-  test("random", () => {
+  test("random 1", () => {
     expect(getForm(
       {root: ["ў", "з", "ц"], pattern: {sort: "substantive", type: "ground"}, theme: "у", affixes: {prefixal: [], infixal: ["-ед-"], suffixal: [], terminal: []}},
       {sort: "substantive", category: "base", adhesivity: "adverbial", gender: "water", case: "accusative", definiteness: "indefinite"}
@@ -235,9 +251,21 @@ describe("inflection", () => {
       {root: ["ў", "з", "ц"], pattern: {sort: "substantive", type: "ground"}, theme: "у", affixes: {prefixal: [], infixal: ["-ед-"], suffixal: [], terminal: []}},
       {sort: "substantive", category: "base", adhesivity: "adjectival", gender: "water", case: "dative", definiteness: "definite"}
     )).toBe("лоду̂ццевас");
+  });
+  test("random 2", () => {
     expect(getForm(
       {root: ["т", "б", "ҙ"], pattern: {sort: "verbal", type: "doubleFinal"}, theme: "у", affixes: {prefixal: [], infixal: [], suffixal: ["-ал-"], terminal: ["-ҙ"]}},
       {sort: "substantive", category: "base", adhesivity: "adverbial", gender: "fire", case: "ablative", definiteness: "definite"}
     )).toBe("лотбу̂ззалозмаз");
+  });
+  test("random 3", () => {
+    expect(getForm(
+      {root: ["ч", "к", "ў"], pattern: {sort: "substantive", type: "ground"}, theme: "у", affixes: {prefixal: ["ҫе-"], infixal: [], suffixal: [], terminal: []}},
+      {sort: "substantive", category: "adpredicative", gender: "water"}
+    )).toBe("сечу̂ко̀");
+    expect(getForm(
+      {root: ["ч", "к", "ў"], pattern: {sort: "substantive", type: "ground"}, theme: "у", affixes: {prefixal: ["ҫе-"], infixal: [], suffixal: [], terminal: []}},
+      {sort: "substantive", category: "adpredicative", gender: "fire"}
+    )).toBe("сечу̂ку̀");
   });
 });
