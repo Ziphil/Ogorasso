@@ -1,6 +1,6 @@
 //
 
-import {Adhesivity, Case, Definiteness, Gender, Inflection, Person, Tense, Voice} from "../type";
+import {Adhesivity, AdverbType, Case, Definiteness, Gender, Inflection, Person, Tense, Voice} from "../type";
 import {isTruthy} from "../util/misc";
 
 
@@ -11,12 +11,26 @@ export type InflectionAffixes = {
 
 export function getInflectionAffixes(inflection: Inflection): InflectionAffixes {
   if (inflection.sort === "substantive") {
-    const baseAffixes = getSubstantiveBaseInflectionAffixes(inflection);
-    const categoryAffixes = getCategoryInflectionAffixes(inflection.category);
-    return {
-      prefixal: [...categoryAffixes.prefixal, ...baseAffixes.prefixal],
-      suffixal: [...categoryAffixes.suffixal, ...baseAffixes.suffixal]
-    };
+    if (inflection.category === "base" || inflection.category === "adjective") {
+      const baseAffixes = getSubstantiveBaseInflectionAffixes(inflection);
+      const categoryAffixes = getCategoryInflectionAffixes(inflection.category);
+      return {
+        prefixal: [...categoryAffixes.prefixal, ...baseAffixes.prefixal],
+        suffixal: [...categoryAffixes.suffixal, ...baseAffixes.suffixal]
+      };
+    } else if (inflection.category === "adverb") {
+      const adverbAffixes = getSubstantiveAdverbInflectionAffixes(inflection);
+      return {
+        prefixal: adverbAffixes.prefixal,
+        suffixal: adverbAffixes.suffixal
+      };
+    } else {
+      const adpredicativeAffixes = getSubstantiveAdpredicativeInflectionAffixes(inflection);
+      return {
+        prefixal: adpredicativeAffixes.prefixal,
+        suffixal: adpredicativeAffixes.suffixal
+      };
+    }
   } else {
     if (inflection.category === "base") {
       const baseAffixes = getVerbalBaseInflectionAffixes(inflection);
@@ -53,6 +67,12 @@ const SUBSTANTIVE_INFLECTION_SUFFIXES = new Map<`${Adhesivity}.${Gender}.${Case}
   ["adjectival.water.instrumental", "еваўат"], ["adjectival.fire.instrumental", "оваўат"],
   ["adjectival.water.locative", "евай"], ["adjectival.fire.locative", "овай"]
 ]);
+const ADVERB_INFLECTION_SUFFIXES = new Map<`${AdverbType}`, string>([
+  ["simple", "о̀ӈ"], ["k", "о̀ўак"]
+]);
+const ADPREDICATIVE_INFLECTION_SUFFIXES = new Map<`${Gender}`, string>([
+  ["water", "ѐ"], ["fire", "о̀"]
+]);
 
 export function getSubstantiveBaseInflectionAffixes(inflection: {adhesivity: Adhesivity, gender: Gender, case: Case, definiteness: Definiteness}): InflectionAffixes {
   const prefixal = [
@@ -62,6 +82,20 @@ export function getSubstantiveBaseInflectionAffixes(inflection: {adhesivity: Adh
     SUBSTANTIVE_INFLECTION_SUFFIXES.get(`${inflection.adhesivity}.${inflection.gender}.${inflection.case}`)
   ].filter(isTruthy);
   return {prefixal, suffixal};
+}
+
+export function getSubstantiveAdverbInflectionAffixes(inflection: {type: AdverbType}): InflectionAffixes {
+  const suffixal = [
+    ADVERB_INFLECTION_SUFFIXES.get(inflection.type)
+  ].filter(isTruthy);
+  return {prefixal: [], suffixal};
+}
+
+export function getSubstantiveAdpredicativeInflectionAffixes(inflection: {gender: Gender}): InflectionAffixes {
+  const suffixal = [
+    ADPREDICATIVE_INFLECTION_SUFFIXES.get(inflection.gender)
+  ].filter(isTruthy);
+  return {prefixal: [], suffixal};
 }
 
 const VOICE_INFLECTION_PREFIXES = new Map<`${Voice}`, string>([

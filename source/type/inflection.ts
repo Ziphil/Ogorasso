@@ -1,7 +1,5 @@
 //
 
-import {Sort} from "./anatomy";
-
 
 export const ADHESIVITIES = ["adverbial", "adjectival"] as const;
 export type Adhesivity = (typeof ADHESIVITIES)[number];
@@ -24,6 +22,9 @@ export type Tense = (typeof TENSES)[number];
 export const PERSONS = ["thirdDefinite", "thirdIndefinite", "second", "firstPlural", "firstSingular"] as const;
 export type Person = (typeof PERSONS)[number];
 
+export const ADVERB_TYPES = ["simple", "k"] as const;
+export type AdverbType = (typeof ADVERB_TYPES)[number];
+
 export type SubstantiveInflection = {
   sort: "substantive",
   category: "base" | "adjective",
@@ -31,8 +32,19 @@ export type SubstantiveInflection = {
   gender: Gender,
   case: Case,
   definiteness: Definiteness
+} | {
+  sort: "substantive",
+  category: "adverb",
+  type: AdverbType
+} | {
+  sort: "substantive",
+  category: "adpredicative",
+  gender: Gender
 };
-export type SubstantiveInflectionSpecifier = `substantive.${"base" | "adjective"}.${Adhesivity}.${Gender}.${Case}.${Definiteness}`;
+export type SubstantiveInflectionSpecifier =
+  `substantive.${"base" | "adjective"}.${Adhesivity}.${Gender}.${Case}.${Definiteness}` |
+  `substantive.${"adverb"}.${AdverbType}` |
+  `substantive.${"adpredicative"}.${Gender}`;
 
 export type VerbalInflection = {
   sort: "verbal",
@@ -43,16 +55,15 @@ export type VerbalInflection = {
   gender: Gender
 } | {
   sort: "verbal",
-  category: "adjective" | "noun",
+  category: "noun" | "adjective",
   adhesivity: Adhesivity,
   gender: Gender,
   case: Case,
   definiteness: Definiteness
 };
-export type VerbalInflectionSpecifier = `verbal.${"base"}.${Voice}.${Tense}.${Person}.${Gender}` | `verbal.${"adjective" | "noun"}.${Adhesivity}.${Gender}.${Case}.${Definiteness}`;
+export type VerbalInflectionSpecifier =
+  `verbal.${"base"}.${Voice}.${Tense}.${Person}.${Gender}` |
+  `verbal.${"noun" | "adjective"}.${Adhesivity}.${Gender}.${Case}.${Definiteness}`;
 
 export type Inflection = VerbalInflection | SubstantiveInflection;
-export type InflectionOf<S extends Sort> = S extends "verbal" ? VerbalInflection : SubstantiveInflection;
-
 export type InflectionSpecifier = VerbalInflectionSpecifier | SubstantiveInflectionSpecifier;
-export type InflectionSpecifierOf<S extends Sort> = S extends "verbal" ? VerbalInflectionSpecifier : SubstantiveInflectionSpecifier;
