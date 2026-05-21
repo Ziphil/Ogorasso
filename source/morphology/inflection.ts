@@ -4,10 +4,7 @@ import {Adhesivity, AdverbType, Case, Definiteness, Gender, Inflection, Person, 
 import {isTruthy} from "../util/misc";
 
 
-export type InflectionAffixes = {
-  prefixal: ReadonlyArray<string>,
-  suffixal: ReadonlyArray<string>
-};
+export type InflectionAffixes = Record<"prefixal" | "suffixal", ReadonlyArray<string>>;
 
 export function getInflectionAffixes(inflection: Inflection): InflectionAffixes {
   if (inflection.sort === "substantive") {
