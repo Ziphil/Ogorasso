@@ -1,6 +1,6 @@
 //
 
-import {transformEuphony, transformLightSyllables, transformMerger, transformWeakConsonants} from "../surface";
+import {surfaceEuphony, surfaceLightSyllables, surfaceMerger, surfaceWeakConsonants} from "../surfacing";
 import {
   ADHESIVITIES,
   ADVERB_TYPES,
@@ -32,9 +32,9 @@ export type Derivation = {
 };
 
 export function getForm(anatomy: Derivation, inflection: Inflection): string {
-  const coreUnderlyingForm = transformLightSyllables(getStemUnderlyingForm(anatomy));
+  const coreUnderlyingForm = surfaceLightSyllables(getStemUnderlyingForm(anatomy));
   const underlyingForm = getUnderlyingForm(coreUnderlyingForm, anatomy, inflection);
-  const surfaceForm = transformMerger(transformWeakConsonants(transformEuphony(transformLightSyllables(underlyingForm))));
+  const surfaceForm = surfaceMerger(surfaceWeakConsonants(surfaceEuphony(surfaceLightSyllables(underlyingForm))));
   return surfaceForm;
 }
 

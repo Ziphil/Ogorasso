@@ -10,7 +10,7 @@ const MERGER_MAP = new Map<string, string>([
   ["ӝ", "ж"]
 ]);
 
-export function transformMerger(text: string): string {
+export function surfaceMerger(text: string): string {
   const graphemes = [...toGraphemes(text)];
   let index = 0;
   while (index < graphemes.length) {

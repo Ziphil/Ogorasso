@@ -37,7 +37,7 @@ const EUPHONY_MAP = new Map<string, string>([
   ["рл", "лл"]
 ]);
 
-export function transformEuphony(text: string): string {
+export function surfaceEuphony(text: string): string {
   const graphemes = [...toGraphemes(text)];
   let index = 0;
   while (index < graphemes.length - 1) {

@@ -3,7 +3,7 @@
 import {Grapheme, extractDiacritic, extractLetter, isSolidLongVowel, isSolidWeakConsonant, isVowel, isWeakConsonant, toGraphemes} from "./grapheme";
 
 
-export function transformWeakConsonants(text: string): string {
+export function surfaceWeakConsonants(text: string): string {
   const graphemes = desactivateGeminatedWeakConsonant([...toGraphemes(text)]);
   let index = 0;
   while (index < graphemes.length) {

@@ -3,7 +3,7 @@
 import {Grapheme, isConsonant, isVowel, toGraphemes} from "./grapheme";
 
 
-export function transformLightSyllables(text: string): string {
+export function surfaceLightSyllables(text: string): string {
   let graphemes = toGraphemes(text);
   graphemes = dropRedundantHollowVowels(graphemes);
   graphemes = dropRedundantSolidVowels(graphemes);
