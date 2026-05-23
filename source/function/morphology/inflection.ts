@@ -23,7 +23,7 @@ export function getInflectionAffixes(inflection: Inflection): InflectionAffixes 
         suffixal: adverbAffixes.suffixal
       };
     } else {
-      const adpredicativeAffixes = getSubstantiveAdpredicativeInflectionAffixes(inflection);
+      const adpredicativeAffixes = getSubstantivePrepositionalInflectionAffixes(inflection);
       return {
         prefixal: adpredicativeAffixes.prefixal,
         suffixal: adpredicativeAffixes.suffixal
@@ -68,7 +68,7 @@ const SUBSTANTIVE_INFLECTION_SUFFIXES = new Map<`${Adhesivity}.${Gender}.${Case}
 const ADVERB_INFLECTION_SUFFIXES = new Map<`${AdverbType}`, string>([
   ["simple", "-о̀ӈ"], ["k", "-о̀ўак"]
 ]);
-const ADPREDICATIVE_INFLECTION_SUFFIXES = new Map<`${Gender}`, string>([
+const PREPOSITIONAL_INFLECTION_SUFFIXES = new Map<`${Gender}`, string>([
   ["water", "-ѐ"], ["fire", "-о̀"]
 ]);
 
@@ -89,9 +89,9 @@ export function getSubstantiveAdverbInflectionAffixes(inflection: {type: AdverbT
   return {prefixal: [], suffixal};
 }
 
-export function getSubstantiveAdpredicativeInflectionAffixes(inflection: {gender: Gender}): InflectionAffixes {
+export function getSubstantivePrepositionalInflectionAffixes(inflection: {gender: Gender}): InflectionAffixes {
   const suffixal = [
-    ADPREDICATIVE_INFLECTION_SUFFIXES.get(inflection.gender)
+    PREPOSITIONAL_INFLECTION_SUFFIXES.get(inflection.gender)
   ].filter(isTruthy);
   return {prefixal: [], suffixal};
 }

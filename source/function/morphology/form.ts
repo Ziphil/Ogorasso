@@ -49,7 +49,7 @@ export function getAllForms(anatomy: Anatomy): Record<SubstantiveInflectionSpeci
         forms[`${sort}.${category}.${type}`] = form;
       }
     }
-    for (const category of ["adpredicative"] as const) {
+    for (const category of ["prepositional"] as const) {
       for (const gender of GENDERS) {
         const inflection = {sort, category, gender};
         const form = getForm(anatomy, inflection);

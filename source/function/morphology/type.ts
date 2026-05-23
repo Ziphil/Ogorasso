@@ -38,13 +38,13 @@ export type SubstantiveInflection = {
   type: AdverbType
 } | {
   sort: "substantive",
-  category: "adpredicative",
+  category: "prepositional",
   gender: Gender
 };
 export type SubstantiveInflectionSpecifier =
   `substantive.${"base" | "adjective"}.${Adhesivity}.${Gender}.${Case}.${Definiteness}` |
   `substantive.${"adverb"}.${AdverbType}` |
-  `substantive.${"adpredicative"}.${Gender}`;
+  `substantive.${"prepositional"}.${Gender}`;
 
 export type VerbalInflection = {
   sort: "verbal",
