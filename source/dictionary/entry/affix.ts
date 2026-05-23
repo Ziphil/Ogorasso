@@ -1,5 +1,6 @@
 //
 
+import {getAffixType} from "../../function/anatomy/function";
 import type {AffixSpelling, AffixType} from "../../function/anatomy/type";
 import type {Kind} from "../../util/misc";
 import type {Section} from "./word";
@@ -33,19 +34,4 @@ export class AffixEntry extends SimpleAffixEntry implements Kind<"affix"> {
     this.sections = initializer.sections;
   }
 
-}
-
-
-export function getAffixType(spelling: AffixSpelling): AffixType | null {
-  if (spelling.match(/^([^-]+?)-$/)) {
-    return "prefixal";
-  } else if (spelling.match(/^-(е|о)([^-]+?)-$/)) {
-    return "infixal";
-  } else if (spelling.match(/^-(а)([^-]+?)-$/)) {
-    return "suffixal";
-  } else if (spelling.match(/^-([^-]+?)$/)) {
-    return "terminal";
-  } else {
-    return null;
-  }
 }

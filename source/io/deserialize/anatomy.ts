@@ -8,8 +8,7 @@ import {
   SimpleRootEntry,
   SimpleThemeEntry,
   SimpleWord,
-  SimplexAnatomyRelation,
-  getAffixType
+  SimplexAnatomyRelation
 } from "../../dictionary";
 import {
   AffixSpelling,
@@ -17,7 +16,8 @@ import {
   PATTERN_DATA,
   PatternSpelling,
   Root,
-  ThemeSpelling
+  ThemeSpelling,
+  getAffixType
 } from "../../function";
 
 

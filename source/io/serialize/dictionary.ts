@@ -2,7 +2,6 @@
 
 import {AnatomyRelation, Entry, RootEntry, Word} from "../../dictionary";
 import {getAllForms} from "../../function";
-import {mapObject} from "../../util/misc";
 
 
 export function writeEntries(entries: Array<Entry>): {} {
@@ -49,11 +48,8 @@ function writeAnatomy(anatomy: AnatomyRelation): {} {
 
 function writeInflectedSpellings(word: Word): {} | null {
   if (word.anatomy !== null && word.anatomy.kind === "simplex") {
-    const root = word.anatomy.root.root;
-    const pattern = word.anatomy.pattern.pattern ?? {sort: "substantive", type: "ground"};
-    const theme = word.anatomy.theme.spelling;
-    const affixes = mapObject(word.anatomy.affixes, (key, value) => value.map((affix) => affix.spelling));
-    const inflectedSpellings = getAllForms({root, pattern, theme, affixes});
+    const anatomy = word.anatomy.toPlain();
+    const inflectedSpellings = getAllForms(anatomy);
     return inflectedSpellings;
   } else {
     return null;

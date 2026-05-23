@@ -1,7 +1,7 @@
 //
 
-import type {Pattern, PatternSort, PatternSpelling, PatternType} from "../../function/anatomy/type";
-import {PATTERN_DATA} from "../../function/anatomy/type";
+import {getPatternSort, getPatternType} from "../../function/anatomy/function";
+import type {PatternSort, PatternSpelling, PatternType} from "../../function/anatomy/type";
 import type {Kind} from "../../util/misc";
 
 
@@ -25,14 +25,6 @@ export class SimplePatternEntry implements Kind<"pattern"> {
     return getPatternType(this.spelling);
   }
 
-  public get pattern(): Pattern | null {
-    if (this.sort !== null && this.type !== null) {
-      return {sort: this.sort, type: this.type};
-    } else {
-      return null;
-    }
-  }
-
 }
 
 
@@ -42,15 +34,4 @@ export class PatternEntry extends SimplePatternEntry implements Kind<"pattern"> 
     super(initializer);
   }
 
-}
-
-
-export function getPatternSort(spelling: PatternSpelling): PatternSort | null {
-  const sort = PATTERN_DATA.get(spelling)?.sort ?? null;
-  return sort;
-}
-
-export function getPatternType(spelling: PatternSpelling): PatternType | null {
-  const type = PATTERN_DATA.get(spelling)?.type ?? null;
-  return type;
 }
