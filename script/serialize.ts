@@ -11,7 +11,7 @@ async function execute(): Promise<void> {
   }});
   const input = await fs.readFile(`script/file/${values.name}.zpdc`, "utf8");
   const entries = readEntries(input);
-  const output = JSON.stringify(writeEntries(entries), null, 2);
+  const output = JSON.stringify(writeEntries(entries));
   await fs.writeFile(`script/file/${values.name}.fndc`, output);
 }
 
