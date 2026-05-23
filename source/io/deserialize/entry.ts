@@ -23,10 +23,10 @@ import {
   extractAffixSpelling,
   extractOldSpellings,
   extractPatternSpelling,
-  extractRadicals,
+  extractRoot,
   extractSeparatedSpellings,
   extractThemeSpelling,
-  parseAnatomy
+  parseAnatomyRelation
 } from "./anatomy";
 
 
@@ -34,13 +34,13 @@ import {
 export function deserializeEntry(rawEntry: any): Entry {
   const rawSpelling = rawEntry["spelling"] as string;
   if (checkRootSpelling(rawSpelling)) {
-    return deserializeRoot(rawEntry);
+    return deserializeRootEntry(rawEntry);
   } else if (checkThemeSpelling(rawSpelling)) {
-    return deserializeTheme(rawEntry);
+    return deserializeThemeEntry(rawEntry);
   } else if (checkAffixSpelling(rawSpelling)) {
-    return deserializeAffix(rawEntry);
+    return deserializeAffixEntry(rawEntry);
   } else if (checkPatternSpelling(rawSpelling)) {
-    return deserializePattern(rawEntry);
+    return deserializePatternEntry(rawEntry);
   } else {
     return deserializeWord(rawEntry);
   }
@@ -50,11 +50,11 @@ export function deserializeWord(rawEntry: any): Word {
   const rawSections = rawEntry["sections"] as Array<any>;
   const lastRawSection = rawSections[rawSections.length - 1];
   const concreteRawSections = (lastRawSection !== undefined && checkAnatomySection(lastRawSection)) ? rawSections.slice(0, -1) : rawSections;
-  const rawAnatomyRelations = (lastRawSection !== undefined && checkAnatomySection(lastRawSection)) ? lastRawSection["relations"] as Array<any> : null;
+  const rawAnatomyRelations = (lastRawSection !== undefined && checkAnatomySection(lastRawSection)) ? lastRawSection["relations"] as Array<any> : [];
   const word = new Word({
     number: +rawEntry["number"],
     spelling: rawEntry["spelling"],
-    anatomy: (rawAnatomyRelations !== null) ? parseAnatomy(rawEntry["spelling"], rawAnatomyRelations) : null,
+    anatomy: parseAnatomyRelation(rawEntry["spelling"], rawAnatomyRelations) ?? null,
     sections: concreteRawSections.map(deserializeSection),
     origin: (rawEntry["tags"].includes("借用語")) ? "loan" : (rawEntry["tags"].includes("外来語")) ? "foreign" : "proper",
     oldSpellings: (lastRawSection !== undefined && rawAnatomyRelations !== null) ? extractOldSpellings(lastRawSection) : [],
@@ -63,8 +63,8 @@ export function deserializeWord(rawEntry: any): Word {
   return word;
 }
 
-export function deserializeRoot(rawEntry: any): RootEntry {
-  const radicals = extractRadicals(rawEntry["spelling"]);
+export function deserializeRootEntry(rawEntry: any): RootEntry {
+  const radicals = extractRoot(rawEntry["spelling"]);
   if (radicals !== null) {
     const rawSections = rawEntry["sections"] as Array<any>;
     const root = new RootEntry({
@@ -79,7 +79,7 @@ export function deserializeRoot(rawEntry: any): RootEntry {
   }
 }
 
-export function deserializePattern(rawEntry: any): PatternEntry {
+export function deserializePatternEntry(rawEntry: any): PatternEntry {
   const spelling = extractPatternSpelling(rawEntry["spelling"]);
   if (spelling !== null) {
     const pattern = new PatternEntry({
@@ -92,7 +92,7 @@ export function deserializePattern(rawEntry: any): PatternEntry {
   }
 }
 
-export function deserializeAffix(rawEntry: any): AffixEntry {
+export function deserializeAffixEntry(rawEntry: any): AffixEntry {
   const spelling = extractAffixSpelling(rawEntry["spelling"]);
   if (spelling !== null) {
     const rawSections = rawEntry["sections"] as Array<any>;
@@ -107,7 +107,7 @@ export function deserializeAffix(rawEntry: any): AffixEntry {
   }
 }
 
-export function deserializeTheme(rawEntry: any): ThemeEntry {
+export function deserializeThemeEntry(rawEntry: any): ThemeEntry {
   const spelling = extractThemeSpelling(rawEntry["spelling"]);
   if (spelling !== null) {
     const theme = new ThemeEntry({

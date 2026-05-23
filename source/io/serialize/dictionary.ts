@@ -37,12 +37,21 @@ function writeAnatomy(anatomy: AnatomyRelation): {} {
       affixes: anatomy.affixes
     };
     return json;
-  } else {
+  } else if (anatomy.kind === "compound") {
     const json = {
       kind: "compound",
       constituents: anatomy.constituents
     };
     return json;
+  } else if (anatomy.kind === "exceptional") {
+    const json = {
+      kind: "exceptional",
+      spelling: anatomy.spelling
+    };
+    return json;
+  } else {
+    anatomy satisfies never;
+    throw new Error("cannot happen");
   }
 }
 

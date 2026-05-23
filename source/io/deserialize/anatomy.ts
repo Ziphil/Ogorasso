@@ -3,6 +3,7 @@
 import {
   AnatomyRelation,
   CompoundAnatomyRelation,
+  ExceptionalAnatomyRelation,
   SimpleAffixEntry,
   SimplePatternEntry,
   SimpleRootEntry,
@@ -13,6 +14,8 @@ import {
 import {
   AffixSpelling,
   AffixType,
+  EXCEPTIONAL_STEM_UNDERLYING_FORMS,
+  EXCEPTIONAL_SURFACE_FORMS,
   PATTERN_DATA,
   PatternSpelling,
   Root,
@@ -21,15 +24,18 @@ import {
 } from "../../function";
 
 
-export function parseAnatomy(rawSpelling: string, rawRelations: Array<any>): AnatomyRelation | null {
+export function parseAnatomyRelation(rawSpelling: string, rawRelations: Array<any>): AnatomyRelation | null {
   if (rawRelations.some((rawRelation) => rawRelation["titles"][0] === "合成元")) {
     const constituents = parseConstituents(rawRelations);
     return new CompoundAnatomyRelation({constituents});
+  } else if (EXCEPTIONAL_SURFACE_FORMS.has(rawSpelling) || EXCEPTIONAL_STEM_UNDERLYING_FORMS.has(rawSpelling)) {
+    const spelling = rawSpelling;
+    return new ExceptionalAnatomyRelation({spelling});
   } else {
-    const root = parseSimpleRoot(rawRelations);
-    const pattern = parseSimplePattern(rawRelations);
-    const theme = parseSimpleTheme(rawRelations) ?? inferSimpleTheme(rawSpelling);
-    const affixes = parseAffixRelations(rawRelations);
+    const root = parseSimpleRootEntry(rawRelations);
+    const pattern = parseSimplePatternEntry(rawRelations);
+    const theme = parseSimpleThemeEntry(rawRelations) ?? inferSimpleThemeEntry(rawSpelling);
+    const affixes = parseAffixEntries(rawRelations);
     if (root !== null && pattern !== null && theme !== null) {
       return new SimplexAnatomyRelation({root, pattern, theme, affixes});
     } else {
@@ -52,13 +58,13 @@ export function checkAnatomySection(rawSection: any): boolean {
   return rawEquivalents.length <= 0;
 }
 
-export function parseSimpleRoot(rawRelations: Array<any>): SimpleRootEntry | null {
+export function parseSimpleRootEntry(rawRelations: Array<any>): SimpleRootEntry | null {
   const rawRootRelations = rawRelations.find((rawRelation) => rawRelation["titles"][0] === "語根" && checkRootSpelling(rawRelation["spelling"]));
   if (rawRootRelations !== undefined) {
     const number = +rawRootRelations["number"];
-    const radicals = extractRadicals(rawRootRelations["spelling"]);
-    if (radicals !== null) {
-      return new SimpleRootEntry({number, root: radicals});
+    const root = extractRoot(rawRootRelations["spelling"]);
+    if (root !== null) {
+      return new SimpleRootEntry({number, root});
     } else {
       return null;
     }
@@ -71,7 +77,7 @@ export function checkRootSpelling(rawSpelling: string): boolean {
   return rawSpelling.match(/^√(.)-(.)(?:-(.))?(?:-(.))?$/) !== null;
 }
 
-export function extractRadicals(rawSpelling: string): Root | null {
+export function extractRoot(rawSpelling: string): Root | null {
   const match = rawSpelling.match(/^√(.)-(.)-(.)(?:-(.))?$/);
   if (match !== null) {
     if (match[4] !== undefined) {
@@ -84,7 +90,7 @@ export function extractRadicals(rawSpelling: string): Root | null {
   }
 }
 
-export function parseSimplePattern(rawRelations: Array<any>): SimplePatternEntry | null {
+export function parseSimplePatternEntry(rawRelations: Array<any>): SimplePatternEntry | null {
   const rawPatternRelations = rawRelations.find((rawRelation) => checkPatternSpelling(rawRelation["spelling"]));
   if (rawPatternRelations !== undefined) {
     const number = +rawPatternRelations["number"];
@@ -113,7 +119,7 @@ export function extractPatternSpelling(rawSpelling: string): PatternSpelling | n
   }
 }
 
-export function parseAffixRelations(rawRelations: Array<any>): Record<AffixType, ReadonlyArray<SimpleAffixEntry>> {
+export function parseAffixEntries(rawRelations: Array<any>): Record<AffixType, ReadonlyArray<SimpleAffixEntry>> {
   const rawAffixRelations = rawRelations.filter((rawRelation) => checkAffixSpelling(rawRelation["spelling"]));
   const affixes = {
     prefixal: [] as Array<SimpleAffixEntry>,
@@ -146,7 +152,7 @@ export function extractAffixSpelling(rawSpelling: string): AffixSpelling | null 
   }
 }
 
-export function parseSimpleTheme(rawRelations: Array<any>): SimpleThemeEntry | null {
+export function parseSimpleThemeEntry(rawRelations: Array<any>): SimpleThemeEntry | null {
   const rawThemeRelation = rawRelations.find((rawRelation) => checkThemeSpelling(rawRelation["spelling"]));
   if (rawThemeRelation !== undefined) {
     const number = +rawThemeRelation["number"];
@@ -161,7 +167,7 @@ export function parseSimpleTheme(rawRelations: Array<any>): SimpleThemeEntry | n
   }
 }
 
-export function inferSimpleTheme(rawSpelling: string): SimpleThemeEntry | null {
+export function inferSimpleThemeEntry(rawSpelling: string): SimpleThemeEntry | null {
   const spelling = inferThemeSpelling(rawSpelling);
   if (spelling !== null) {
     return new SimpleThemeEntry({number: -1, spelling});
