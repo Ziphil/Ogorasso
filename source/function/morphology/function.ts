@@ -19,7 +19,7 @@ export function toInflectionSpecifier(inflection: Inflection): InflectionSpecifi
     if (inflection.category === "base") {
       return `verbal.base.${inflection.voice}.${inflection.tense}.${inflection.person}.${inflection.gender}`;
     } else if (inflection.category === "adjective" || inflection.category === "noun") {
-      return `verbal.adjective.${inflection.adhesivity}.${inflection.gender}.${inflection.case}.${inflection.definiteness}`;
+      return `verbal.adjective.${inflection.voice}.${inflection.adhesivity}.${inflection.gender}.${inflection.case}.${inflection.definiteness}`;
     } else {
       inflection.category satisfies never;
       throw new Error("cannot occur");
