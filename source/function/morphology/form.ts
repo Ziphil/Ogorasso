@@ -110,15 +110,11 @@ function getUnderlyingForm(stemUnderlyingForm: string, anatomy: Anatomy, inflect
   const inflectionAffixes = getInflectionAffixes(inflection);
   let underlyingRealization = "";
   underlyingRealization += inflectionAffixes.prefixal.map((affix) => affix.replace(/-/g, "")).join("");
-  if (hasStemUnderlyingFormInitialGeminate(stemUnderlyingForm) && ("affixes" in anatomy && anatomy.affixes.prefixal.length <= 0) && inflectionAffixes.prefixal.length <= 0) {
-    underlyingRealization += "а";
-  }
+  underlyingRealization += (hasStemUnderlyingFormInitialGeminate(stemUnderlyingForm) && inflectionAffixes.prefixal.length <= 0) ? "а" : "";
   underlyingRealization += stemUnderlyingForm;
-  if (hasStemUnderlyingFormFinalGeminate(stemUnderlyingForm) && ("affixes" in anatomy && anatomy.affixes.suffixal.length <= 0) && inflectionAffixes.suffixal.length <= 0 && anatomy.affixes.terminal.length <= 0) {
-    underlyingRealization += "е";
-  }
+  underlyingRealization += (hasStemUnderlyingFormFinalGeminate(stemUnderlyingForm) && inflectionAffixes.suffixal.length <= 0) ? "е" : "";
   underlyingRealization += inflectionAffixes.suffixal.map((affix) => affix.replace(/-/g, "")).join("");
-  if (anatomy.kind === "simplex" && anatomy.affixes.terminal.length > 0) {
+  if ("affixes" in anatomy && anatomy.affixes.terminal.length > 0) {
     const last = underlyingRealization[underlyingRealization.length - 1];
     if (last !== "е" && last !== "о" && last !== "а") {
       if (("voice" in inflection && inflection.gender === "water") || ("adhesivity" in inflection && inflection.gender === "water" && inflection.case === "nominative" && inflection.adhesivity === "adverbial")) {
@@ -141,10 +137,10 @@ function hasStemUnderlyingFormFinalGeminate(stemUnderlyingForm: string): boolean
 }
 
 export const EXCEPTIONAL_UNDERLYING_FORMS = new Map<string, string>([
-  ["ѐ", "ъ"], ["шѐ", "ш"], ["бамѐ", "бам"], ["цѐ", "ц"],
+  ["ѐ", "ъ"], ["шѐ", "ш"], ["бамѐ", "бам"], ["цѐ", "ц"],
   ["ех", "ъ"], ["шех", "ш"], ["бамех", "бам"], ["цех", "ц"],
   ["хе̂е", "хе̂ъъ"], ["хо̂е", "хо̂ъъ"], ["те̂шше", "те̂шш"], ["бе̂мме", "бе̂мм"], ["и̂цце", "йе̂цц"],
-  ["хѐ", "х"], ["тѐ", "т"], ["ѝ", "й"], ["кѐ", "к"], ["фѐ", "ф"], ["аффѐ", "фф"], ["нѐ", "н"], ["аннѐ", "нн"], ["ажжѐ", "жж"],
+  ["хѐ", "х"], ["тѐ", "т"], ["ѝ", "й"], ["кѐ", "к"], ["фѐ", "ф"], ["аффѐ", "фф"], ["нѐ", "н"], ["аннѐ", "нн"], ["ажжѐ", "жж"],
   ["хе̂с", "хе̂с"], ["те̂с", "те̂с"], ["и̂с", "йе̂с"], ["ке̂с", "ке̂с"], ["фе̂с", "фе̂с"], ["аффе̂с", "ффе̂с"], ["не̂с", "не̂с"], ["анне̂с", "нне̂с"], ["ажже̂с", "жже̂с"],
   ["хо̂с", "хо̂с"], ["то̂с", "то̂с"], ["е̂с", "йо̂с"], ["ко̂с", "ко̂с"], ["фо̂с", "фо̂с"], ["аффо̂с", "ффо̂с"], ["но̂с", "но̂с"], ["анно̂с", "нно̂с"], ["ажжо̂с", "жжо̂с"],
   ["хе̂дде", "хе̂дд"], ["те̂дде", "те̂дд"], ["и̂дде", "йе̂дд"], ["ке̂дде", "ке̂дд"], ["фе̂дде", "фе̂дд"], ["аффе̂дде", "ффе̂дд"], ["не̂дде", "не̂дд"], ["анне̂дде", "нне̂дд"], ["ажже̂дде", "жже̂дд"],
