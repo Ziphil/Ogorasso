@@ -1,13 +1,13 @@
 //
 
 import {AnatomyRelation, Entry, RootEntry, Word} from "../../dictionary";
-import {getAllForms} from "../../function";
+import {SimplexAnatomy, getAllForms} from "../../function";
 
 
 export function writeEntries(entries: Array<Entry>): {} {
   const json = {
-    type: "withForms",
-    version: "1",
+    type: "claude",
+    version: "2",
     words: entries.filter((entry) => entry.kind === "word").map(writeWord),
     roots: entries.filter((entry) => entry.kind === "root").map(writeRoot)
   };
@@ -27,39 +27,40 @@ function writeWord(word: Word): {} {
   return json;
 }
 
-function writeAnatomy(anatomy: AnatomyRelation): {} {
-  if (anatomy.kind === "simplex") {
-    const json = {
-      kind: "simplex",
-      root: anatomy.root,
-      pattern: anatomy.pattern,
-      theme: anatomy.theme,
-      affixes: anatomy.affixes
-    };
-    return json;
-  } else if (anatomy.kind === "compound") {
-    const json = {
-      kind: "compound",
-      constituents: anatomy.constituents
-    };
-    return json;
-  } else if (anatomy.kind === "exceptional") {
-    const json = {
-      kind: "exceptional",
-      spelling: anatomy.spelling
-    };
-    return json;
+function writeAnatomy(anatomy: AnatomyRelation): {} | null {
+  if (anatomy !== null) {
+    if (anatomy.kind === "simplex") {
+      const plainAnatomy = anatomy.toPlain() as SimplexAnatomy;
+      const json = {
+        kind: "simplex",
+        root: anatomy.root,
+        pattern: plainAnatomy.pattern,
+        theme: plainAnatomy.theme,
+        affixes: plainAnatomy.affixes
+      };
+      return json;
+    } else if (anatomy.kind === "compound") {
+      const json = {
+        kind: "compound",
+        constituents: anatomy.constituents
+      };
+      return json;
+    } else if (anatomy.kind === "exceptional") {
+      return null;
+    } else {
+      anatomy satisfies never;
+      throw new Error("cannot happen");
+    }
   } else {
-    anatomy satisfies never;
-    throw new Error("cannot happen");
+    return null;
   }
 }
 
 function writeInflectedSpellings(word: Word): {} | null {
   if (word.anatomy !== null) {
-    const anatomy = word.anatomy.toPlain();
-    if (anatomy !== null) {
-      const inflectedSpellings = getAllForms(anatomy);
+    const plainAnatomy = word.anatomy.toPlain();
+    if (plainAnatomy !== null) {
+      const inflectedSpellings = getAllForms(plainAnatomy);
       return inflectedSpellings;
     } else {
       return null;
