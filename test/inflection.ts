@@ -1,7 +1,7 @@
 //
 
 import {describe, expect, test} from "vitest";
-import {Derivation, getForm} from "../source";
+import {Anatomy, getForm} from "../source";
 
 
 describe("inflection", () => {
@@ -11,7 +11,7 @@ describe("inflection", () => {
       pattern: {sort: "substantive", type: "ground"},
       theme: "и",
       affixes: {prefixal: [], infixal: [], suffixal: [], terminal: []}
-    } as Derivation;
+    } as Anatomy;
     expect(getForm(anatomy, {sort: "substantive", category: "base", adhesivity: "adverbial", gender: "water", case: "nominative", definiteness: "indefinite"})).toBe("ци̂нат");
     expect(getForm(anatomy, {sort: "substantive", category: "base", adhesivity: "adverbial", gender: "water", case: "accusative", definiteness: "indefinite"})).toBe("ци̂нта");
     expect(getForm(anatomy, {sort: "substantive", category: "base", adhesivity: "adverbial", gender: "fire", case: "dative", definiteness: "indefinite"})).toBe("ци̂нтос");
@@ -37,7 +37,7 @@ describe("inflection", () => {
       pattern: {sort: "substantive", type: "doubleMedial"},
       theme: "у",
       affixes: {prefixal: [], infixal: [], suffixal: [], terminal: []}
-    } as Derivation;
+    } as Anatomy;
     expect(getForm(anatomy, {sort: "substantive", category: "base", adhesivity: "adverbial", gender: "water", case: "nominative", definiteness: "indefinite"})).toBe("гу̂ббаш");
     expect(getForm(anatomy, {sort: "substantive", category: "base", adhesivity: "adverbial", gender: "water", case: "accusative", definiteness: "indefinite"})).toBe("гу̂ббаша");
     expect(getForm(anatomy, {sort: "substantive", category: "base", adhesivity: "adverbial", gender: "fire", case: "dative", definiteness: "indefinite"})).toBe("гу̂ббашос");
@@ -63,7 +63,7 @@ describe("inflection", () => {
       pattern: {sort: "substantive", type: "doubleFinal"},
       theme: "и",
       affixes: {prefixal: [], infixal: [], suffixal: [], terminal: []}
-    } as Derivation;
+    } as Anatomy;
     expect(getForm(anatomy, {sort: "substantive", category: "base", adhesivity: "adverbial", gender: "water", case: "nominative", definiteness: "indefinite"})).toBe("хи̂лаффе");
     expect(getForm(anatomy, {sort: "substantive", category: "base", adhesivity: "adverbial", gender: "water", case: "accusative", definiteness: "indefinite"})).toBe("хи̂лаффа");
     expect(getForm(anatomy, {sort: "substantive", category: "base", adhesivity: "adverbial", gender: "fire", case: "dative", definiteness: "indefinite"})).toBe("хи̂лаффос");
@@ -89,7 +89,7 @@ describe("inflection", () => {
       pattern: {sort: "substantive", type: "doubleInitial"},
       theme: "и",
       affixes: {prefixal: [], infixal: [], suffixal: [], terminal: []}
-    } as Derivation;
+    } as Anatomy;
     expect(getForm(anatomy, {sort: "substantive", category: "base", adhesivity: "adverbial", gender: "water", case: "nominative", definiteness: "indefinite"})).toBe("ажжи̂баӈ");
     expect(getForm(anatomy, {sort: "substantive", category: "base", adhesivity: "adverbial", gender: "water", case: "accusative", definiteness: "indefinite"})).toBe("ажжи̂бӈа");
     expect(getForm(anatomy, {sort: "substantive", category: "base", adhesivity: "adverbial", gender: "fire", case: "dative", definiteness: "indefinite"})).toBe("ажжи̂бӈос");
@@ -115,7 +115,7 @@ describe("inflection", () => {
       pattern: {sort: "verbal", type: "ground"},
       theme: "у",
       affixes: {prefixal: [], infixal: [], suffixal: [], terminal: []}
-    } as Derivation;
+    } as Anatomy;
     expect(getForm(anatomy, {sort: "verbal", category: "base", voice: "active", tense: "present", person: "thirdDefinite", gender: "water"})).toBe("заму̂к");
     expect(getForm(anatomy, {sort: "verbal", category: "base", voice: "active", tense: "present", person: "thirdIndefinite", gender: "fire"})).toBe("азму̂ко");
     expect(getForm(anatomy, {sort: "verbal", category: "base", voice: "active", tense: "present", person: "second", gender: "fire"})).toBe("тозму̂ко");
@@ -138,7 +138,7 @@ describe("inflection", () => {
       pattern: {sort: "verbal", type: "ground"},
       theme: "и",
       affixes: {prefixal: [], infixal: [], suffixal: [], terminal: ["-ҙ"]}
-    } as Derivation;
+    } as Anatomy;
     expect(getForm(anatomy, {sort: "verbal", category: "base", voice: "active", tense: "present", person: "thirdDefinite", gender: "water"})).toBe("вали̂кез");
     expect(getForm(anatomy, {sort: "verbal", category: "base", voice: "active", tense: "present", person: "thirdIndefinite", gender: "fire"})).toBe("авли̂коз");
     expect(getForm(anatomy, {sort: "verbal", category: "base", voice: "active", tense: "present", person: "second", gender: "fire"})).toBe("товли̂коз");
@@ -161,7 +161,7 @@ describe("inflection", () => {
       pattern: {sort: "verbal", type: "doubleMedial"},
       theme: "у",
       affixes: {prefixal: [], infixal: [], suffixal: [], terminal: []}
-    } as Derivation;
+    } as Anatomy;
     expect(getForm(anatomy, {sort: "verbal", category: "base", voice: "active", tense: "present", person: "thirdDefinite", gender: "water"})).toBe("таллу̂г");
     expect(getForm(anatomy, {sort: "verbal", category: "base", voice: "active", tense: "present", person: "thirdIndefinite", gender: "fire"})).toBe("аталлу̂го");
     expect(getForm(anatomy, {sort: "verbal", category: "base", voice: "active", tense: "present", person: "second", gender: "fire"})).toBe("тоталлу̂го");
@@ -184,7 +184,7 @@ describe("inflection", () => {
       pattern: {sort: "verbal", type: "doubleFinal"},
       theme: "и",
       affixes: {prefixal: [], infixal: [], suffixal: [], terminal: []}
-    } as Derivation;
+    } as Anatomy;
     expect(getForm(anatomy, {sort: "verbal", category: "base", voice: "active", tense: "present", person: "thirdDefinite", gender: "water"})).toBe("заси̂ббе");
     expect(getForm(anatomy, {sort: "verbal", category: "base", voice: "active", tense: "present", person: "thirdIndefinite", gender: "fire"})).toBe("азси̂ббо");
     expect(getForm(anatomy, {sort: "verbal", category: "base", voice: "active", tense: "present", person: "second", gender: "fire"})).toBe("тозси̂ббо");
@@ -207,7 +207,7 @@ describe("inflection", () => {
       pattern: {sort: "verbal", type: "doubleInitial"},
       theme: "у",
       affixes: {prefixal: [], infixal: [], suffixal: [], terminal: []}
-    } as Derivation;
+    } as Anatomy;
     expect(getForm(anatomy, {sort: "verbal", category: "base", voice: "active", tense: "present", person: "thirdDefinite", gender: "water"})).toBe("аҕҕаву̂ц");
     expect(getForm(anatomy, {sort: "verbal", category: "base", voice: "active", tense: "present", person: "thirdIndefinite", gender: "fire"})).toBe("аҕҕаву̂цо");
     expect(getForm(anatomy, {sort: "verbal", category: "base", voice: "active", tense: "present", person: "second", gender: "fire"})).toBe("тоҕҕаву̂цо");

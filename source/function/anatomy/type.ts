@@ -31,7 +31,16 @@ export const AFFIX_TYPES = ["prefixal", "infixal", "suffixal", "terminal"] as co
 export type AffixSpelling = string;
 export type AffixType = (typeof AFFIX_TYPES)[number];
 
+export type Affixes = Record<AffixType, ReadonlyArray<string>>;
+
 export const THEME_CHARS = ["и", "у"] as const;
 
-export type Theme = (typeof THEME_CHARS)[number];
 export type ThemeSpelling = (typeof THEME_CHARS)[number];
+export type Theme = (typeof THEME_CHARS)[number];
+
+export type Anatomy = {
+  root: Root,
+  pattern: Pattern,
+  theme: Theme,
+  affixes: Affixes
+};

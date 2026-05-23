@@ -1,35 +1,37 @@
 //
 
 import {
-  AffixSpelling,
-  AffixType,
-  Anatomy,
-  CompoundAnatomy,
-  PATTERN_DATA,
-  PatternSpelling,
-  Root,
+  AnatomyRelation,
+  CompoundAnatomyRelation,
   SimpleAffixEntry,
   SimplePatternEntry,
   SimpleRootEntry,
   SimpleThemeEntry,
   SimpleWord,
-  SimplexAnatomy,
-  ThemeSpelling,
+  SimplexAnatomyRelation,
   getAffixType
-} from "../../type";
+} from "../../dictionary";
+import {
+  AffixSpelling,
+  AffixType,
+  PATTERN_DATA,
+  PatternSpelling,
+  Root,
+  ThemeSpelling
+} from "../../function";
 
 
-export function parseAnatomy(rawSpelling: string, rawRelations: Array<any>): Anatomy | null {
+export function parseAnatomy(rawSpelling: string, rawRelations: Array<any>): AnatomyRelation | null {
   if (rawRelations.some((rawRelation) => rawRelation["titles"][0] === "合成元")) {
     const constituents = parseConstituents(rawRelations);
-    return new CompoundAnatomy({constituents});
+    return new CompoundAnatomyRelation({constituents});
   } else {
     const root = parseSimpleRoot(rawRelations);
     const pattern = parseSimplePattern(rawRelations);
     const theme = parseSimpleTheme(rawRelations) ?? inferSimpleTheme(rawSpelling);
     const affixes = parseAffixRelations(rawRelations);
     if (root !== null && pattern !== null && theme !== null) {
-      return new SimplexAnatomy({root, pattern, theme, affixes});
+      return new SimplexAnatomyRelation({root, pattern, theme, affixes});
     } else {
       return null;
     }
@@ -105,7 +107,7 @@ export function checkPatternSpelling(rawSpelling: string): boolean {
 export function extractPatternSpelling(rawSpelling: string): PatternSpelling | null {
   const match = rawSpelling.match(/^‹(.*)›$/);
   if (match !== null && PATTERN_DATA.has(match[1] as any)) {
-    return match[1] as PatternSpelling;
+    return match[1] ;
   } else {
     return null;
   }

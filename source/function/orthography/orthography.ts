@@ -1,7 +1,7 @@
 //
 
 
-export const CYRILLIC_LATIN_MAP = new Map([
+const CYRILLIC_LATIN_MAP = new Map([
   ["К", "K"], ["к", "k"],
   ["Г", "G"], ["г", "g"],
   ["Х", "H"], ["х", "h"],
@@ -46,6 +46,8 @@ export const CYRILLIC_LATIN_MAP = new Map([
   ["А̀", "À"], ["а̀", "à"]
 ]);
 
+/** キリル文字正書法で書かれた文字列をラテン文字代用表記 (補助符号あり) に変換します。
+ * 表層形と基層形のどちらにも対応しています。 */
 export function convertCyrillicToLatin(text: string): string {
   let result = "";
   let index = 0;

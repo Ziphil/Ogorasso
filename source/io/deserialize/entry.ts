@@ -10,9 +10,10 @@ import {
   Relation,
   RootEntry,
   Section,
+  SimpleWord,
   ThemeEntry,
   Word
-} from "../../type";
+} from "../../dictionary";
 import {
   checkAffixSpelling,
   checkAnatomySection,
@@ -161,8 +162,7 @@ export function deserializePhrase(rawPhrase: any): Phrase {
 export function deserializeRelation(rawRelation: any): Relation {
   const relation = {
     title: rawRelation["titles"][0] ?? "関連語",
-    number: rawRelation["number"],
-    spelling: rawRelation["spelling"]
+    word: new SimpleWord({number: rawRelation["number"], spelling: rawRelation["spelling"]})
   } satisfies Relation;
   return relation;
 }

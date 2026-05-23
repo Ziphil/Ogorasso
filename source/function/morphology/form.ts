@@ -1,44 +1,31 @@
 //
 
+import {Anatomy, Sort} from "../anatomy";
 import {surfaceEuphony, surfaceLightSyllables, surfaceMerger, surfaceWeakConsonants} from "../surfacing";
+import {getInflectionAffixes} from "./inflection";
 import {
   ADHESIVITIES,
   ADVERB_TYPES,
-  AffixType,
   CASES,
   DEFINITENESSES,
   GENDERS,
   Inflection,
   PERSONS,
-  Pattern,
-  Root,
-  Sort,
   SubstantiveInflectionSpecifier,
   TENSES,
-  Theme,
   VOICES,
   VerbalInflectionSpecifier
-} from "../type";
-import {getInflectionAffixes} from "./inflection";
+} from "./type";
 
 
-export type PatternAffixes = Record<AffixType, ReadonlyArray<string>>;
-
-export type Derivation = {
-  root: Root,
-  pattern: Pattern,
-  theme: Theme,
-  affixes: PatternAffixes
-};
-
-export function getForm(anatomy: Derivation, inflection: Inflection): string {
+export function getForm(anatomy: Anatomy, inflection: Inflection): string {
   const coreUnderlyingForm = surfaceLightSyllables(getStemUnderlyingForm(anatomy));
   const underlyingForm = getUnderlyingForm(coreUnderlyingForm, anatomy, inflection);
   const surfaceForm = surfaceMerger(surfaceWeakConsonants(surfaceEuphony(surfaceLightSyllables(underlyingForm))));
   return surfaceForm;
 }
 
-export function getAllForms(anatomy: Derivation): Record<SubstantiveInflectionSpecifier, string> | Record<VerbalInflectionSpecifier, string> {
+export function getAllForms(anatomy: Anatomy): Record<SubstantiveInflectionSpecifier, string> | Record<VerbalInflectionSpecifier, string> {
   const sort = getInflectionSort(anatomy);
   if (sort === "substantive") {
     const forms = {} as Record<SubstantiveInflectionSpecifier, string>;
@@ -102,7 +89,7 @@ export function getAllForms(anatomy: Derivation): Record<SubstantiveInflectionSp
   }
 }
 
-export function getInflectionSort(anatomy: Derivation): Sort {
+export function getInflectionSort(anatomy: Anatomy): Sort {
   if (anatomy.pattern.sort === "verbal") {
     if (anatomy.affixes.suffixal.length > 0) {
       return "substantive";
@@ -114,7 +101,7 @@ export function getInflectionSort(anatomy: Derivation): Sort {
   }
 }
 
-function getUnderlyingForm(stemUnderlyingForm: string, anatomy: Derivation, inflection: Inflection): string {
+function getUnderlyingForm(stemUnderlyingForm: string, anatomy: Anatomy, inflection: Inflection): string {
   const inflectionAffixes = getInflectionAffixes(inflection);
   let underlyingRealization = "";
   underlyingRealization += inflectionAffixes.prefixal.map((affix) => affix.replace(/-/g, "")).join("");
@@ -136,7 +123,7 @@ function getUnderlyingForm(stemUnderlyingForm: string, anatomy: Derivation, infl
   return underlyingRealization;
 }
 
-function getStemUnderlyingForm(anatomy: Derivation): string {
+function getStemUnderlyingForm(anatomy: Anatomy): string {
   const {root, pattern, theme, affixes} = anatomy;
   if (root.length === 3) {
     if (pattern.sort === "verbal") {

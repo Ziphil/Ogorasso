@@ -1,7 +1,7 @@
 //
 
+import type {Root} from "../../function/anatomy/type";
 import type {Kind} from "../../util/misc";
-import type {Root} from "../anatomy/core";
 import type {Origin, Section} from "./word";
 
 

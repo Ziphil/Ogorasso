@@ -1,7 +1,7 @@
 //
 
+import type {AffixSpelling, AffixType} from "../../function/anatomy/type";
 import type {Kind} from "../../util/misc";
-import type {AffixSpelling, AffixType} from "../anatomy/core";
 import type {Section} from "./word";
 
 

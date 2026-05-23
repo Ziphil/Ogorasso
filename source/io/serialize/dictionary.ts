@@ -1,7 +1,7 @@
 //
 
-import {getAllForms} from "../../morphology";
-import {Anatomy, Entry, RootEntry, Word} from "../../type";
+import {AnatomyRelation, Entry, RootEntry, Word} from "../../dictionary";
+import {getAllForms} from "../../function";
 import {mapObject} from "../../util/misc";
 
 
@@ -28,7 +28,7 @@ function writeWord(word: Word): {} {
   return json;
 }
 
-function writeAnatomy(anatomy: Anatomy): {} {
+function writeAnatomy(anatomy: AnatomyRelation): {} {
   if (anatomy.kind === "simplex") {
     const json = {
       kind: "simplex",
@@ -52,8 +52,8 @@ function writeInflectedSpellings(word: Word): {} | null {
     const root = word.anatomy.root.root;
     const pattern = word.anatomy.pattern.pattern ?? {sort: "substantive", type: "ground"};
     const theme = word.anatomy.theme.spelling;
-    const patternAffixes = mapObject(word.anatomy.affixes, (key, value) => value.map((affix) => affix.spelling));
-    const inflectedSpellings = getAllForms(root, pattern, theme, patternAffixes);
+    const affixes = mapObject(word.anatomy.affixes, (key, value) => value.map((affix) => affix.spelling));
+    const inflectedSpellings = getAllForms({root, pattern, theme, affixes});
     return inflectedSpellings;
   } else {
     return null;

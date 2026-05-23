@@ -1,7 +1,7 @@
 //
 
 import type {Kind} from "../../util/misc";
-import type {Anatomy} from "../anatomy";
+import type {AnatomyRelation} from "../anatomy";
 
 
 export class SimpleWord implements Kind<"word"> {
@@ -22,7 +22,7 @@ export class SimpleWord implements Kind<"word"> {
 export class Word extends SimpleWord implements Kind<"word"> {
 
   public readonly sections: ReadonlyArray<Section>;
-  public readonly anatomy: Anatomy | null;
+  public readonly anatomy: AnatomyRelation | null;
   public readonly origin: Origin;
   public readonly oldSpellings: ReadonlyArray<string>;
   public readonly separatedSpellings: ReadonlyArray<string>;
@@ -80,8 +80,7 @@ export interface Phrase {
 export interface Relation {
 
   readonly title: string;
-  readonly number: number;
-  readonly spelling: string;
+  readonly word: SimpleWord;
 
 }
 

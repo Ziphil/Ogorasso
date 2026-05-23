@@ -1,8 +1,8 @@
 //
 
+import type {Pattern, PatternSort, PatternSpelling, PatternType} from "../../function/anatomy/type";
+import {PATTERN_DATA} from "../../function/anatomy/type";
 import type {Kind} from "../../util/misc";
-import type {Pattern, PatternSort, PatternSpelling, PatternType} from "../anatomy/core";
-import {PATTERN_DATA} from "../anatomy/core";
 
 
 export class SimplePatternEntry implements Kind<"pattern"> {

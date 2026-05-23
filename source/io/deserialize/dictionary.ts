@@ -1,6 +1,6 @@
 //
 
-import {Entry} from "../../type";
+import {Entry} from "../../dictionary";
 import {deserializeEntry} from "./entry";
 
 

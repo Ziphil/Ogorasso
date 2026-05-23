@@ -1,7 +1,7 @@
 //
 
+import type {ThemeSpelling} from "../../function/anatomy/type";
 import type {Kind} from "../../util/misc";
-import type {ThemeSpelling} from "../anatomy/core";
 
 
 export class SimpleThemeEntry implements Kind<"theme"> {

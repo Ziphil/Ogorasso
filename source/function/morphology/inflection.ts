@@ -1,10 +1,11 @@
 //
 
-import {Adhesivity, AdverbType, Case, Definiteness, Gender, Inflection, Person, Tense, Voice} from "../type";
-import {isTruthy} from "../util/misc";
+import {isTruthy} from "../../util/misc";
+import {Affixes} from "../anatomy";
+import {Adhesivity, AdverbType, Case, Definiteness, Gender, Inflection, Person, Tense, Voice} from "./type";
 
 
-export type InflectionAffixes = Record<"prefixal" | "suffixal", ReadonlyArray<string>>;
+export type InflectionAffixes = Pick<Affixes, "prefixal" | "suffixal">;
 
 export function getInflectionAffixes(inflection: Inflection): InflectionAffixes {
   if (inflection.sort === "substantive") {
