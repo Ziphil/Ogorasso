@@ -377,7 +377,7 @@ describe("inflection", () => {
   test("random 6", () => {
     expect(getForm(
       {kind: "simplex", root: ["в", "й", "д"], pattern: {sort: "verbal", type: "ground"}, theme: "у", affixes: {prefixal: ["бо-"], infixal: [], suffixal: [], terminal: []}},
-      {sort: "verbal", category: "noun", adhesivity: "adverbial", gender: "fire", case: "accusative", definiteness: "definite"}
+      {sort: "verbal", category: "noun", voice: "active", adhesivity: "adverbial", gender: "fire", case: "accusative", definiteness: "definite"}
     )).toBe("лобово̂лла");
   });
   test("random 7", () => {

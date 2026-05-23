@@ -22,12 +22,15 @@ export function getInflectionAffixes(inflection: Inflection): InflectionAffixes 
         prefixal: adverbAffixes.prefixal,
         suffixal: adverbAffixes.suffixal
       };
-    } else {
+    } else if (inflection.category === "prepositional") {
       const adpredicativeAffixes = getSubstantivePrepositionalInflectionAffixes(inflection);
       return {
         prefixal: adpredicativeAffixes.prefixal,
         suffixal: adpredicativeAffixes.suffixal
       };
+    } else {
+      inflection.category satisfies never;
+      throw new Error("cannot happen");
     }
   } else {
     if (inflection.category === "base") {
@@ -36,13 +39,16 @@ export function getInflectionAffixes(inflection: Inflection): InflectionAffixes 
         prefixal: baseAffixes.prefixal,
         suffixal: baseAffixes.suffixal
       };
-    } else {
+    } else if (inflection.category === "adjective" || inflection.category === "noun") {
       const baseAffixes = getSubstantiveBaseInflectionAffixes(inflection);
       const categoryAffixes = getCategoryInflectionAffixes(inflection.category);
       return {
         prefixal: [...categoryAffixes.prefixal, ...baseAffixes.prefixal],
         suffixal: [...categoryAffixes.suffixal, ...baseAffixes.suffixal]
       };
+    } else {
+      inflection.category satisfies never;
+      throw new Error("cannot happen");
     }
   }
 }
@@ -86,8 +92,9 @@ const PREPOSITIONAL_INFLECTION_SUFFIXES = new Map<`${Gender}`, string>([
   ["water", "-ѐ"], ["fire", "-о̀"]
 ]);
 
-export function getSubstantiveBaseInflectionAffixes(inflection: {adhesivity: Adhesivity, gender: Gender, case: Case, definiteness: Definiteness, short?: boolean}): InflectionAffixes {
+export function getSubstantiveBaseInflectionAffixes(inflection: {voice?: Voice, adhesivity: Adhesivity, gender: Gender, case: Case, definiteness: Definiteness, short?: boolean}): InflectionAffixes {
   const prefixal = [
+    (inflection.voice !== undefined) ? VOICE_INFLECTION_PREFIXES.get(inflection.voice) : undefined,
     SUBSTANTIVE_INFLECTION_PREFIXES.get(`${inflection.definiteness}.${inflection.gender}`)
   ].filter(isTruthy);
   const suffixal = [

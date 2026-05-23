@@ -64,13 +64,15 @@ export function getAllForms(anatomy: Anatomy): Record<SubstantiveInflectionSpeci
       }
     }
     for (const category of ["adjective", "noun"] as const) {
-      for (const adhesivity of ADHESIVITIES) {
-        for (const gender of GENDERS) {
-          for (const caze of CASES) {
-            for (const definiteness of DEFINITENESSES) {
-              const inflection = {sort, category, adhesivity, gender, case: caze, definiteness} as const;
-              const form = getForm(anatomy, inflection);
-              forms[`${sort}.${category}.${adhesivity}.${gender}.${caze}.${definiteness}`] = form;
+      for (const voice of VOICES) {
+        for (const adhesivity of ADHESIVITIES) {
+          for (const gender of GENDERS) {
+            for (const caze of CASES) {
+              for (const definiteness of DEFINITENESSES) {
+                const inflection = {sort, category, voice, adhesivity, gender, case: caze, definiteness} as const;
+                const form = getForm(anatomy, inflection);
+                forms[`${sort}.${category}.${voice}.${adhesivity}.${gender}.${caze}.${definiteness}`] = form;
+              }
             }
           }
         }

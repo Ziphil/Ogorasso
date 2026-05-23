@@ -124,7 +124,8 @@ export const EXCEPTIONAL_STEM_UNDERLYING_FORMS = new Map<string, string>([
 ]);
 
 /** 活用接辞のない語幹部分の基層形を計算します。
- * ただし、語末型語型接辞は無視します (語末型語型接辞のみ活用接辞として扱って `getUnderlyingForm` 関数で追加する)。 */
+ * 語幹頭もしくは語幹末が重子音の場合でも、緩衝母音の а や е は付与されません (これは `getUnderlyingForm` 関数で付加される)。
+ * また、語末型語型接辞は無視されます (これは活用接辞として扱って `getUnderlyingForm` 関数で追加する)。 */
 function getStemUnderlyingForm(anatomy: Anatomy, inflection: Inflection): string {
   if (anatomy.kind === "simplex") {
     const {root, pattern, theme, affixes} = anatomy;
@@ -140,7 +141,7 @@ function getStemUnderlyingForm(anatomy: Anatomy, inflection: Inflection): string
         coreUnderlyingRealization += (pattern.type === "doubleFinal") ? root[2] + root[2] : root[2];
         coreUnderlyingRealization += affixes.suffixal.map((affix) => affix.replace(/-/g, "")).join("");
         return coreUnderlyingRealization;
-      } else {
+      } else if (pattern.sort === "substantive") {
         let coreUnderlyingRealization = "";
         coreUnderlyingRealization += affixes.prefixal.map((affix) => affix.replace(/-/g, "")).join("");
         coreUnderlyingRealization += (pattern.type === "doubleInitial") ? root[0] + root[0] : root[0];
@@ -151,6 +152,9 @@ function getStemUnderlyingForm(anatomy: Anatomy, inflection: Inflection): string
         coreUnderlyingRealization += (pattern.type === "doubleFinal") ? root[2] + root[2] : root[2];
         coreUnderlyingRealization += affixes.suffixal.map((affix) => affix.replace(/-/g, "")).join("");
         return coreUnderlyingRealization;
+      } else {
+        pattern satisfies never;
+        throw new Error("cannot happen");
       }
     } else {
       if (pattern.sort === "verbal") {
@@ -166,7 +170,7 @@ function getStemUnderlyingForm(anatomy: Anatomy, inflection: Inflection): string
         coreUnderlyingRealization += root[3];
         coreUnderlyingRealization += affixes.suffixal.map((affix) => affix.replace(/-/g, "")).join("");
         return coreUnderlyingRealization;
-      } else {
+      } else if (pattern.sort === "substantive") {
         let coreUnderlyingRealization = "";
         coreUnderlyingRealization += affixes.prefixal.map((affix) => affix.replace(/-/g, "")).join("");
         coreUnderlyingRealization += root[0];
@@ -179,6 +183,9 @@ function getStemUnderlyingForm(anatomy: Anatomy, inflection: Inflection): string
         coreUnderlyingRealization += root[3];
         coreUnderlyingRealization += affixes.suffixal.map((affix) => affix.replace(/-/g, "")).join("");
         return coreUnderlyingRealization;
+      } else {
+        pattern satisfies never;
+        throw new Error("cannot happen");
       }
     }
   } else if (anatomy.kind === "exceptional") {

@@ -57,6 +57,7 @@ export type VerbalInflection = {
 } | {
   sort: "verbal",
   category: "noun" | "adjective",
+  voice: Voice,
   adhesivity: Adhesivity,
   gender: Gender,
   case: Case,
@@ -64,7 +65,7 @@ export type VerbalInflection = {
 };
 export type VerbalInflectionSpecifier =
   `verbal.${"base"}.${Voice}.${Tense}.${Person}.${Gender}` |
-  `verbal.${"noun" | "adjective"}.${Adhesivity}.${Gender}.${Case}.${Definiteness}`;
+  `verbal.${"noun" | "adjective"}.${Voice}.${Adhesivity}.${Gender}.${Case}.${Definiteness}`;
 
 export type Inflection = VerbalInflection | SubstantiveInflection;
 export type InflectionSpecifier = VerbalInflectionSpecifier | SubstantiveInflectionSpecifier;
