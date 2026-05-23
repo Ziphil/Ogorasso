@@ -47,10 +47,14 @@ function writeAnatomy(anatomy: AnatomyRelation): {} {
 }
 
 function writeInflectedSpellings(word: Word): {} | null {
-  if (word.anatomy !== null && word.anatomy.kind === "simplex") {
+  if (word.anatomy !== null) {
     const anatomy = word.anatomy.toPlain();
-    const inflectedSpellings = getAllForms(anatomy);
-    return inflectedSpellings;
+    if (anatomy !== null) {
+      const inflectedSpellings = getAllForms(anatomy);
+      return inflectedSpellings;
+    } else {
+      return null;
+    }
   } else {
     return null;
   }

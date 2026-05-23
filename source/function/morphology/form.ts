@@ -2,6 +2,7 @@
 
 import {Anatomy, Sort} from "../anatomy";
 import {surfaceEuphony, surfaceLightSyllables, surfaceMerger, surfaceWeakConsonants} from "../surfacing";
+import {isConsonant} from "../surfacing/grapheme";
 import {getInflectionAffixes} from "./inflection";
 import {
   ADHESIVITIES,
@@ -19,8 +20,8 @@ import {
 
 
 export function getForm(anatomy: Anatomy, inflection: Inflection): string {
-  const coreUnderlyingForm = surfaceLightSyllables(getStemUnderlyingForm(anatomy));
-  const underlyingForm = getUnderlyingForm(coreUnderlyingForm, anatomy, inflection);
+  const stemUnderlyingForm = surfaceLightSyllables(getStemUnderlyingForm(anatomy));
+  const underlyingForm = getUnderlyingForm(stemUnderlyingForm, anatomy, inflection);
   const surfaceForm = surfaceMerger(surfaceWeakConsonants(surfaceEuphony(surfaceLightSyllables(underlyingForm))));
   return surfaceForm;
 }
@@ -90,11 +91,15 @@ export function getAllForms(anatomy: Anatomy): Record<SubstantiveInflectionSpeci
 }
 
 export function getInflectionSort(anatomy: Anatomy): Sort {
-  if (anatomy.pattern.sort === "verbal") {
-    if (anatomy.affixes.suffixal.length > 0) {
-      return "substantive";
+  if (anatomy.kind === "simplex") {
+    if (anatomy.pattern.sort === "verbal") {
+      if (anatomy.affixes.suffixal.length > 0) {
+        return "substantive";
+      } else {
+        return "verbal";
+      }
     } else {
-      return "verbal";
+      return "substantive";
     }
   } else {
     return "substantive";
@@ -105,11 +110,15 @@ function getUnderlyingForm(stemUnderlyingForm: string, anatomy: Anatomy, inflect
   const inflectionAffixes = getInflectionAffixes(inflection);
   let underlyingRealization = "";
   underlyingRealization += inflectionAffixes.prefixal.map((affix) => affix.replace(/-/g, "")).join("");
-  underlyingRealization += (anatomy.pattern.type === "doubleInitial" && anatomy.affixes.prefixal.length <= 0 && inflectionAffixes.prefixal.length <= 0) ? "а" : "";
+  if (hasStemUnderlyingFormInitialGeminate(stemUnderlyingForm) && ("affixes" in anatomy && anatomy.affixes.prefixal.length <= 0) && inflectionAffixes.prefixal.length <= 0) {
+    underlyingRealization += "а";
+  }
   underlyingRealization += stemUnderlyingForm;
-  underlyingRealization += (anatomy.pattern.type === "doubleFinal" && anatomy.affixes.suffixal.length <= 0 && inflectionAffixes.suffixal.length <= 0 && anatomy.affixes.terminal.length <= 0) ? "е" : "";
+  if (hasStemUnderlyingFormFinalGeminate(stemUnderlyingForm) && ("affixes" in anatomy && anatomy.affixes.suffixal.length <= 0) && inflectionAffixes.suffixal.length <= 0 && anatomy.affixes.terminal.length <= 0) {
+    underlyingRealization += "е";
+  }
   underlyingRealization += inflectionAffixes.suffixal.map((affix) => affix.replace(/-/g, "")).join("");
-  if (anatomy.affixes.terminal.length > 0) {
+  if (anatomy.kind === "simplex" && anatomy.affixes.terminal.length > 0) {
     const last = underlyingRealization[underlyingRealization.length - 1];
     if (last !== "е" && last !== "о" && last !== "а") {
       if (("voice" in inflection && inflection.gender === "water") || ("adhesivity" in inflection && inflection.gender === "water" && inflection.case === "nominative" && inflection.adhesivity === "adverbial")) {
@@ -123,59 +132,88 @@ function getUnderlyingForm(stemUnderlyingForm: string, anatomy: Anatomy, inflect
   return underlyingRealization;
 }
 
+function hasStemUnderlyingFormInitialGeminate(stemUnderlyingForm: string): boolean {
+  return stemUnderlyingForm.length >= 2 && isConsonant(stemUnderlyingForm[0]) && stemUnderlyingForm[0] === stemUnderlyingForm[1];
+}
+
+function hasStemUnderlyingFormFinalGeminate(stemUnderlyingForm: string): boolean {
+  return stemUnderlyingForm.length >= 2 && isConsonant(stemUnderlyingForm[stemUnderlyingForm.length - 1]) && stemUnderlyingForm[stemUnderlyingForm.length - 1] === stemUnderlyingForm[stemUnderlyingForm.length - 2];
+}
+
+export const EXCEPTIONAL_UNDERLYING_FORMS = new Map<string, string>([
+  ["ѐ", "ъ"], ["шѐ", "ш"], ["бамѐ", "бам"], ["цѐ", "ц"],
+  ["ех", "ъ"], ["шех", "ш"], ["бамех", "бам"], ["цех", "ц"],
+  ["хе̂е", "хе̂ъъ"], ["хо̂е", "хо̂ъъ"], ["те̂шше", "те̂шш"], ["бе̂мме", "бе̂мм"], ["и̂цце", "йе̂цц"],
+  ["хѐ", "х"], ["тѐ", "т"], ["ѝ", "й"], ["кѐ", "к"], ["фѐ", "ф"], ["аффѐ", "фф"], ["нѐ", "н"], ["аннѐ", "нн"], ["ажжѐ", "жж"],
+  ["хе̂с", "хе̂с"], ["те̂с", "те̂с"], ["и̂с", "йе̂с"], ["ке̂с", "ке̂с"], ["фе̂с", "фе̂с"], ["аффе̂с", "ффе̂с"], ["не̂с", "не̂с"], ["анне̂с", "нне̂с"], ["ажже̂с", "жже̂с"],
+  ["хо̂с", "хо̂с"], ["то̂с", "то̂с"], ["е̂с", "йо̂с"], ["ко̂с", "ко̂с"], ["фо̂с", "фо̂с"], ["аффо̂с", "ффо̂с"], ["но̂с", "но̂с"], ["анно̂с", "нно̂с"], ["ажжо̂с", "жжо̂с"],
+  ["хе̂дде", "хе̂дд"], ["те̂дде", "те̂дд"], ["и̂дде", "йе̂дд"], ["ке̂дде", "ке̂дд"], ["фе̂дде", "фе̂дд"], ["аффе̂дде", "ффе̂дд"], ["не̂дде", "не̂дд"], ["анне̂дде", "нне̂дд"], ["ажже̂дде", "жже̂дд"],
+  ["хо̂ддо", "хо̂дд"], ["то̂ддо", "то̂дд"], ["е̂ддо", "йо̂дд"], ["ко̂ддо", "ко̂дд"], ["фо̂ддо", "фо̂дд"], ["аффо̂ддо", "ффо̂дд"], ["но̂ддо", "но̂дд"], ["анно̂ддо", "нно̂дд"], ["ажжо̂ддо", "жжо̂дд"],
+  ["хо̂чче", "хо̂чч"], ["то̂чче", "то̂чч"], ["е̂чче", "йо̂чч"], ["ко̂чче", "ко̂чч"], ["фо̂чче", "фо̂чч"], ["аффо̂чче", "ффо̂чч"], ["но̂чче", "но̂чч"], ["анно̂чче", "нно̂чч"], ["ажжо̂чче", "жжо̂чч"]
+]);
+
+/** 活用接辞のない語幹部分の基層形を計算します。
+ * ただし、語末型語型接辞は無視します (語末型語型接辞のみ活用接辞として扱って `getUnderlyingForm` 関数で追加する)。 */
 function getStemUnderlyingForm(anatomy: Anatomy): string {
-  const {root, pattern, theme, affixes} = anatomy;
-  if (root.length === 3) {
-    if (pattern.sort === "verbal") {
-      let coreUnderlyingRealization = "";
-      coreUnderlyingRealization += affixes.prefixal.map((affix) => affix.replace(/-/g, "")).join("");
-      coreUnderlyingRealization += (pattern.type === "doubleInitial") ? root[0] + root[0] : root[0];
-      coreUnderlyingRealization += "а";
-      coreUnderlyingRealization += (pattern.type === "doubleMedial") ? root[1] + root[1] : root[1];
-      coreUnderlyingRealization += affixes.infixal.map((affix) => affix.replace(/-/g, "")).join("");
-      coreUnderlyingRealization += theme + "\u0302";
-      coreUnderlyingRealization += (pattern.type === "doubleFinal") ? root[2] + root[2] : root[2];
-      coreUnderlyingRealization += affixes.suffixal.map((affix) => affix.replace(/-/g, "")).join("");
-      return coreUnderlyingRealization;
+  if (anatomy.kind === "simplex") {
+    const {root, pattern, theme, affixes} = anatomy;
+    if (root.length === 3) {
+      if (pattern.sort === "verbal") {
+        let coreUnderlyingRealization = "";
+        coreUnderlyingRealization += affixes.prefixal.map((affix) => affix.replace(/-/g, "")).join("");
+        coreUnderlyingRealization += (pattern.type === "doubleInitial") ? root[0] + root[0] : root[0];
+        coreUnderlyingRealization += "а";
+        coreUnderlyingRealization += (pattern.type === "doubleMedial") ? root[1] + root[1] : root[1];
+        coreUnderlyingRealization += affixes.infixal.map((affix) => affix.replace(/-/g, "")).join("");
+        coreUnderlyingRealization += theme + "\u0302";
+        coreUnderlyingRealization += (pattern.type === "doubleFinal") ? root[2] + root[2] : root[2];
+        coreUnderlyingRealization += affixes.suffixal.map((affix) => affix.replace(/-/g, "")).join("");
+        return coreUnderlyingRealization;
+      } else {
+        let coreUnderlyingRealization = "";
+        coreUnderlyingRealization += affixes.prefixal.map((affix) => affix.replace(/-/g, "")).join("");
+        coreUnderlyingRealization += (pattern.type === "doubleInitial") ? root[0] + root[0] : root[0];
+        coreUnderlyingRealization += affixes.infixal.map((affix) => affix.replace(/-/g, "")).join("");
+        coreUnderlyingRealization += theme + "\u0302";
+        coreUnderlyingRealization += (pattern.type === "doubleMedial") ? root[1] + root[1] : root[1];
+        coreUnderlyingRealization += "а";
+        coreUnderlyingRealization += (pattern.type === "doubleFinal") ? root[2] + root[2] : root[2];
+        coreUnderlyingRealization += affixes.suffixal.map((affix) => affix.replace(/-/g, "")).join("");
+        return coreUnderlyingRealization;
+      }
     } else {
-      let coreUnderlyingRealization = "";
-      coreUnderlyingRealization += affixes.prefixal.map((affix) => affix.replace(/-/g, "")).join("");
-      coreUnderlyingRealization += (pattern.type === "doubleInitial") ? root[0] + root[0] : root[0];
-      coreUnderlyingRealization += affixes.infixal.map((affix) => affix.replace(/-/g, "")).join("");
-      coreUnderlyingRealization += theme + "\u0302";
-      coreUnderlyingRealization += (pattern.type === "doubleMedial") ? root[1] + root[1] : root[1];
-      coreUnderlyingRealization += "а";
-      coreUnderlyingRealization += (pattern.type === "doubleFinal") ? root[2] + root[2] : root[2];
-      coreUnderlyingRealization += affixes.suffixal.map((affix) => affix.replace(/-/g, "")).join("");
-      return coreUnderlyingRealization;
+      if (pattern.sort === "verbal") {
+        let coreUnderlyingRealization = "";
+        coreUnderlyingRealization += affixes.prefixal.map((affix) => affix.replace(/-/g, "")).join("");
+        coreUnderlyingRealization += root[0];
+        coreUnderlyingRealization += "а";
+        coreUnderlyingRealization += root[1];
+        coreUnderlyingRealization += "а";
+        coreUnderlyingRealization += root[2];
+        coreUnderlyingRealization += affixes.infixal.map((affix) => affix.replace(/-/g, "")).join("");
+        coreUnderlyingRealization += theme + "\u0302";
+        coreUnderlyingRealization += root[3];
+        coreUnderlyingRealization += affixes.suffixal.map((affix) => affix.replace(/-/g, "")).join("");
+        return coreUnderlyingRealization;
+      } else {
+        let coreUnderlyingRealization = "";
+        coreUnderlyingRealization += affixes.prefixal.map((affix) => affix.replace(/-/g, "")).join("");
+        coreUnderlyingRealization += root[0];
+        coreUnderlyingRealization += affixes.infixal.map((affix) => affix.replace(/-/g, "")).join("");
+        coreUnderlyingRealization += theme + "\u0302";
+        coreUnderlyingRealization += root[1];
+        coreUnderlyingRealization += "а";
+        coreUnderlyingRealization += root[2];
+        coreUnderlyingRealization += "а";
+        coreUnderlyingRealization += root[3];
+        coreUnderlyingRealization += affixes.suffixal.map((affix) => affix.replace(/-/g, "")).join("");
+        return coreUnderlyingRealization;
+      }
     }
+  } else if (anatomy.kind === "exceptional") {
+    return EXCEPTIONAL_UNDERLYING_FORMS.get(anatomy.spelling) ?? "";
   } else {
-    if (pattern.sort === "verbal") {
-      let coreUnderlyingRealization = "";
-      coreUnderlyingRealization += affixes.prefixal.map((affix) => affix.replace(/-/g, "")).join("");
-      coreUnderlyingRealization += root[0];
-      coreUnderlyingRealization += "а";
-      coreUnderlyingRealization += root[1];
-      coreUnderlyingRealization += "а";
-      coreUnderlyingRealization += root[2];
-      coreUnderlyingRealization += affixes.infixal.map((affix) => affix.replace(/-/g, "")).join("");
-      coreUnderlyingRealization += theme + "\u0302";
-      coreUnderlyingRealization += root[3];
-      coreUnderlyingRealization += affixes.suffixal.map((affix) => affix.replace(/-/g, "")).join("");
-      return coreUnderlyingRealization;
-    } else {
-      let coreUnderlyingRealization = "";
-      coreUnderlyingRealization += affixes.prefixal.map((affix) => affix.replace(/-/g, "")).join("");
-      coreUnderlyingRealization += root[0];
-      coreUnderlyingRealization += affixes.infixal.map((affix) => affix.replace(/-/g, "")).join("");
-      coreUnderlyingRealization += theme + "\u0302";
-      coreUnderlyingRealization += root[1];
-      coreUnderlyingRealization += "а";
-      coreUnderlyingRealization += root[2];
-      coreUnderlyingRealization += "а";
-      coreUnderlyingRealization += root[3];
-      coreUnderlyingRealization += affixes.suffixal.map((affix) => affix.replace(/-/g, "")).join("");
-      return coreUnderlyingRealization;
-    }
+    anatomy satisfies never;
+    throw new Error("cannot occur");
   }
 }

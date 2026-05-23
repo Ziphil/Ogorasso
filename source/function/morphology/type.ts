@@ -31,7 +31,8 @@ export type SubstantiveInflection = {
   adhesivity: Adhesivity,
   gender: Gender,
   case: Case,
-  definiteness: Definiteness
+  definiteness: Definiteness,
+  short?: boolean
 } | {
   sort: "substantive",
   category: "adverb",

@@ -1,6 +1,6 @@
 //
 
-import type {AffixType, Anatomy} from "../../function/anatomy/type";
+import type {AffixType, Anatomy} from "../../function/anatomy";
 import {mapObject} from "../../util/misc";
 import type {Kind} from "../../util/misc";
 import type {SimpleAffixEntry} from "../entry/affix";
@@ -25,12 +25,18 @@ export class SimplexAnatomyRelation implements Kind<"simplex"> {
     this.theme = initializer.theme;
   }
 
-  public toPlain(): Anatomy {
-    const root = this.root.root;
-    const pattern = {sort: this.pattern.sort!, type: this.pattern.type!};
-    const theme = this.theme.spelling;
-    const affixes = mapObject(this.affixes, (key, value) => value.map((affix) => affix.spelling));
-    return {root, pattern, theme, affixes};
+  public toPlain(): Anatomy | null {
+    if (this.pattern.sort && this.pattern.type) {
+      return {
+        kind: "simplex",
+        root: this.root.root,
+        pattern: {sort: this.pattern.sort, type: this.pattern.type},
+        theme: this.theme.spelling,
+        affixes: mapObject(this.affixes, (key, value) => value.map((affix) => affix.spelling))
+      };
+    } else {
+      return null;
+    }
   }
 
 }

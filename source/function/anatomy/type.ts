@@ -38,9 +38,15 @@ export const THEME_CHARS = ["и", "у"] as const;
 export type ThemeSpelling = (typeof THEME_CHARS)[number];
 export type Theme = (typeof THEME_CHARS)[number];
 
-export type Anatomy = {
+export type SimplexAnatomy = {
+  kind: "simplex",
   root: Root,
   pattern: Pattern,
   theme: Theme,
   affixes: Affixes
 };
+export type ExceptionalAnatomy = {
+  kind: "exceptional",
+  spelling: string
+};
+export type Anatomy = SimplexAnatomy | ExceptionalAnatomy;
