@@ -47,7 +47,7 @@ export const EXCEPTIONAL_SURFACE_FORMS = new Map<string, Map<InflectionSpecifier
 export function getForm(anatomy: Anatomy, inflection: Inflection): string {
   const exceptionalForms = (anatomy.kind === "exceptional") ? EXCEPTIONAL_SURFACE_FORMS.get(anatomy.spelling) : undefined;
   if (!exceptionalForms) {
-    const stemUnderlyingForm = surfaceLightSyllables(getStemUnderlyingForm(anatomy));
+    const stemUnderlyingForm = surfaceLightSyllables(getStemUnderlyingForm(anatomy, inflection));
     const underlyingForm = getUnderlyingForm(stemUnderlyingForm, anatomy, inflection);
     const surfaceForm = surfaceMerger(surfaceWeakConsonants(surfaceEuphony(surfaceLightSyllables(underlyingForm))));
     return surfaceForm;
@@ -84,11 +84,7 @@ function getUnderlyingForm(stemUnderlyingForm: string, anatomy: Anatomy, inflect
   if ("affixes" in anatomy && anatomy.affixes.terminal.length > 0) {
     const last = underlyingRealization[underlyingRealization.length - 1];
     if (last !== "е" && last !== "о" && last !== "а") {
-      if (("voice" in inflection && inflection.gender === "water") || ("adhesivity" in inflection && inflection.gender === "water" && inflection.case === "nominative" && inflection.adhesivity === "adverbial")) {
-        underlyingRealization += "е";
-      } else {
-        underlyingRealization += "а";
-      }
+      underlyingRealization += (hasStemUnderlyingFormGenderVowel(inflection)) ? "е" : "а";
     }
     underlyingRealization += anatomy.affixes.terminal.map((affix) => affix.replace(/-/g, "")).join("");
   }
@@ -101,6 +97,10 @@ function hasStemUnderlyingFormInitialGeminate(stemUnderlyingForm: string): boole
 
 function hasStemUnderlyingFormFinalGeminate(stemUnderlyingForm: string): boolean {
   return stemUnderlyingForm.length >= 2 && isConsonant(stemUnderlyingForm[stemUnderlyingForm.length - 1]) && stemUnderlyingForm[stemUnderlyingForm.length - 1] === stemUnderlyingForm[stemUnderlyingForm.length - 2];
+}
+
+function hasStemUnderlyingFormGenderVowel(inflection: Inflection): boolean {
+  return ("voice" in inflection && inflection.gender === "water") || ("adhesivity" in inflection && inflection.gender === "water" && inflection.case === "nominative" && inflection.adhesivity === "adverbial");
 }
 
 export const EXCEPTIONAL_STEM_UNDERLYING_FORMS = new Map<string, string>([
@@ -117,7 +117,7 @@ export const EXCEPTIONAL_STEM_UNDERLYING_FORMS = new Map<string, string>([
 
 /** 活用接辞のない語幹部分の基層形を計算します。
  * ただし、語末型語型接辞は無視します (語末型語型接辞のみ活用接辞として扱って `getUnderlyingForm` 関数で追加する)。 */
-function getStemUnderlyingForm(anatomy: Anatomy): string {
+function getStemUnderlyingForm(anatomy: Anatomy, inflection: Inflection): string {
   if (anatomy.kind === "simplex") {
     const {root, pattern, theme, affixes} = anatomy;
     if (root.length === 3) {
@@ -174,7 +174,11 @@ function getStemUnderlyingForm(anatomy: Anatomy): string {
       }
     }
   } else if (anatomy.kind === "exceptional") {
-    return EXCEPTIONAL_STEM_UNDERLYING_FORMS.get(anatomy.spelling) ?? "";
+    if (anatomy.spelling === "е̂к") {
+      return (inflection.sort === "verbal" && inflection.category !== "base") ? "ъе̂ъ" : "ъе̂к";
+    } else {
+      return EXCEPTIONAL_STEM_UNDERLYING_FORMS.get(anatomy.spelling) ?? "";
+    }
   } else {
     anatomy satisfies never;
     throw new Error("cannot occur");
