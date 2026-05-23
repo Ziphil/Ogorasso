@@ -3,15 +3,58 @@
 import {Anatomy, Sort} from "../anatomy";
 import {surfaceEuphony, surfaceLightSyllables, surfaceMerger, surfaceWeakConsonants} from "../surfacing";
 import {isConsonant} from "../surfacing/grapheme";
+import {toInflectionSpecifier} from "./function";
 import {getInflectionAffixes} from "./inflection";
-import {Inflection} from "./type";
+import {Inflection, InflectionSpecifier} from "./type";
 
+
+export const EXCEPTIONAL_SURFACE_FORMS = new Map<string, Map<InflectionSpecifier, string>>([
+  ["у", new Map<InflectionSpecifier, string>([
+    ["substantive.base.adverbial.water.nominative.indefinite", "у"], ["substantive.base.adverbial.fire.nominative.indefinite", "у"],
+    ["substantive.base.adverbial.water.accusative.indefinite", "ух"], ["substantive.base.adverbial.fire.accusative.indefinite", "ух"],
+    ["substantive.base.adverbial.water.dative.indefinite", "ус"], ["substantive.base.adverbial.fire.dative.indefinite", "ус"],
+    ["substantive.base.adverbial.water.ablative.indefinite", "ум"], ["substantive.base.adverbial.fire.ablative.indefinite", "ум"],
+    ["substantive.base.adverbial.water.instrumental.indefinite", "ут"], ["substantive.base.adverbial.fire.instrumental.indefinite", "ут"],
+    ["substantive.base.adverbial.water.locative.indefinite", "у"], ["substantive.base.adverbial.fire.locative.indefinite", "у"],
+    ["substantive.base.adjectival.water.nominative.indefinite", "ув"], ["substantive.base.adjectival.fire.nominative.indefinite", "ув"],
+    ["substantive.base.adjectival.water.accusative.indefinite", "увах"], ["substantive.base.adjectival.fire.accusative.indefinite", "увах"],
+    ["substantive.base.adjectival.water.dative.indefinite", "увас"], ["substantive.base.adjectival.fire.dative.indefinite", "увас"],
+    ["substantive.base.adjectival.water.ablative.indefinite", "увам"], ["substantive.base.adjectival.fire.ablative.indefinite", "увам"],
+    ["substantive.base.adjectival.water.instrumental.indefinite", "уват"], ["substantive.base.adjectival.fire.instrumental.indefinite", "уват"],
+    ["substantive.base.adjectival.water.locative.indefinite", "уве"], ["substantive.base.adjectival.fire.locative.indefinite", "уве"]
+  ])],
+  ["ку̂к", new Map<InflectionSpecifier, string>([
+    ["substantive.base.adverbial.fire.nominative.indefinite", "ку̂к"],
+    ["substantive.base.adverbial.fire.accusative.indefinite", "ко̂к"],
+    ["substantive.base.adverbial.fire.dative.indefinite", "ко̂сок"],
+    ["substantive.base.adverbial.fire.ablative.indefinite", "ко̂замок"],
+    ["substantive.base.adverbial.fire.instrumental.indefinite", "ку̂ток"],
+    ["substantive.base.adverbial.fire.locative.indefinite", "ке̂ок"],
+    ["substantive.base.adjectival.fire.nominative.indefinite", "ко̂вок"],
+    ["substantive.base.adjectival.fire.accusative.indefinite", "ко̂вахок"],
+    ["substantive.base.adjectival.fire.dative.indefinite", "ко̂васок"],
+    ["substantive.base.adjectival.fire.ablative.indefinite", "ко̂взамок"],
+    ["substantive.base.adjectival.fire.instrumental.indefinite", "ко̂воток"],
+    ["substantive.base.adjectival.fire.locative.indefinite", "ко̂веок"]
+  ])],
+  ["ко̂ддео", new Map<InflectionSpecifier, string>([
+    ["substantive.base.adverbial.fire.dative.indefinite", "ко̂ддосо"],
+    ["substantive.base.adverbial.fire.ablative.indefinite", "ко̂ддозамо"],
+    ["substantive.base.adverbial.fire.locative.indefinite", "ко̂ддео"]
+  ])]
+]);
 
 export function getForm(anatomy: Anatomy, inflection: Inflection): string {
-  const stemUnderlyingForm = surfaceLightSyllables(getStemUnderlyingForm(anatomy));
-  const underlyingForm = getUnderlyingForm(stemUnderlyingForm, anatomy, inflection);
-  const surfaceForm = surfaceMerger(surfaceWeakConsonants(surfaceEuphony(surfaceLightSyllables(underlyingForm))));
-  return surfaceForm;
+  const exceptionalForms = (anatomy.kind === "exceptional") ? EXCEPTIONAL_SURFACE_FORMS.get(anatomy.spelling) : undefined;
+  if (!exceptionalForms) {
+    const stemUnderlyingForm = surfaceLightSyllables(getStemUnderlyingForm(anatomy));
+    const underlyingForm = getUnderlyingForm(stemUnderlyingForm, anatomy, inflection);
+    const surfaceForm = surfaceMerger(surfaceWeakConsonants(surfaceEuphony(surfaceLightSyllables(underlyingForm))));
+    return surfaceForm;
+  } else {
+    const surfaceForm = exceptionalForms.get(toInflectionSpecifier(inflection)) ?? "";
+    return surfaceForm;
+  }
 }
 
 export function getInflectionSort(anatomy: Anatomy): Sort {
@@ -60,7 +103,7 @@ function hasStemUnderlyingFormFinalGeminate(stemUnderlyingForm: string): boolean
   return stemUnderlyingForm.length >= 2 && isConsonant(stemUnderlyingForm[stemUnderlyingForm.length - 1]) && stemUnderlyingForm[stemUnderlyingForm.length - 1] === stemUnderlyingForm[stemUnderlyingForm.length - 2];
 }
 
-export const EXCEPTIONAL_UNDERLYING_FORMS = new Map<string, string>([
+export const EXCEPTIONAL_STEM_UNDERLYING_FORMS = new Map<string, string>([
   ["ѐ", "ъ"], ["шѐ", "ш"], ["бамѐ", "бам"], ["цѐ", "ц"],
   ["ех", "ъ"], ["шех", "ш"], ["бамех", "бам"], ["цех", "ц"],
   ["хе̂е", "хе̂ъъ"], ["хо̂е", "хо̂ъъ"], ["те̂шше", "те̂шш"], ["бе̂мме", "бе̂мм"], ["и̂цце", "йе̂цц"],
@@ -131,7 +174,7 @@ function getStemUnderlyingForm(anatomy: Anatomy): string {
       }
     }
   } else if (anatomy.kind === "exceptional") {
-    return EXCEPTIONAL_UNDERLYING_FORMS.get(anatomy.spelling) ?? "";
+    return EXCEPTIONAL_STEM_UNDERLYING_FORMS.get(anatomy.spelling) ?? "";
   } else {
     anatomy satisfies never;
     throw new Error("cannot occur");

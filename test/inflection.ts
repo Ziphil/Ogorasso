@@ -285,6 +285,41 @@ describe("inflection", () => {
     expect(getForm(anatomy, {sort: "substantive", category: "prepositional", gender: "water"})).toBe("ѝ");
     expect(getForm(anatomy, {sort: "substantive", category: "prepositional", gender: "fire"})).toBe("ѐ");
   });
+  test("exceptional: у", () => {
+    const anatomy = {
+      kind: "exceptional",
+      spelling: "у"
+    } as Anatomy;
+    expect(getForm(anatomy, {sort: "substantive", category: "base", adhesivity: "adverbial", gender: "water", case: "nominative", definiteness: "indefinite"})).toBe("у");
+    expect(getForm(anatomy, {sort: "substantive", category: "base", adhesivity: "adverbial", gender: "water", case: "accusative", definiteness: "indefinite"})).toBe("ух");
+    expect(getForm(anatomy, {sort: "substantive", category: "base", adhesivity: "adverbial", gender: "fire", case: "locative", definiteness: "indefinite"})).toBe("у");
+    expect(getForm(anatomy, {sort: "substantive", category: "base", adhesivity: "adjectival", gender: "fire", case: "instrumental", definiteness: "indefinite"})).toBe("уват");
+  });
+  test("exceptional: ку̂к", () => {
+    const anatomy = {
+      kind: "exceptional",
+      spelling: "ку̂к"
+    } as Anatomy;
+    expect(getForm(anatomy, {sort: "substantive", category: "base", adhesivity: "adverbial", gender: "fire", case: "nominative", definiteness: "indefinite"})).toBe("ку̂к");
+    expect(getForm(anatomy, {sort: "substantive", category: "base", adhesivity: "adverbial", gender: "fire", case: "accusative", definiteness: "indefinite"})).toBe("ко̂к");
+    expect(getForm(anatomy, {sort: "substantive", category: "base", adhesivity: "adverbial", gender: "fire", case: "ablative", definiteness: "indefinite"})).toBe("ко̂замок");
+    expect(getForm(anatomy, {sort: "substantive", category: "base", adhesivity: "adverbial", gender: "fire", case: "instrumental", definiteness: "indefinite"})).toBe("ку̂ток");
+    expect(getForm(anatomy, {sort: "substantive", category: "base", adhesivity: "adverbial", gender: "fire", case: "locative", definiteness: "indefinite"})).toBe("ке̂ок");
+    expect(getForm(anatomy, {sort: "substantive", category: "base", adhesivity: "adjectival", gender: "fire", case: "nominative", definiteness: "indefinite"})).toBe("ко̂вок");
+    expect(getForm(anatomy, {sort: "substantive", category: "base", adhesivity: "adjectival", gender: "fire", case: "accusative", definiteness: "indefinite"})).toBe("ко̂вахок");
+    expect(getForm(anatomy, {sort: "substantive", category: "base", adhesivity: "adjectival", gender: "fire", case: "ablative", definiteness: "indefinite"})).toBe("ко̂взамок");
+    expect(getForm(anatomy, {sort: "substantive", category: "base", adhesivity: "adjectival", gender: "fire", case: "instrumental", definiteness: "indefinite"})).toBe("ко̂воток");
+    expect(getForm(anatomy, {sort: "substantive", category: "base", adhesivity: "adjectival", gender: "fire", case: "locative", definiteness: "indefinite"})).toBe("ко̂веок");
+  });
+  test("exceptional: ко̂ддео", () => {
+    const anatomy = {
+      kind: "exceptional",
+      spelling: "ко̂ддео"
+    } as Anatomy;
+    expect(getForm(anatomy, {sort: "substantive", category: "base", adhesivity: "adverbial", gender: "fire", case: "dative", definiteness: "indefinite"})).toBe("ко̂ддосо");
+    expect(getForm(anatomy, {sort: "substantive", category: "base", adhesivity: "adverbial", gender: "fire", case: "ablative", definiteness: "indefinite"})).toBe("ко̂ддозамо");
+    expect(getForm(anatomy, {sort: "substantive", category: "base", adhesivity: "adverbial", gender: "fire", case: "locative", definiteness: "indefinite"})).toBe("ко̂ддео");
+  });
   test("failed 1", () => {
     expect(getForm(
       {kind: "simplex", root: ["ҙ", "р", "с"], pattern: {sort: "substantive", type: "doubleFinal"}, theme: "и", affixes: {prefixal: [], infixal: ["-еб-"], suffixal: [], terminal: []}},
