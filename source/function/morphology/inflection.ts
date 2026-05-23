@@ -94,8 +94,8 @@ const PREPOSITIONAL_INFLECTION_SUFFIXES = new Map<`${Gender}`, string>([
 
 export function getSubstantiveBaseInflectionAffixes(inflection: {voice?: Voice, adhesivity: Adhesivity, gender: Gender, case: Case, definiteness: Definiteness, short?: boolean}): InflectionAffixes {
   const prefixal = [
-    (inflection.voice !== undefined) ? VOICE_INFLECTION_PREFIXES.get(inflection.voice) : undefined,
-    SUBSTANTIVE_INFLECTION_PREFIXES.get(`${inflection.definiteness}.${inflection.gender}`)
+    SUBSTANTIVE_INFLECTION_PREFIXES.get(`${inflection.definiteness}.${inflection.gender}`),
+    (inflection.voice !== undefined) ? VOICE_INFLECTION_PREFIXES.get(inflection.voice) : undefined
   ].filter(isTruthy);
   const suffixal = [
     ((inflection.short) ? SUBSTANTIVE_SHORT_INFLECTION_SUFFIXES : SUBSTANTIVE_INFLECTION_SUFFIXES).get(`${inflection.adhesivity}.${inflection.gender}.${inflection.case}`)
