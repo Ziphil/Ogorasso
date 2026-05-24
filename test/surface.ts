@@ -4,7 +4,7 @@ import {describe, expect, test} from "vitest";
 import {surfaceEuphony, surfaceLightSyllables, surfaceMerger, surfaceWeakConsonants} from "../source";
 
 
-describe("transform consecutive light syllables", () => {
+describe("surface consecutive light syllables", () => {
   test("substaintives, suffix declensions", () => {
     expect(surfaceLightSyllables("шеши̂налеҫ")).toBe("шеши̂нлеҫ");
     expect(surfaceLightSyllables("ӈи̂латтоӟам")).toBe("ӈи̂латтоӟам");
@@ -19,7 +19,7 @@ describe("transform consecutive light syllables", () => {
   });
 });
 
-describe("transform according to consonant euphony", () => {
+describe("surface according to consonant euphony", () => {
   test("basic", () => {
     expect(surfaceEuphony("кх")).toBe("хх");
     expect(surfaceEuphony("гҕ")).toBe("ҕҕ");
@@ -51,7 +51,7 @@ describe("transform according to consonant euphony", () => {
   });
 });
 
-describe("transform weak consonants", () => {
+describe("surface weak consonants", () => {
   test("basic, CV", () => {
     expect(surfaceWeakConsonants("йа")).toBe("е");
   });
@@ -77,7 +77,7 @@ describe("transform weak consonants", () => {
     expect(surfaceWeakConsonants("е̂йоў")).toBe("е̂");
     expect(surfaceWeakConsonants("ейоў")).toBe("о");
   });
-  test("geminated weak consonant", () => {
+  test("geminated weak consonants", () => {
     expect(surfaceWeakConsonants("у̂ййо")).toBe("о̂о");
     expect(surfaceWeakConsonants("аўўи̂")).toBe("ае̂");
     expect(surfaceWeakConsonants("у̂йўо")).toBe("о̂у");
@@ -85,7 +85,7 @@ describe("transform weak consonants", () => {
   });
 });
 
-describe("transform consonantal mergers", () => {
+describe("surface consonantal mergers", () => {
   test("basic", () => {
     expect(surfaceMerger("ҫ")).toBe("с");
     expect(surfaceMerger("ҙ")).toBe("з");
