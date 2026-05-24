@@ -13,6 +13,7 @@ async function execute(): Promise<void> {
   const dictionary = readDictionary(input);
   const output = writeDictionary(dictionary);
   await fs.writeFile(`script/file/${values.name}.fndc`, output);
+  console.log(`${dictionary.words.length} words, ${dictionary.roots.length} roots`);
 }
 
 execute();
