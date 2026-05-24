@@ -1,7 +1,7 @@
 //
 
 import {AnatomyRelation, Dictionary, RootEntry, Word} from "../../dictionary";
-import {SimplexAnatomy, getAllForms} from "../../function";
+import {SimplexAnatomy, getAllPossibleForms} from "../../function";
 
 
 export function writeDictionary(dictionary: Dictionary): string {
@@ -65,7 +65,7 @@ function serializeInflectedSpellings(word: Word): {} | null {
   if (word.anatomy !== null) {
     const plainAnatomy = word.anatomy.toPlain();
     if (plainAnatomy !== null) {
-      const inflectedSpellings = getAllForms(plainAnatomy);
+      const inflectedSpellings = getAllPossibleForms(plainAnatomy);
       return inflectedSpellings;
     } else {
       return null;
