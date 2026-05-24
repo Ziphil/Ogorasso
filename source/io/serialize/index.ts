@@ -1,3 +1,3 @@
 //
 
-export {writeEntries} from "./dictionary";
+export {writeDictionary, serializeDictionary} from "./dictionary";

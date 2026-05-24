@@ -1,33 +1,38 @@
 //
 
-import {AnatomyRelation, Entry, RootEntry, Word} from "../../dictionary";
+import {AnatomyRelation, Dictionary, RootEntry, Word} from "../../dictionary";
 import {SimplexAnatomy, getAllForms} from "../../function";
 
 
-export function writeEntries(entries: Array<Entry>): {} {
+export function writeDictionary(dictionary: Dictionary): string {
+  const json = serializeDictionary(dictionary);
+  return JSON.stringify(json);
+}
+
+export function serializeDictionary(dictionary: Dictionary): {} {
   const json = {
     type: "claude",
     version: "2",
-    words: entries.filter((entry) => entry.kind === "word").map(writeWord),
-    roots: entries.filter((entry) => entry.kind === "root").map(writeRoot)
+    words: dictionary.words.map(serializeWord),
+    roots: dictionary.roots.map(serializeRootEntry)
   };
   return json;
 }
 
-function writeWord(word: Word): {} {
+function serializeWord(word: Word): {} {
   const json = {
     number: word.number,
     spelling: word.spelling,
     sections: word.sections,
-    anatomy: word.anatomy !== null ? writeAnatomy(word.anatomy) : null,
+    anatomy: word.anatomy !== null ? serializeAnatomyRelation(word.anatomy) : null,
     origin: word.origin,
     oldSpellings: word.oldSpellings,
-    inflectedSpellings: writeInflectedSpellings(word)
+    inflectedSpellings: serializeInflectedSpellings(word)
   };
   return json;
 }
 
-function writeAnatomy(anatomy: AnatomyRelation): {} | null {
+function serializeAnatomyRelation(anatomy: AnatomyRelation): {} | null {
   if (anatomy !== null) {
     if (anatomy.kind === "simplex") {
       const plainAnatomy = anatomy.toPlain() as SimplexAnatomy;
@@ -56,7 +61,7 @@ function writeAnatomy(anatomy: AnatomyRelation): {} | null {
   }
 }
 
-function writeInflectedSpellings(word: Word): {} | null {
+function serializeInflectedSpellings(word: Word): {} | null {
   if (word.anatomy !== null) {
     const plainAnatomy = word.anatomy.toPlain();
     if (plainAnatomy !== null) {
@@ -70,7 +75,7 @@ function writeInflectedSpellings(word: Word): {} | null {
   }
 }
 
-function writeRoot(root: RootEntry): {} {
+function serializeRootEntry(root: RootEntry): {} {
   const json = {
     number: root.number,
     root: root.root,

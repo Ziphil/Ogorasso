@@ -1,4 +1,4 @@
 //
 
 export {deserializeEntry} from "./entry";
-export {readEntries} from "./dictionary";
+export {deserializeDictionary, readDictionary} from "./dictionary";

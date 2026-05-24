@@ -2,7 +2,7 @@
 
 import fs from "fs/promises";
 import {parseArgs} from "node:util";
-import {readEntries, writeEntries} from "../source";
+import {readDictionary, writeDictionary} from "../source";
 
 
 async function execute(): Promise<void> {
@@ -10,8 +10,8 @@ async function execute(): Promise<void> {
     name: {type: "string", short: "n"}
   }});
   const input = await fs.readFile(`script/file/${values.name}.zpdc`, "utf8");
-  const entries = readEntries(input);
-  const output = JSON.stringify(writeEntries(entries));
+  const dictionary = readDictionary(input);
+  const output = writeDictionary(dictionary);
   await fs.writeFile(`script/file/${values.name}.fndc`, output);
 }
 
