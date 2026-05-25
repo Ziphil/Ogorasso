@@ -1,7 +1,7 @@
 //
 
 import {Anatomy} from "../anatomy";
-import {getForm, getInflectionSort} from "./form";
+import {EXCEPTIONAL_SHORTS, getForm, getInflectionSort} from "./form";
 import {toInflectionSpecifier} from "./function";
 import {
   ADHESIVITIES,
@@ -27,7 +27,8 @@ export function getAllPossibleInflections(anatomy: Anatomy): Array<SubstantiveIn
         for (const gender of GENDERS) {
           for (const caze of CASES) {
             for (const definiteness of DEFINITENESSES) {
-              const inflection = {sort, category, adhesivity, gender, case: caze, definiteness};
+              const short = anatomy.kind === "exceptional" && EXCEPTIONAL_SHORTS.has(anatomy.spelling);
+              const inflection = {sort, category, adhesivity, gender, case: caze, definiteness, short};
               inflections.push(inflection);
             }
           }

@@ -316,6 +316,18 @@ describe("inflections", () => {
     expect(getForm(anatomy, {sort: "substantive", category: "prepositional", gender: "water"})).toBe("ѐ");
     expect(getForm(anatomy, {sort: "substantive", category: "prepositional", gender: "fire"})).toBe("о̀");
   });
+  test("exceptional: ех", () => {
+    const anatomy = {
+      kind: "exceptional",
+      spelling: "ех"
+    } as Anatomy;
+    expect(getForm(anatomy, {sort: "substantive", category: "base", adhesivity: "adverbial", gender: "water", case: "accusative", definiteness: "indefinite", short: true})).toBe("ех");
+    expect(getForm(anatomy, {sort: "substantive", category: "base", adhesivity: "adverbial", gender: "water", case: "instrumental", definiteness: "indefinite", short: true})).toBe("ет");
+    expect(getForm(anatomy, {sort: "substantive", category: "base", adhesivity: "adverbial", gender: "fire", case: "locative", definiteness: "indefinite", short: true})).toBe("е");
+    expect(getForm(anatomy, {sort: "substantive", category: "base", adhesivity: "adjectival", gender: "water", case: "dative", definiteness: "indefinite", short: true})).toBe("евас");
+    expect(getForm(anatomy, {sort: "substantive", category: "base", adhesivity: "adjectival", gender: "fire", case: "ablative", definiteness: "indefinite", short: true})).toBe("овам");
+    expect(getForm(anatomy, {sort: "substantive", category: "base", adhesivity: "adjectival", gender: "fire", case: "instrumental", definiteness: "indefinite", short: true})).toBe("оват");
+  });
   test("exceptional: анне̂с", () => {
     const anatomy = {
       kind: "exceptional",
