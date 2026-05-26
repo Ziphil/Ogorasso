@@ -9,7 +9,7 @@ import {
   CASES,
   DEFINITENESSES,
   GENDERS,
-  InflectionSpecifier,
+  InflectionDescriptor,
   PERSONS,
   SubstantiveInflection,
   TENSES,
@@ -80,9 +80,9 @@ export function getAllPossibleInflections(anatomy: Anatomy): Array<SubstantiveIn
   }
 }
 
-export function getAllPossibleForms(anatomy: Anatomy): Record<InflectionSpecifier, string | undefined> {
+export function getAllPossibleForms(anatomy: Anatomy): Record<InflectionDescriptor, string | undefined> {
   const inflections = getAllPossibleInflections(anatomy);
-  const forms = {} as Record<InflectionSpecifier, string | undefined>;
+  const forms = {} as Record<InflectionDescriptor, string | undefined>;
   for (const inflection of inflections) {
     const form = getForm(anatomy, inflection);
     forms[toInflectionSpecifier(inflection)] = form;

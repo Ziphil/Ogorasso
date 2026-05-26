@@ -1,7 +1,8 @@
 //
 
 import {AnatomyRelation, Dictionary, RootEntry, Word} from "../../dictionary";
-import {SimplexAnatomy, getAllPossibleForms} from "../../function";
+import {SimplexAnatomy, decodeInflectionDescriptor, getAllPossibleForms} from "../../function";
+import {mapObject} from "../../util/misc";
 
 
 export function writeDictionary(dictionary: Dictionary): string {
@@ -65,7 +66,7 @@ function serializeInflectedSpellings(word: Word): {} | null {
   if (word.anatomy !== null) {
     const plainAnatomy = word.anatomy.toPlain();
     if (plainAnatomy !== null) {
-      const inflectedSpellings = getAllPossibleForms(plainAnatomy);
+      const inflectedSpellings = mapObject(getAllPossibleForms(plainAnatomy), (descriptor, form) => [decodeInflectionDescriptor(descriptor, "japanese"), form]);
       return inflectedSpellings;
     } else {
       return null;

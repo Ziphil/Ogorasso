@@ -1,9 +1,9 @@
 //
 
-import {Inflection, InflectionSpecifier} from "./type";
+import {Inflection, InflectionDescriptor} from "./type";
 
 
-export function toInflectionSpecifier(inflection: Inflection): InflectionSpecifier {
+export function toInflectionSpecifier(inflection: Inflection): InflectionDescriptor {
   if (inflection.sort === "substantive") {
     if (inflection.category === "base" || inflection.category === "adjective") {
       return `substantive.${inflection.category}.${inflection.adhesivity}.${inflection.gender}.${inflection.case}.${inflection.definiteness}`;

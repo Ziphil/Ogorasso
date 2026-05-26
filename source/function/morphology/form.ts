@@ -5,11 +5,11 @@ import {surfaceEuphony, surfaceLightSyllables, surfaceMerger, surfaceWeakConsona
 import {isConsonant} from "../surfacing/grapheme";
 import {toInflectionSpecifier} from "./function";
 import {getInflectionAffixes} from "./inflection";
-import {Inflection, InflectionSpecifier} from "./type";
+import {Inflection, InflectionDescriptor} from "./type";
 
 
-export const EXCEPTIONAL_SURFACE_FORMS = new Map<string, Map<InflectionSpecifier, string>>([
-  ["у", new Map<InflectionSpecifier, string>([
+export const EXCEPTIONAL_SURFACE_FORMS = new Map<string, Map<InflectionDescriptor, string>>([
+  ["у", new Map<InflectionDescriptor, string>([
     ["substantive.base.adverbial.water.nominative.indefinite", "у"], ["substantive.base.adverbial.fire.nominative.indefinite", "у"],
     ["substantive.base.adverbial.water.accusative.indefinite", "ух"], ["substantive.base.adverbial.fire.accusative.indefinite", "ух"],
     ["substantive.base.adverbial.water.dative.indefinite", "ус"], ["substantive.base.adverbial.fire.dative.indefinite", "ус"],
@@ -23,7 +23,7 @@ export const EXCEPTIONAL_SURFACE_FORMS = new Map<string, Map<InflectionSpecifier
     ["substantive.base.adjectival.water.instrumental.indefinite", "уват"], ["substantive.base.adjectival.fire.instrumental.indefinite", "уват"],
     ["substantive.base.adjectival.water.locative.indefinite", "уве"], ["substantive.base.adjectival.fire.locative.indefinite", "уве"]
   ])],
-  ["ку̂к", new Map<InflectionSpecifier, string>([
+  ["ку̂к", new Map<InflectionDescriptor, string>([
     ["substantive.base.adverbial.fire.nominative.indefinite", "ку̂к"],
     ["substantive.base.adverbial.fire.accusative.indefinite", "ко̂к"],
     ["substantive.base.adverbial.fire.dative.indefinite", "ко̂сок"],
@@ -37,7 +37,7 @@ export const EXCEPTIONAL_SURFACE_FORMS = new Map<string, Map<InflectionSpecifier
     ["substantive.base.adjectival.fire.instrumental.indefinite", "ко̂воток"],
     ["substantive.base.adjectival.fire.locative.indefinite", "ко̂веок"]
   ])],
-  ["ко̂ддео", new Map<InflectionSpecifier, string>([
+  ["ко̂ддео", new Map<InflectionDescriptor, string>([
     ["substantive.base.adverbial.fire.dative.indefinite", "ко̂ддосо"],
     ["substantive.base.adverbial.fire.ablative.indefinite", "ко̂ддозамо"],
     ["substantive.base.adverbial.fire.locative.indefinite", "ко̂ддео"]

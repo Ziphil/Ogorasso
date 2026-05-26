@@ -42,7 +42,7 @@ export type SubstantiveInflection = {
   category: "prepositional",
   gender: Gender
 };
-export type SubstantiveInflectionSpecifier =
+export type SubstantiveInflectionDescriptor =
   `substantive.${"base" | "adjective"}.${Adhesivity}.${Gender}.${Case}.${Definiteness}` |
   `substantive.${"adverb"}.${AdverbType}` |
   `substantive.${"prepositional"}.${Gender}`;
@@ -63,9 +63,9 @@ export type VerbalInflection = {
   case: Case,
   definiteness: Definiteness
 };
-export type VerbalInflectionSpecifier =
+export type VerbalInflectionDescriptor =
   `verbal.${"base"}.${Voice}.${Tense}.${Person}.${Gender}` |
   `verbal.${"noun" | "adjective"}.${Voice}.${Adhesivity}.${Gender}.${Case}.${Definiteness}`;
 
 export type Inflection = VerbalInflection | SubstantiveInflection;
-export type InflectionSpecifier = VerbalInflectionSpecifier | SubstantiveInflectionSpecifier;
+export type InflectionDescriptor = VerbalInflectionDescriptor | SubstantiveInflectionDescriptor;
