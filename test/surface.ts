@@ -5,13 +5,13 @@ import {surfaceEuphony, surfaceLightSyllables, surfaceMerger, surfaceWeakConsona
 
 
 describe("surface consecutive light syllables", () => {
-  test("substaintives, suffix declensions", () => {
+  test("substants, suffix declensions", () => {
     expect(surfaceLightSyllables("шеши̂налеҫ")).toBe("шеши̂нлеҫ");
     expect(surfaceLightSyllables("ӈи̂латтоӟам")).toBe("ӈи̂латтоӟам");
     expect(surfaceLightSyllables("ди̂ссакеваўат")).toBe("ди̂ссакевўат");
     expect(surfaceLightSyllables("асси̂маревах")).toBe("асси̂мревах");
   });
-  test("substaintives, adjectival forms", () => {
+  test("substants, substophoric forms", () => {
     expect(surfaceLightSyllables("шеши̂налареҫ")).toBe("шеши̂нлареҫ");
     expect(surfaceLightSyllables("ӈи̂латтароӟам")).toBe("ӈи̂латтароӟам");
     expect(surfaceLightSyllables("ди̂ссакареваўат")).toBe("ди̂ссакревўат");

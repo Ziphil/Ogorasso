@@ -1,8 +1,8 @@
 //
 
 
-export const ADHESIVITIES = ["adverbial", "adjectival"] as const;
-export type Adhesivity = (typeof ADHESIVITIES)[number];
+export const PHORICITIES = ["verbophoric", "substophoric"] as const;
+export type Phoricity = (typeof PHORICITIES)[number];
 
 export const GENDERS = ["water", "fire"] as const;
 export type Gender = (typeof GENDERS)[number];
@@ -25,47 +25,47 @@ export type Person = (typeof PERSONS)[number];
 export const ADVERB_TYPES = ["simple", "k"] as const;
 export type AdverbType = (typeof ADVERB_TYPES)[number];
 
-export type SubstantiveInflection = {
-  sort: "substantive",
+export type SubstantInflection = {
+  sort: "substant",
   category: "base" | "adjective",
-  adhesivity: Adhesivity,
+  phoricity: Phoricity,
   gender: Gender,
   case: Case,
   definiteness: Definiteness,
   short?: boolean
 } | {
-  sort: "substantive",
+  sort: "substant",
   category: "adverb",
   type: AdverbType
 } | {
-  sort: "substantive",
+  sort: "substant",
   category: "prepositional",
   gender: Gender
 };
-export type SubstantiveInflectionDescriptor =
-  `substantive.${"base" | "adjective"}.${Adhesivity}.${Gender}.${Case}.${Definiteness}` |
-  `substantive.${"adverb"}.${AdverbType}` |
-  `substantive.${"prepositional"}.${Gender}`;
+export type substantInflectionDescriptor =
+  `substant.${"base" | "adjective"}.${Phoricity}.${Gender}.${Case}.${Definiteness}` |
+  `substant.${"adverb"}.${AdverbType}` |
+  `substant.${"prepositional"}.${Gender}`;
 
-export type VerbalInflection = {
-  sort: "verbal",
+export type VerbantInflection = {
+  sort: "verbant",
   category: "base",
   voice: Voice,
   tense: Tense,
   person: Person,
   gender: Gender
 } | {
-  sort: "verbal",
+  sort: "verbant",
   category: "noun" | "adjective",
   voice: Voice,
-  adhesivity: Adhesivity,
+  phoricity: Phoricity,
   gender: Gender,
   case: Case,
   definiteness: Definiteness
 };
-export type VerbalInflectionDescriptor =
-  `verbal.${"base"}.${Voice}.${Tense}.${Person}.${Gender}` |
-  `verbal.${"noun" | "adjective"}.${Voice}.${Adhesivity}.${Gender}.${Case}.${Definiteness}`;
+export type VerbantInflectionDescriptor =
+  `verbant.${"base"}.${Voice}.${Tense}.${Person}.${Gender}` |
+  `verbant.${"noun" | "adjective"}.${Voice}.${Phoricity}.${Gender}.${Case}.${Definiteness}`;
 
-export type Inflection = VerbalInflection | SubstantiveInflection;
-export type InflectionDescriptor = VerbalInflectionDescriptor | SubstantiveInflectionDescriptor;
+export type Inflection = VerbantInflection | SubstantInflection;
+export type InflectionDescriptor = VerbantInflectionDescriptor | substantInflectionDescriptor;

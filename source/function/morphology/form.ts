@@ -10,37 +10,37 @@ import {Inflection, InflectionDescriptor} from "./type";
 
 export const EXCEPTIONAL_SURFACE_FORMS = new Map<string, Map<InflectionDescriptor, string>>([
   ["у", new Map<InflectionDescriptor, string>([
-    ["substantive.base.adverbial.water.nominative.indefinite", "у"], ["substantive.base.adverbial.fire.nominative.indefinite", "у"],
-    ["substantive.base.adverbial.water.accusative.indefinite", "ух"], ["substantive.base.adverbial.fire.accusative.indefinite", "ух"],
-    ["substantive.base.adverbial.water.dative.indefinite", "ус"], ["substantive.base.adverbial.fire.dative.indefinite", "ус"],
-    ["substantive.base.adverbial.water.ablative.indefinite", "ум"], ["substantive.base.adverbial.fire.ablative.indefinite", "ум"],
-    ["substantive.base.adverbial.water.instrumental.indefinite", "ут"], ["substantive.base.adverbial.fire.instrumental.indefinite", "ут"],
-    ["substantive.base.adverbial.water.locative.indefinite", "у"], ["substantive.base.adverbial.fire.locative.indefinite", "у"],
-    ["substantive.base.adjectival.water.nominative.indefinite", "ув"], ["substantive.base.adjectival.fire.nominative.indefinite", "ув"],
-    ["substantive.base.adjectival.water.accusative.indefinite", "увах"], ["substantive.base.adjectival.fire.accusative.indefinite", "увах"],
-    ["substantive.base.adjectival.water.dative.indefinite", "увас"], ["substantive.base.adjectival.fire.dative.indefinite", "увас"],
-    ["substantive.base.adjectival.water.ablative.indefinite", "увам"], ["substantive.base.adjectival.fire.ablative.indefinite", "увам"],
-    ["substantive.base.adjectival.water.instrumental.indefinite", "уват"], ["substantive.base.adjectival.fire.instrumental.indefinite", "уват"],
-    ["substantive.base.adjectival.water.locative.indefinite", "уве"], ["substantive.base.adjectival.fire.locative.indefinite", "уве"]
+    ["substant.base.verbophoric.water.nominative.indefinite", "у"], ["substant.base.verbophoric.fire.nominative.indefinite", "у"],
+    ["substant.base.verbophoric.water.accusative.indefinite", "ух"], ["substant.base.verbophoric.fire.accusative.indefinite", "ух"],
+    ["substant.base.verbophoric.water.dative.indefinite", "ус"], ["substant.base.verbophoric.fire.dative.indefinite", "ус"],
+    ["substant.base.verbophoric.water.ablative.indefinite", "ум"], ["substant.base.verbophoric.fire.ablative.indefinite", "ум"],
+    ["substant.base.verbophoric.water.instrumental.indefinite", "ут"], ["substant.base.verbophoric.fire.instrumental.indefinite", "ут"],
+    ["substant.base.verbophoric.water.locative.indefinite", "у"], ["substant.base.verbophoric.fire.locative.indefinite", "у"],
+    ["substant.base.substophoric.water.nominative.indefinite", "ув"], ["substant.base.substophoric.fire.nominative.indefinite", "ув"],
+    ["substant.base.substophoric.water.accusative.indefinite", "увах"], ["substant.base.substophoric.fire.accusative.indefinite", "увах"],
+    ["substant.base.substophoric.water.dative.indefinite", "увас"], ["substant.base.substophoric.fire.dative.indefinite", "увас"],
+    ["substant.base.substophoric.water.ablative.indefinite", "увам"], ["substant.base.substophoric.fire.ablative.indefinite", "увам"],
+    ["substant.base.substophoric.water.instrumental.indefinite", "уват"], ["substant.base.substophoric.fire.instrumental.indefinite", "уват"],
+    ["substant.base.substophoric.water.locative.indefinite", "уве"], ["substant.base.substophoric.fire.locative.indefinite", "уве"]
   ])],
   ["ку̂к", new Map<InflectionDescriptor, string>([
-    ["substantive.base.adverbial.fire.nominative.indefinite", "ку̂к"],
-    ["substantive.base.adverbial.fire.accusative.indefinite", "ко̂к"],
-    ["substantive.base.adverbial.fire.dative.indefinite", "ко̂сок"],
-    ["substantive.base.adverbial.fire.ablative.indefinite", "ко̂замок"],
-    ["substantive.base.adverbial.fire.instrumental.indefinite", "ку̂ток"],
-    ["substantive.base.adverbial.fire.locative.indefinite", "ке̂ок"],
-    ["substantive.base.adjectival.fire.nominative.indefinite", "ко̂вок"],
-    ["substantive.base.adjectival.fire.accusative.indefinite", "ко̂вахок"],
-    ["substantive.base.adjectival.fire.dative.indefinite", "ко̂васок"],
-    ["substantive.base.adjectival.fire.ablative.indefinite", "ко̂взамок"],
-    ["substantive.base.adjectival.fire.instrumental.indefinite", "ко̂воток"],
-    ["substantive.base.adjectival.fire.locative.indefinite", "ко̂веок"]
+    ["substant.base.verbophoric.fire.nominative.indefinite", "ку̂к"],
+    ["substant.base.verbophoric.fire.accusative.indefinite", "ко̂к"],
+    ["substant.base.verbophoric.fire.dative.indefinite", "ко̂сок"],
+    ["substant.base.verbophoric.fire.ablative.indefinite", "ко̂замок"],
+    ["substant.base.verbophoric.fire.instrumental.indefinite", "ку̂ток"],
+    ["substant.base.verbophoric.fire.locative.indefinite", "ке̂ок"],
+    ["substant.base.substophoric.fire.nominative.indefinite", "ко̂вок"],
+    ["substant.base.substophoric.fire.accusative.indefinite", "ко̂вахок"],
+    ["substant.base.substophoric.fire.dative.indefinite", "ко̂васок"],
+    ["substant.base.substophoric.fire.ablative.indefinite", "ко̂взамок"],
+    ["substant.base.substophoric.fire.instrumental.indefinite", "ко̂воток"],
+    ["substant.base.substophoric.fire.locative.indefinite", "ко̂веок"]
   ])],
   ["ко̂ддео", new Map<InflectionDescriptor, string>([
-    ["substantive.base.adverbial.fire.dative.indefinite", "ко̂ддосо"],
-    ["substantive.base.adverbial.fire.ablative.indefinite", "ко̂ддозамо"],
-    ["substantive.base.adverbial.fire.locative.indefinite", "ко̂ддео"]
+    ["substant.base.verbophoric.fire.dative.indefinite", "ко̂ддосо"],
+    ["substant.base.verbophoric.fire.ablative.indefinite", "ко̂ддозамо"],
+    ["substant.base.verbophoric.fire.locative.indefinite", "ко̂ддео"]
   ])]
 ]);
 
@@ -59,20 +59,20 @@ export function getForm(anatomy: Anatomy, inflection: Inflection): string {
 
 export function getInflectionSort(anatomy: Anatomy): Sort {
   if (anatomy.kind === "simplex") {
-    if (anatomy.pattern.sort === "verbal") {
+    if (anatomy.pattern.sort === "verbant") {
       if (anatomy.affixes.suffixal.length > 0) {
-        return "substantive";
+        return "substant";
       } else {
-        return "verbal";
+        return "verbant";
       }
     } else {
-      return "substantive";
+      return "substant";
     }
   } else if (anatomy.kind === "exceptional") {
     if (anatomy.spelling === "е̂к") {
-      return "verbal";
+      return "verbant";
     } else {
-      return "substantive";
+      return "substant";
     }
   } else {
     anatomy satisfies never;
@@ -107,7 +107,7 @@ function hasStemUnderlyingFormFinalGeminate(stemUnderlyingForm: string): boolean
 }
 
 function hasStemUnderlyingFormGenderVowel(inflection: Inflection): boolean {
-  return ("voice" in inflection && inflection.gender === "water") || ("adhesivity" in inflection && inflection.gender === "water" && inflection.case === "nominative" && inflection.adhesivity === "adverbial");
+  return ("voice" in inflection && inflection.gender === "water") || ("phoricity" in inflection && inflection.gender === "water" && inflection.case === "nominative" && inflection.phoricity === "verbophoric");
 }
 
 export const EXCEPTIONAL_STEM_UNDERLYING_FORMS = new Map<string, string>([
@@ -133,7 +133,7 @@ function getStemUnderlyingForm(anatomy: Anatomy, inflection: Inflection): string
   if (anatomy.kind === "simplex") {
     const {root, pattern, theme, affixes} = anatomy;
     if (root.length === 3) {
-      if (pattern.sort === "verbal") {
+      if (pattern.sort === "verbant") {
         let coreUnderlyingRealization = "";
         coreUnderlyingRealization += affixes.prefixal.map((affix) => affix.replace(/-/g, "")).join("");
         coreUnderlyingRealization += (pattern.type === "doubleInitial") ? root[0] + root[0] : root[0];
@@ -144,7 +144,7 @@ function getStemUnderlyingForm(anatomy: Anatomy, inflection: Inflection): string
         coreUnderlyingRealization += (pattern.type === "doubleFinal") ? root[2] + root[2] : root[2];
         coreUnderlyingRealization += affixes.suffixal.map((affix) => affix.replace(/-/g, "")).join("");
         return coreUnderlyingRealization;
-      } else if (pattern.sort === "substantive") {
+      } else if (pattern.sort === "substant") {
         let coreUnderlyingRealization = "";
         coreUnderlyingRealization += affixes.prefixal.map((affix) => affix.replace(/-/g, "")).join("");
         coreUnderlyingRealization += (pattern.type === "doubleInitial") ? root[0] + root[0] : root[0];
@@ -160,7 +160,7 @@ function getStemUnderlyingForm(anatomy: Anatomy, inflection: Inflection): string
         throw new Error("cannot happen");
       }
     } else {
-      if (pattern.sort === "verbal") {
+      if (pattern.sort === "verbant") {
         let coreUnderlyingRealization = "";
         coreUnderlyingRealization += affixes.prefixal.map((affix) => affix.replace(/-/g, "")).join("");
         coreUnderlyingRealization += root[0];
@@ -173,7 +173,7 @@ function getStemUnderlyingForm(anatomy: Anatomy, inflection: Inflection): string
         coreUnderlyingRealization += root[3];
         coreUnderlyingRealization += affixes.suffixal.map((affix) => affix.replace(/-/g, "")).join("");
         return coreUnderlyingRealization;
-      } else if (pattern.sort === "substantive") {
+      } else if (pattern.sort === "substant") {
         let coreUnderlyingRealization = "";
         coreUnderlyingRealization += affixes.prefixal.map((affix) => affix.replace(/-/g, "")).join("");
         coreUnderlyingRealization += root[0];
@@ -193,7 +193,7 @@ function getStemUnderlyingForm(anatomy: Anatomy, inflection: Inflection): string
     }
   } else if (anatomy.kind === "exceptional") {
     if (anatomy.spelling === "е̂к") {
-      return (inflection.sort === "verbal" && inflection.category !== "base") ? "ъе̂ъ" : "ъе̂к";
+      return (inflection.sort === "verbant" && inflection.category !== "base") ? "ъе̂ъ" : "ъе̂к";
     } else {
       return EXCEPTIONAL_STEM_UNDERLYING_FORMS.get(anatomy.spelling) ?? "";
     }

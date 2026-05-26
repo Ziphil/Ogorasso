@@ -2,28 +2,28 @@
 
 import {isTruthy} from "../../util/misc";
 import {Affixes} from "../anatomy";
-import {Adhesivity, AdverbType, Case, Definiteness, Gender, Inflection, Person, Tense, Voice} from "./type";
+import {AdverbType, Case, Definiteness, Gender, Inflection, Person, Phoricity, Tense, Voice} from "./type";
 
 
 export type InflectionAffixes = Pick<Affixes, "prefixal" | "suffixal">;
 
 export function getInflectionAffixes(inflection: Inflection): InflectionAffixes {
-  if (inflection.sort === "substantive") {
+  if (inflection.sort === "substant") {
     if (inflection.category === "base" || inflection.category === "adjective") {
-      const baseAffixes = getSubstantiveBaseInflectionAffixes(inflection);
+      const baseAffixes = getSubstantBaseInflectionAffixes(inflection);
       const categoryAffixes = getCategoryInflectionAffixes(inflection.category);
       return {
         prefixal: [...categoryAffixes.prefixal, ...baseAffixes.prefixal],
         suffixal: [...categoryAffixes.suffixal, ...baseAffixes.suffixal]
       };
     } else if (inflection.category === "adverb") {
-      const adverbAffixes = getSubstantiveAdverbInflectionAffixes(inflection);
+      const adverbAffixes = getSubstantAdverbInflectionAffixes(inflection);
       return {
         prefixal: adverbAffixes.prefixal,
         suffixal: adverbAffixes.suffixal
       };
     } else if (inflection.category === "prepositional") {
-      const adpredicativeAffixes = getSubstantivePrepositionalInflectionAffixes(inflection);
+      const adpredicativeAffixes = getsubstantPrepositionalInflectionAffixes(inflection);
       return {
         prefixal: adpredicativeAffixes.prefixal,
         suffixal: adpredicativeAffixes.suffixal
@@ -34,13 +34,13 @@ export function getInflectionAffixes(inflection: Inflection): InflectionAffixes 
     }
   } else {
     if (inflection.category === "base") {
-      const baseAffixes = getVerbalBaseInflectionAffixes(inflection);
+      const baseAffixes = getVerbantBaseInflectionAffixes(inflection);
       return {
         prefixal: baseAffixes.prefixal,
         suffixal: baseAffixes.suffixal
       };
     } else if (inflection.category === "adjective" || inflection.category === "noun") {
-      const baseAffixes = getSubstantiveBaseInflectionAffixes(inflection);
+      const baseAffixes = getSubstantBaseInflectionAffixes(inflection);
       const categoryAffixes = getCategoryInflectionAffixes(inflection.category);
       return {
         prefixal: [...categoryAffixes.prefixal, ...baseAffixes.prefixal],
@@ -53,37 +53,37 @@ export function getInflectionAffixes(inflection: Inflection): InflectionAffixes 
   }
 }
 
-const SUBSTANTIVE_INFLECTION_PREFIXES = new Map<`${Definiteness}.${Gender}`, string>([
+const SUBSTANT_INFLECTION_PREFIXES = new Map<`${Definiteness}.${Gender}`, string>([
   ["indefinite.water", ""], ["indefinite.fire", ""],
   ["definite.water", "ле-"], ["definite.fire", "ло-"]
 ]);
-const SUBSTANTIVE_INFLECTION_SUFFIXES = new Map<`${Adhesivity}.${Gender}.${Case}`, string>([
-  ["adverbial.water.nominative", ""], ["adverbial.fire.nominative", "-о"],
-  ["adverbial.water.accusative", "-а"], ["adverbial.fire.accusative", "-а"],
-  ["adverbial.water.dative", "-еҫ"], ["adverbial.fire.dative", "-оҫ"],
-  ["adverbial.water.ablative", "-еӟам"], ["adverbial.fire.ablative", "-оӟам"],
-  ["adverbial.water.instrumental", "-еўат"], ["adverbial.fire.instrumental", "-оўат"],
-  ["adverbial.water.locative", "-ей"], ["adverbial.fire.locative", "-ой"],
-  ["adjectival.water.nominative", "-ев"], ["adjectival.fire.nominative", "-ов"],
-  ["adjectival.water.accusative", "-евах"], ["adjectival.fire.accusative", "-овах"],
-  ["adjectival.water.dative", "-еваҫ"], ["adjectival.fire.dative", "-оваҫ"],
-  ["adjectival.water.ablative", "-еваӟам"], ["adjectival.fire.ablative", "-оваӟам"],
-  ["adjectival.water.instrumental", "-еваўат"], ["adjectival.fire.instrumental", "-оваўат"],
-  ["adjectival.water.locative", "-евай"], ["adjectival.fire.locative", "-овай"]
+const SUBSTANT_INFLECTION_SUFFIXES = new Map<`${Phoricity}.${Gender}.${Case}`, string>([
+  ["verbophoric.water.nominative", ""], ["verbophoric.fire.nominative", "-о"],
+  ["verbophoric.water.accusative", "-а"], ["verbophoric.fire.accusative", "-а"],
+  ["verbophoric.water.dative", "-еҫ"], ["verbophoric.fire.dative", "-оҫ"],
+  ["verbophoric.water.ablative", "-еӟам"], ["verbophoric.fire.ablative", "-оӟам"],
+  ["verbophoric.water.instrumental", "-еўат"], ["verbophoric.fire.instrumental", "-оўат"],
+  ["verbophoric.water.locative", "-ей"], ["verbophoric.fire.locative", "-ой"],
+  ["substophoric.water.nominative", "-ев"], ["substophoric.fire.nominative", "-ов"],
+  ["substophoric.water.accusative", "-евах"], ["substophoric.fire.accusative", "-овах"],
+  ["substophoric.water.dative", "-еваҫ"], ["substophoric.fire.dative", "-оваҫ"],
+  ["substophoric.water.ablative", "-еваӟам"], ["substophoric.fire.ablative", "-оваӟам"],
+  ["substophoric.water.instrumental", "-еваўат"], ["substophoric.fire.instrumental", "-оваўат"],
+  ["substophoric.water.locative", "-евай"], ["substophoric.fire.locative", "-овай"]
 ]);
-const SUBSTANTIVE_SHORT_INFLECTION_SUFFIXES = new Map<`${Adhesivity}.${Gender}.${Case}`, string>([
-  ["adverbial.water.nominative", ""], ["adverbial.fire.nominative", "-о"],
-  ["adverbial.water.accusative", "-ех"], ["adverbial.fire.accusative", "-ох"],
-  ["adverbial.water.dative", "-еҫ"], ["adverbial.fire.dative", "-оҫ"],
-  ["adverbial.water.ablative", "-ем"], ["adverbial.fire.ablative", "-ом"],
-  ["adverbial.water.instrumental", "-ет"], ["adverbial.fire.instrumental", "-от"],
-  ["adverbial.water.locative", "-ей"], ["adverbial.fire.locative", "-ой"],
-  ["adjectival.water.nominative", "-ев"], ["adjectival.fire.nominative", "-ов"],
-  ["adjectival.water.accusative", "-евах"], ["adjectival.fire.accusative", "-овах"],
-  ["adjectival.water.dative", "-еваҫ"], ["adjectival.fire.dative", "-оваҫ"],
-  ["adjectival.water.ablative", "-евам"], ["adjectival.fire.ablative", "-овам"],
-  ["adjectival.water.instrumental", "-еват"], ["adjectival.fire.instrumental", "-оват"],
-  ["adjectival.water.locative", "-евай"], ["adjectival.fire.locative", "-овай"]
+const SUBSTANT_SHORT_INFLECTION_SUFFIXES = new Map<`${Phoricity}.${Gender}.${Case}`, string>([
+  ["verbophoric.water.nominative", ""], ["verbophoric.fire.nominative", "-о"],
+  ["verbophoric.water.accusative", "-ех"], ["verbophoric.fire.accusative", "-ох"],
+  ["verbophoric.water.dative", "-еҫ"], ["verbophoric.fire.dative", "-оҫ"],
+  ["verbophoric.water.ablative", "-ем"], ["verbophoric.fire.ablative", "-ом"],
+  ["verbophoric.water.instrumental", "-ет"], ["verbophoric.fire.instrumental", "-от"],
+  ["verbophoric.water.locative", "-ей"], ["verbophoric.fire.locative", "-ой"],
+  ["substophoric.water.nominative", "-ев"], ["substophoric.fire.nominative", "-ов"],
+  ["substophoric.water.accusative", "-евах"], ["substophoric.fire.accusative", "-овах"],
+  ["substophoric.water.dative", "-еваҫ"], ["substophoric.fire.dative", "-оваҫ"],
+  ["substophoric.water.ablative", "-евам"], ["substophoric.fire.ablative", "-овам"],
+  ["substophoric.water.instrumental", "-еват"], ["substophoric.fire.instrumental", "-оват"],
+  ["substophoric.water.locative", "-евай"], ["substophoric.fire.locative", "-овай"]
 ]);
 const ADVERB_INFLECTION_SUFFIXES = new Map<`${AdverbType}`, string>([
   ["simple", "-о̀ӈ"], ["k", "-о̀ўак"]
@@ -92,25 +92,25 @@ const PREPOSITIONAL_INFLECTION_SUFFIXES = new Map<`${Gender}`, string>([
   ["water", "-ѐ"], ["fire", "-о̀"]
 ]);
 
-export function getSubstantiveBaseInflectionAffixes(inflection: {voice?: Voice, adhesivity: Adhesivity, gender: Gender, case: Case, definiteness: Definiteness, short?: boolean}): InflectionAffixes {
+export function getSubstantBaseInflectionAffixes(inflection: {voice?: Voice, phoricity: Phoricity, gender: Gender, case: Case, definiteness: Definiteness, short?: boolean}): InflectionAffixes {
   const prefixal = [
-    SUBSTANTIVE_INFLECTION_PREFIXES.get(`${inflection.definiteness}.${inflection.gender}`),
+    SUBSTANT_INFLECTION_PREFIXES.get(`${inflection.definiteness}.${inflection.gender}`),
     (inflection.voice !== undefined) ? VOICE_INFLECTION_PREFIXES.get(inflection.voice) : undefined
   ].filter(isTruthy);
   const suffixal = [
-    ((inflection.short) ? SUBSTANTIVE_SHORT_INFLECTION_SUFFIXES : SUBSTANTIVE_INFLECTION_SUFFIXES).get(`${inflection.adhesivity}.${inflection.gender}.${inflection.case}`)
+    ((inflection.short) ? SUBSTANT_SHORT_INFLECTION_SUFFIXES : SUBSTANT_INFLECTION_SUFFIXES).get(`${inflection.phoricity}.${inflection.gender}.${inflection.case}`)
   ].filter(isTruthy);
   return {prefixal, suffixal};
 }
 
-export function getSubstantiveAdverbInflectionAffixes(inflection: {type: AdverbType}): InflectionAffixes {
+export function getSubstantAdverbInflectionAffixes(inflection: {type: AdverbType}): InflectionAffixes {
   const suffixal = [
     ADVERB_INFLECTION_SUFFIXES.get(inflection.type)
   ].filter(isTruthy);
   return {prefixal: [], suffixal};
 }
 
-export function getSubstantivePrepositionalInflectionAffixes(inflection: {gender: Gender}): InflectionAffixes {
+export function getsubstantPrepositionalInflectionAffixes(inflection: {gender: Gender}): InflectionAffixes {
   const suffixal = [
     PREPOSITIONAL_INFLECTION_SUFFIXES.get(inflection.gender)
   ].filter(isTruthy);
@@ -134,7 +134,7 @@ const GENDER_INFLECTION_SUFFIXES = new Map<`${Gender}`, string>([
   ["water", ""], ["fire", "-о"]
 ]);
 
-export function getVerbalBaseInflectionAffixes(inflection: {voice: Voice, tense: Tense, person: Person, gender: Gender}): InflectionAffixes {
+export function getVerbantBaseInflectionAffixes(inflection: {voice: Voice, tense: Tense, person: Person, gender: Gender}): InflectionAffixes {
   const prefixal = [
     PERSON_INFLECTION_PREFIXES.get(`${inflection.person}.${inflection.gender}`),
     VOICE_INFLECTION_PREFIXES.get(inflection.voice)

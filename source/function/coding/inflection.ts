@@ -6,15 +6,15 @@ import {InflectionDescriptor} from "../morphology/type";
 export type NaturalLocale = "japanese" | "abbreviation";
 
 const INFLECTION_CODING_MAP = new Map<string, Record<NaturalLocale, string>>([
-  ["substantive", {japanese: "体言", abbreviation: "SUB"}],
-  ["verbal", {japanese: "用言", abbreviation: "VER"}],
+  ["substant", {japanese: "体言", abbreviation: "SUB"}],
+  ["verbant", {japanese: "用言", abbreviation: "VER"}],
   ["base", {japanese: "基本", abbreviation: "BAS"}],
   ["adjective", {japanese: "形容詞", abbreviation: "ADJ"}],
   ["noun", {japanese: "名詞", abbreviation: "NON"}],
   ["adverb", {japanese: "副詞", abbreviation: "ADV"}],
   ["prepositional", {japanese: "前置", abbreviation: "PREP"}],
-  ["adverbial", {japanese: "連用", abbreviation: "ADV"}],
-  ["adjectival", {japanese: "連体", abbreviation: "ADJ"}],
+  ["verbophoric", {japanese: "連用", abbreviation: "ADV"}],
+  ["substophoric", {japanese: "連体", abbreviation: "ADJ"}],
   ["water", {japanese: "水類", abbreviation: "WAT"}],
   ["fire", {japanese: "火類", abbreviation: "FIR"}],
   ["nominative", {japanese: "主格", abbreviation: "NOM"}],

@@ -4,22 +4,22 @@ import {Inflection, InflectionDescriptor} from "./type";
 
 
 export function toInflectionSpecifier(inflection: Inflection): InflectionDescriptor {
-  if (inflection.sort === "substantive") {
+  if (inflection.sort === "substant") {
     if (inflection.category === "base" || inflection.category === "adjective") {
-      return `substantive.${inflection.category}.${inflection.adhesivity}.${inflection.gender}.${inflection.case}.${inflection.definiteness}`;
+      return `substant.${inflection.category}.${inflection.phoricity}.${inflection.gender}.${inflection.case}.${inflection.definiteness}`;
     } else if (inflection.category === "adverb") {
-      return `substantive.adverb.${inflection.type}`;
+      return `substant.adverb.${inflection.type}`;
     } else if (inflection.category === "prepositional") {
-      return `substantive.prepositional.${inflection.gender}`;
+      return `substant.prepositional.${inflection.gender}`;
     } else {
       inflection.category satisfies never;
       throw new Error("cannot occur");
     }
-  } else if (inflection.sort === "verbal") {
+  } else if (inflection.sort === "verbant") {
     if (inflection.category === "base") {
-      return `verbal.base.${inflection.voice}.${inflection.tense}.${inflection.person}.${inflection.gender}`;
+      return `verbant.base.${inflection.voice}.${inflection.tense}.${inflection.person}.${inflection.gender}`;
     } else if (inflection.category === "adjective" || inflection.category === "noun") {
-      return `verbal.${inflection.category}.${inflection.voice}.${inflection.adhesivity}.${inflection.gender}.${inflection.case}.${inflection.definiteness}`;
+      return `verbant.${inflection.category}.${inflection.voice}.${inflection.phoricity}.${inflection.gender}.${inflection.case}.${inflection.definiteness}`;
     } else {
       inflection.category satisfies never;
       throw new Error("cannot occur");
