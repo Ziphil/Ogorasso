@@ -1,6 +1,6 @@
 //
 
-import type {AffixType, Anatomy} from "../../function/anatomy";
+import type {AffixType, SimplexAnatomy} from "../../function/anatomy";
 import {mapObjectValue} from "../../util/misc";
 import type {Kind} from "../../util/misc";
 import type {SimpleAffixEntry} from "../entry/affix";
@@ -25,7 +25,7 @@ export class SimplexAnatomyRelation implements Kind<"simplex"> {
     this.theme = initializer.theme;
   }
 
-  public toPlain(): Anatomy | null {
+  public toPlain(): SimplexAnatomy | null {
     if (this.pattern.sort && this.pattern.type) {
       return {
         kind: "simplex",

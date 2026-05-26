@@ -1,7 +1,7 @@
 //
 
 import {AnatomyRelation, Dictionary, RootEntry, Word} from "../../dictionary";
-import {SimplexAnatomy, decodeInflectionDescriptor, getAllPossibleForms} from "../../function";
+import {decodeInflectionDescriptor, getAllPossibleForms} from "../../function";
 import {mapObjectKey} from "../../util/misc";
 
 
@@ -36,7 +36,7 @@ function serializeWord(word: Word): {} {
 function serializeAnatomyRelation(anatomy: AnatomyRelation): {} | null {
   if (anatomy !== null) {
     if (anatomy.kind === "simplex") {
-      const plainAnatomy = anatomy.toPlain() as SimplexAnatomy;
+      const plainAnatomy = anatomy.toPlain()!;
       const json = {
         kind: "simplex",
         root: anatomy.root,

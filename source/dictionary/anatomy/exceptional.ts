@@ -1,6 +1,6 @@
 //
 
-import type {Anatomy} from "../../function/anatomy";
+import type {ExceptionalAnatomy} from "../../function/anatomy";
 import type {Kind} from "../../util/misc";
 
 
@@ -14,7 +14,7 @@ export class ExceptionalAnatomyRelation implements Kind<"exceptional"> {
     this.spelling = initializer.spelling;
   }
 
-  public toPlain(): Anatomy | null {
+  public toPlain(): ExceptionalAnatomy | null {
     return {
       kind: "exceptional",
       spelling: this.spelling
