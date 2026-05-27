@@ -13,7 +13,7 @@ export function writeDictionary(dictionary: Dictionary): string {
 export function serializeDictionary(dictionary: Dictionary): {} {
   const json = {
     type: "claude",
-    version: "2",
+    version: "3",
     words: dictionary.words.map(serializeWord),
     roots: dictionary.roots.map(serializeRootEntry)
   };
