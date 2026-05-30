@@ -110,6 +110,8 @@ function hasStemUnderlyingFormGenderVowel(inflection: Inflection): boolean {
   return ("voice" in inflection && inflection.gender === "water") || ("phoricity" in inflection && inflection.gender === "water" && inflection.case === "nominative" && inflection.phoricity === "verbophoric");
 }
 
+/** 例外的な語幹をとる単語 (の辞書形) とその語幹のマップです。
+ * е̂к もここに含まれていますが、動形容詞と動名詞においてさらに語幹が変化する現象は `getStemUnderlyingForm` 関数内で個別に対応されています。 */
 export const EXCEPTIONAL_STEM_UNDERLYING_FORMS = new Map<string, string>([
   ["ѐ", "ъ"], ["шѐ", "ш"], ["бамѐ", "бам"], ["цѐ", "ц"],
   ["ех", "ъ"], ["шех", "ш"], ["бамех", "бам"], ["цех", "ц"],
@@ -122,8 +124,11 @@ export const EXCEPTIONAL_STEM_UNDERLYING_FORMS = new Map<string, string>([
   ["хо̂чче", "хо̂чч"], ["то̂чче", "то̂чч"], ["е̂чче", "йо̂чч"], ["ко̂чче", "ко̂чч"], ["фо̂чче", "фо̂чч"], ["аффо̂чче", "ффо̂чч"], ["но̂чче", "но̂чч"], ["анно̂чче", "нно̂чч"], ["ажжо̂чче", "жжо̂чч"],
   ["е̂к", "ъе̂к"]
 ]);
+/** 曲用として短形をとる単語 (の辞書形) です。
+ * 人称代体言のみが該当します。
+ * 辞書では、人称代体言は短形と前置形が同じエントリーになっており、辞書形として前置形の方が採用されているため、ここでも前置形が格納されています。 */
 export const EXCEPTIONAL_SHORTS = new Set([
-  "ех", "шех", "бамех", "цех"
+  "ѐ", "шѐ", "бамѐ", "цѐ"
 ]);
 
 /** 活用接辞のない語幹部分の基層形を計算します。

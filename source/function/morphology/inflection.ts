@@ -23,7 +23,7 @@ export function getInflectionAffixes(inflection: Inflection): InflectionAffixes 
         suffixal: adverbAffixes.suffixal
       };
     } else if (inflection.category === "prepositional") {
-      const adpredicativeAffixes = getsubstantPrepositionalInflectionAffixes(inflection);
+      const adpredicativeAffixes = getSubstantPrepositionalInflectionAffixes(inflection);
       return {
         prefixal: adpredicativeAffixes.prefixal,
         suffixal: adpredicativeAffixes.suffixal
@@ -110,7 +110,7 @@ export function getSubstantAdverbInflectionAffixes(inflection: {type: AdverbType
   return {prefixal: [], suffixal};
 }
 
-export function getsubstantPrepositionalInflectionAffixes(inflection: {gender: Gender}): InflectionAffixes {
+export function getSubstantPrepositionalInflectionAffixes(inflection: {gender: Gender}): InflectionAffixes {
   const suffixal = [
     PREPOSITIONAL_INFLECTION_SUFFIXES.get(inflection.gender)
   ].filter(isTruthy);

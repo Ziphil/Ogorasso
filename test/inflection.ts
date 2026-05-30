@@ -315,12 +315,6 @@ describe("inflections", () => {
     } as Anatomy;
     expect(getForm(anatomy, {sort: "substant", category: "prepositional", gender: "water"})).toBe("ѐ");
     expect(getForm(anatomy, {sort: "substant", category: "prepositional", gender: "fire"})).toBe("о̀");
-  });
-  test("exceptional: ех", () => {
-    const anatomy = {
-      kind: "exceptional",
-      spelling: "ех"
-    } as Anatomy;
     expect(getForm(anatomy, {sort: "substant", category: "base", phoricity: "verbophoric", gender: "water", case: "accusative", definiteness: "indefinite", short: true})).toBe("ех");
     expect(getForm(anatomy, {sort: "substant", category: "base", phoricity: "verbophoric", gender: "water", case: "instrumental", definiteness: "indefinite", short: true})).toBe("ет");
     expect(getForm(anatomy, {sort: "substant", category: "base", phoricity: "verbophoric", gender: "fire", case: "locative", definiteness: "indefinite", short: true})).toBe("е");
