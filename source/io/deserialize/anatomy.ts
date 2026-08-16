@@ -25,7 +25,7 @@ import {
 
 
 export function parseAnatomyRelation(rawSpelling: string, rawRelations: Array<any>): AnatomyRelation | null {
-  if (rawRelations.some((rawRelation) => rawRelation["titles"][0] === "合成元")) {
+  if (rawRelations.some((rawRelation) => rawRelation["titles"][0] === "複合要素")) {
     const constituents = parseConstituents(rawRelations);
     return new CompoundAnatomyRelation({constituents});
   } else if (EXCEPTIONAL_SURFACE_FORMS.has(rawSpelling) || EXCEPTIONAL_STEM_UNDERLYING_FORMS.has(rawSpelling)) {
@@ -45,7 +45,7 @@ export function parseAnatomyRelation(rawSpelling: string, rawRelations: Array<an
 }
 
 export function parseConstituents(rawRelations: Array<any>): ReadonlyArray<SimpleWord> {
-  const rawConstituents = rawRelations.filter((rawRelation) => rawRelation["titles"][0] === "合成元");
+  const rawConstituents = rawRelations.filter((rawRelation) => rawRelation["titles"][0] === "複合要素");
   const constituents = rawConstituents.map((rawRelation) => new SimpleWord({
     number: +rawRelation["number"],
     spelling: rawRelation["spelling"]
@@ -74,11 +74,11 @@ export function parseSimpleRootEntry(rawRelations: Array<any>): SimpleRootEntry 
 }
 
 export function checkRootSpelling(rawSpelling: string): boolean {
-  return rawSpelling.match(/^√(.)-(.)(?:-(.))?(?:-(.))?$/) !== null;
+  return rawSpelling.match(/^√(.)‧(.)‧(.)(?:‧(.))?$/) !== null;
 }
 
 export function extractRoot(rawSpelling: string): Root | null {
-  const match = rawSpelling.match(/^√(.)-(.)-(.)(?:-(.))?$/);
+  const match = rawSpelling.match(/^√(.)‧(.)‧(.)(?:‧(.))?$/);
   if (match !== null) {
     if (match[4] !== undefined) {
       return [match[1].toLowerCase(), match[2].toLowerCase(), match[3].toLowerCase(), match[4].toLowerCase()] as Root;
@@ -176,8 +176,7 @@ export function inferSimpleThemeEntry(rawSpelling: string): SimpleThemeEntry | n
   }
 }
 
-/** 辞書の見出し語から幹母音を推定します。
- * 弱子音の消失が起こっている場合は正しい幹母音を推定できない場合があるので注意してください。 */
+/** 辞書の見出し語から幹母音を推定します。*/
 export function inferThemeSpelling(rawSpelling: string): ThemeSpelling | null {
   if (rawSpelling.includes("е̂") || rawSpelling.includes("и̂")) {
     return "и";

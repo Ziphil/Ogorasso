@@ -56,7 +56,7 @@ export function deserializeWord(rawEntry: any): Word {
     spelling: rawEntry["spelling"],
     anatomy: parseAnatomyRelation(rawEntry["spelling"], rawAnatomyRelations) ?? null,
     sections: concreteRawSections.map(deserializeSection),
-    origin: (rawEntry["tags"].includes("借用語")) ? "loan" : (rawEntry["tags"].includes("外来語")) ? "foreign" : "proper",
+    origin: (rawEntry["tags"].includes("借用語基")) ? "loan" : (rawEntry["tags"].includes("外来語基")) ? "foreign" : "proper",
     oldSpellings: (lastRawSection !== undefined && rawAnatomyRelations !== null) ? extractOldSpellings(lastRawSection) : [],
     separatedSpellings: (lastRawSection !== undefined && rawAnatomyRelations !== null) ? extractSeparatedSpellings(lastRawSection) : []
   });
@@ -71,7 +71,7 @@ export function deserializeRootEntry(rawEntry: any): RootEntry {
       number: +rawEntry["number"],
       root: radicals,
       sections: rawSections.map(deserializeSection),
-      origin: (rawEntry["tags"].includes("借用語")) ? "loan" : (rawEntry["tags"].includes("外来語")) ? "foreign" : "proper"
+      origin: (rawEntry["tags"].includes("借用語根")) ? "loan" : (rawEntry["tags"].includes("外来語根")) ? "foreign" : "proper"
     });
     return root;
   } else {
@@ -161,7 +161,7 @@ export function deserializePhrase(rawPhrase: any): Phrase {
 
 export function deserializeRelation(rawRelation: any): Relation {
   const relation = {
-    title: rawRelation["titles"][0] ?? "関連語",
+    title: rawRelation["titles"][0] ?? "関連語素",
     word: new SimpleWord({number: rawRelation["number"], spelling: rawRelation["spelling"]})
   } satisfies Relation;
   return relation;
