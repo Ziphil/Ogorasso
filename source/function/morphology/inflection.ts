@@ -55,41 +55,41 @@ export function getInflectionAffixes(inflection: Inflection): InflectionAffixes 
 
 const SUBSTANT_INFLECTION_PREFIXES = new Map<`${Definiteness}.${Gender}`, string>([
   ["indefinite.water", ""], ["indefinite.fire", ""],
-  ["definite.water", "ле-"], ["definite.fire", "ло-"]
+  ["definite.water", "ле‧"], ["definite.fire", "ло‧"]
 ]);
 const SUBSTANT_INFLECTION_SUFFIXES = new Map<`${Phoricity}.${Gender}.${Case}`, string>([
-  ["verbophoric.water.nominative", ""], ["verbophoric.fire.nominative", "-о"],
-  ["verbophoric.water.accusative", "-а"], ["verbophoric.fire.accusative", "-а"],
-  ["verbophoric.water.dative", "-еҫ"], ["verbophoric.fire.dative", "-оҫ"],
-  ["verbophoric.water.ablative", "-еӟам"], ["verbophoric.fire.ablative", "-оӟам"],
-  ["verbophoric.water.instrumental", "-еўат"], ["verbophoric.fire.instrumental", "-оўат"],
-  ["verbophoric.water.locative", "-ей"], ["verbophoric.fire.locative", "-ой"],
-  ["substophoric.water.nominative", "-ев"], ["substophoric.fire.nominative", "-ов"],
-  ["substophoric.water.accusative", "-евах"], ["substophoric.fire.accusative", "-овах"],
-  ["substophoric.water.dative", "-еваҫ"], ["substophoric.fire.dative", "-оваҫ"],
-  ["substophoric.water.ablative", "-еваӟам"], ["substophoric.fire.ablative", "-оваӟам"],
-  ["substophoric.water.instrumental", "-еваўат"], ["substophoric.fire.instrumental", "-оваўат"],
-  ["substophoric.water.locative", "-евай"], ["substophoric.fire.locative", "-овай"]
+  ["verbophoric.water.nominative", ""], ["verbophoric.fire.nominative", "‧о"],
+  ["verbophoric.water.accusative", "‧а"], ["verbophoric.fire.accusative", "‧а"],
+  ["verbophoric.water.dative", "‧еҫ"], ["verbophoric.fire.dative", "‧оҫ"],
+  ["verbophoric.water.ablative", "‧еӟам"], ["verbophoric.fire.ablative", "‧оӟам"],
+  ["verbophoric.water.instrumental", "‧еўат"], ["verbophoric.fire.instrumental", "‧оўат"],
+  ["verbophoric.water.locative", "‧ей"], ["verbophoric.fire.locative", "‧ой"],
+  ["substophoric.water.nominative", "‧ев"], ["substophoric.fire.nominative", "‧ов"],
+  ["substophoric.water.accusative", "‧евах"], ["substophoric.fire.accusative", "‧овах"],
+  ["substophoric.water.dative", "‧еваҫ"], ["substophoric.fire.dative", "‧оваҫ"],
+  ["substophoric.water.ablative", "‧еваӟам"], ["substophoric.fire.ablative", "‧оваӟам"],
+  ["substophoric.water.instrumental", "‧еваўат"], ["substophoric.fire.instrumental", "‧оваўат"],
+  ["substophoric.water.locative", "‧евай"], ["substophoric.fire.locative", "‧овай"]
 ]);
 const SUBSTANT_SHORT_INFLECTION_SUFFIXES = new Map<`${Phoricity}.${Gender}.${Case}`, string>([
-  ["verbophoric.water.nominative", ""], ["verbophoric.fire.nominative", "-о"],
-  ["verbophoric.water.accusative", "-ех"], ["verbophoric.fire.accusative", "-ох"],
-  ["verbophoric.water.dative", "-еҫ"], ["verbophoric.fire.dative", "-оҫ"],
-  ["verbophoric.water.ablative", "-ем"], ["verbophoric.fire.ablative", "-ом"],
-  ["verbophoric.water.instrumental", "-ет"], ["verbophoric.fire.instrumental", "-от"],
-  ["verbophoric.water.locative", "-ей"], ["verbophoric.fire.locative", "-ой"],
-  ["substophoric.water.nominative", "-ев"], ["substophoric.fire.nominative", "-ов"],
-  ["substophoric.water.accusative", "-евах"], ["substophoric.fire.accusative", "-овах"],
-  ["substophoric.water.dative", "-еваҫ"], ["substophoric.fire.dative", "-оваҫ"],
-  ["substophoric.water.ablative", "-евам"], ["substophoric.fire.ablative", "-овам"],
-  ["substophoric.water.instrumental", "-еват"], ["substophoric.fire.instrumental", "-оват"],
-  ["substophoric.water.locative", "-евай"], ["substophoric.fire.locative", "-овай"]
+  ["verbophoric.water.nominative", ""], ["verbophoric.fire.nominative", "‧о"],
+  ["verbophoric.water.accusative", "‧ех"], ["verbophoric.fire.accusative", "‧ох"],
+  ["verbophoric.water.dative", "‧еҫ"], ["verbophoric.fire.dative", "‧оҫ"],
+  ["verbophoric.water.ablative", "‧ем"], ["verbophoric.fire.ablative", "‧ом"],
+  ["verbophoric.water.instrumental", "‧ет"], ["verbophoric.fire.instrumental", "‧от"],
+  ["verbophoric.water.locative", "‧ей"], ["verbophoric.fire.locative", "‧ой"],
+  ["substophoric.water.nominative", "‧ев"], ["substophoric.fire.nominative", "‧ов"],
+  ["substophoric.water.accusative", "‧евах"], ["substophoric.fire.accusative", "‧овах"],
+  ["substophoric.water.dative", "‧еваҫ"], ["substophoric.fire.dative", "‧оваҫ"],
+  ["substophoric.water.ablative", "‧евам"], ["substophoric.fire.ablative", "‧овам"],
+  ["substophoric.water.instrumental", "‧еват"], ["substophoric.fire.instrumental", "‧оват"],
+  ["substophoric.water.locative", "‧евай"], ["substophoric.fire.locative", "‧овай"]
 ]);
 const ADVERB_INFLECTION_SUFFIXES = new Map<`${AdverbType}`, string>([
-  ["simple", "-о̀ӈ"], ["k", "-о̀ўак"]
+  ["simple", "‧о̀ӈ"], ["k", "‧о̀ўак"]
 ]);
 const PREPOSITIONAL_INFLECTION_SUFFIXES = new Map<`${Gender}`, string>([
-  ["water", "-ѐ"], ["fire", "-о̀"]
+  ["water", "‧ѐ"], ["fire", "‧о̀"]
 ]);
 
 export function getSubstantBaseInflectionAffixes(inflection: {voice?: Voice, phoricity: Phoricity, gender: Gender, case: Case, definiteness: Definiteness, short?: boolean}): InflectionAffixes {
@@ -118,20 +118,20 @@ export function getSubstantPrepositionalInflectionAffixes(inflection: {gender: G
 }
 
 const VOICE_INFLECTION_PREFIXES = new Map<`${Voice}`, string>([
-  ["active", ""], ["passive", "до̀-"]
+  ["active", ""], ["passive", "до̀‧"]
 ]);
 const TENSE_INFLECTION_SUFFIXES = new Map<`${Tense}`, string>([
-  ["present", ""], ["past", "-ан"]
+  ["present", ""], ["past", "‧ан"]
 ]);
 const PERSON_INFLECTION_PREFIXES = new Map<`${Person}.${Gender}`, string>([
   ["thirdDefinite.water", ""], ["thirdDefinite.fire", ""],
-  ["thirdIndefinite.water", "ъа-"], ["thirdIndefinite.fire", "ъа-"],
-  ["second.water", "те-"], ["second.fire", "то-"],
-  ["firstPlural.water", "баме-"], ["firstPlural.fire", "бамо-"],
-  ["firstSingular.water", "йе-"], ["firstSingular.fire", "йо-"]
+  ["thirdIndefinite.water", "ъа‧"], ["thirdIndefinite.fire", "ъа‧"],
+  ["second.water", "те‧"], ["second.fire", "то‧"],
+  ["firstPlural.water", "баме‧"], ["firstPlural.fire", "бамо‧"],
+  ["firstSingular.water", "йе‧"], ["firstSingular.fire", "йо‧"]
 ]);
 const GENDER_INFLECTION_SUFFIXES = new Map<`${Gender}`, string>([
-  ["water", ""], ["fire", "-о"]
+  ["water", ""], ["fire", "‧о"]
 ]);
 
 export function getVerbantBaseInflectionAffixes(inflection: {voice: Voice, tense: Tense, person: Person, gender: Gender}): InflectionAffixes {
@@ -148,9 +148,9 @@ export function getVerbantBaseInflectionAffixes(inflection: {voice: Voice, tense
 
 export function getCategoryInflectionAffixes(category: Inflection["category"]): InflectionAffixes {
   if (category === "adjective") {
-    return {prefixal: [], suffixal: ["-ар-"]};
+    return {prefixal: [], suffixal: ["‧ар"]};
   } else if (category === "noun") {
-    return {prefixal: [], suffixal: ["-ал-"]};
+    return {prefixal: [], suffixal: ["‧ал"]};
   } else {
     return {prefixal: [], suffixal: []};
   }

@@ -200,7 +200,7 @@ describe("inflections", () => {
       root: ["в", "л", "к"],
       pattern: {sort: "verbant", type: "ground"},
       theme: "и",
-      affixes: {prefixal: [], infixal: [], suffixal: [], terminal: ["-ҙ"]}
+      affixes: {prefixal: [], infixal: [], suffixal: [], terminal: ["‧ҙ"]}
     } as Anatomy;
     expect(getForm(anatomy, {sort: "verbant", category: "base", voice: "active", tense: "present", person: "thirdDefinite", gender: "water"})).toBe("вали̂кез");
     expect(getForm(anatomy, {sort: "verbant", category: "base", voice: "active", tense: "present", person: "thirdIndefinite", gender: "fire"})).toBe("авли̂коз");
@@ -401,45 +401,45 @@ describe("inflections", () => {
   });
   test("random 1", () => {
     expect(getForm(
-      {kind: "simplex", root: ["ў", "з", "ц"], pattern: {sort: "substant", type: "ground"}, theme: "у", affixes: {prefixal: [], infixal: ["-ед-"], suffixal: [], terminal: []}},
+      {kind: "simplex", root: ["ў", "з", "ц"], pattern: {sort: "substant", type: "ground"}, theme: "у", affixes: {prefixal: [], infixal: ["‧ед‧"], suffixal: [], terminal: []}},
       {sort: "substant", category: "base", phoricity: "verbophoric", gender: "water", case: "accusative", definiteness: "indefinite"}
     )).toBe("оду̂цца");
     expect(getForm(
-      {kind: "simplex", root: ["ў", "з", "ц"], pattern: {sort: "substant", type: "ground"}, theme: "у", affixes: {prefixal: [], infixal: ["-ед-"], suffixal: [], terminal: []}},
+      {kind: "simplex", root: ["ў", "з", "ц"], pattern: {sort: "substant", type: "ground"}, theme: "у", affixes: {prefixal: [], infixal: ["‧ед‧"], suffixal: [], terminal: []}},
       {sort: "substant", category: "base", phoricity: "substophoric", gender: "water", case: "dative", definiteness: "definite"}
     )).toBe("лоду̂ццевас");
   });
   test("random 2", () => {
     expect(getForm(
-      {kind: "simplex", root: ["т", "б", "ҙ"], pattern: {sort: "verbant", type: "doubleFinal"}, theme: "у", affixes: {prefixal: [], infixal: [], suffixal: ["-ал-"], terminal: ["-ҙ"]}},
+      {kind: "simplex", root: ["т", "б", "ҙ"], pattern: {sort: "verbant", type: "doubleFinal"}, theme: "у", affixes: {prefixal: [], infixal: [], suffixal: ["‧ал‧"], terminal: ["‧ҙ"]}},
       {sort: "substant", category: "base", phoricity: "verbophoric", gender: "fire", case: "ablative", definiteness: "definite"}
     )).toBe("лотбу̂ззалозмаз");
   });
   test("random 3", () => {
     expect(getForm(
-      {kind: "simplex", root: ["ч", "к", "ў"], pattern: {sort: "substant", type: "ground"}, theme: "у", affixes: {prefixal: ["ҫе-"], infixal: [], suffixal: [], terminal: []}},
+      {kind: "simplex", root: ["ч", "к", "ў"], pattern: {sort: "substant", type: "ground"}, theme: "у", affixes: {prefixal: ["ҫе‧"], infixal: [], suffixal: [], terminal: []}},
       {sort: "substant", category: "prepositional", gender: "water"}
     )).toBe("сечу̂ко̀");
     expect(getForm(
-      {kind: "simplex", root: ["ч", "к", "ў"], pattern: {sort: "substant", type: "ground"}, theme: "у", affixes: {prefixal: ["ҫе-"], infixal: [], suffixal: [], terminal: []}},
+      {kind: "simplex", root: ["ч", "к", "ў"], pattern: {sort: "substant", type: "ground"}, theme: "у", affixes: {prefixal: ["ҫе‧"], infixal: [], suffixal: [], terminal: []}},
       {sort: "substant", category: "prepositional", gender: "fire"}
     )).toBe("сечу̂ку̀");
   });
   test("random 4", () => {
     expect(getForm(
-      {kind: "simplex", root: ["ҙ", "р", "с"], pattern: {sort: "substant", type: "doubleFinal"}, theme: "и", affixes: {prefixal: [], infixal: ["-еб-"], suffixal: [], terminal: []}},
+      {kind: "simplex", root: ["ҙ", "р", "с"], pattern: {sort: "substant", type: "doubleFinal"}, theme: "и", affixes: {prefixal: [], infixal: ["‧еб‧"], suffixal: [], terminal: []}},
       {sort: "substant", category: "base", phoricity: "verbophoric", gender: "water", case: "nominative", definiteness: "definite"}
     )).toBe("лезби̂рассе");
   });
   test("random 5", () => {
     expect(getForm(
-      {kind: "simplex", root: ["г", "т", "к"], pattern: {sort: "substant", type: "doubleInitial"}, theme: "и", affixes: {prefixal: ["бо-"], infixal: [], suffixal: [], terminal: []}},
+      {kind: "simplex", root: ["г", "т", "к"], pattern: {sort: "substant", type: "doubleInitial"}, theme: "и", affixes: {prefixal: ["бо‧"], infixal: [], suffixal: [], terminal: []}},
       {sort: "substant", category: "base", phoricity: "verbophoric", gender: "water", case: "nominative", definiteness: "definite"}
     )).toBe("лебогги̂так");
   });
   test("random 6", () => {
     expect(getForm(
-      {kind: "simplex", root: ["в", "й", "д"], pattern: {sort: "verbant", type: "ground"}, theme: "у", affixes: {prefixal: ["бо-"], infixal: [], suffixal: [], terminal: []}},
+      {kind: "simplex", root: ["в", "й", "д"], pattern: {sort: "verbant", type: "ground"}, theme: "у", affixes: {prefixal: ["бо‧"], infixal: [], suffixal: [], terminal: []}},
       {sort: "verbant", category: "noun", voice: "active", phoricity: "verbophoric", gender: "fire", case: "accusative", definiteness: "definite"}
     )).toBe("лобово̂лла");
   });

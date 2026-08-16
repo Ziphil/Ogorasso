@@ -83,17 +83,17 @@ export function getInflectionSort(anatomy: Anatomy): Sort {
 function getUnderlyingForm(stemUnderlyingForm: string, anatomy: Anatomy, inflection: Inflection): string {
   const inflectionAffixes = getInflectionAffixes(inflection);
   let underlyingRealization = "";
-  underlyingRealization += inflectionAffixes.prefixal.map((affix) => affix.replace(/-/g, "")).join("");
+  underlyingRealization += inflectionAffixes.prefixal.map((affix) => affix.replace(/‧/g, "")).join("");
   underlyingRealization += (hasStemUnderlyingFormInitialGeminate(stemUnderlyingForm) && inflectionAffixes.prefixal.length <= 0) ? "а" : "";
   underlyingRealization += stemUnderlyingForm;
   underlyingRealization += (hasStemUnderlyingFormFinalGeminate(stemUnderlyingForm) && inflectionAffixes.suffixal.length <= 0) ? "е" : "";
-  underlyingRealization += inflectionAffixes.suffixal.map((affix) => affix.replace(/-/g, "")).join("");
+  underlyingRealization += inflectionAffixes.suffixal.map((affix) => affix.replace(/‧/g, "")).join("");
   if ("affixes" in anatomy && anatomy.affixes.terminal.length > 0) {
     const last = underlyingRealization[underlyingRealization.length - 1];
     if (last !== "е" && last !== "о" && last !== "а") {
       underlyingRealization += (hasStemUnderlyingFormGenderVowel(inflection)) ? "е" : "а";
     }
-    underlyingRealization += anatomy.affixes.terminal.map((affix) => affix.replace(/-/g, "")).join("");
+    underlyingRealization += anatomy.affixes.terminal.map((affix) => affix.replace(/‧/g, "")).join("");
   }
   return underlyingRealization;
 }
@@ -141,25 +141,25 @@ function getStemUnderlyingForm(anatomy: Anatomy, inflection: Inflection): string
     if (root.length === 3) {
       if (pattern.sort === "verbant") {
         let coreUnderlyingRealization = "";
-        coreUnderlyingRealization += affixes.prefixal.map((affix) => affix.replace(/-/g, "")).join("");
+        coreUnderlyingRealization += affixes.prefixal.map((affix) => affix.replace(/‧/g, "")).join("");
         coreUnderlyingRealization += (pattern.type === "doubleInitial") ? root[0] + root[0] : root[0];
         coreUnderlyingRealization += "а";
         coreUnderlyingRealization += (pattern.type === "doubleMedial") ? root[1] + root[1] : root[1];
-        coreUnderlyingRealization += affixes.infixal.map((affix) => affix.replace(/-/g, "")).join("");
+        coreUnderlyingRealization += affixes.infixal.map((affix) => affix.replace(/‧/g, "")).join("");
         coreUnderlyingRealization += theme + "\u0302";
         coreUnderlyingRealization += (pattern.type === "doubleFinal") ? root[2] + root[2] : root[2];
-        coreUnderlyingRealization += affixes.suffixal.map((affix) => affix.replace(/-/g, "")).join("");
+        coreUnderlyingRealization += affixes.suffixal.map((affix) => affix.replace(/‧/g, "")).join("");
         return coreUnderlyingRealization;
       } else if (pattern.sort === "substant") {
         let coreUnderlyingRealization = "";
-        coreUnderlyingRealization += affixes.prefixal.map((affix) => affix.replace(/-/g, "")).join("");
+        coreUnderlyingRealization += affixes.prefixal.map((affix) => affix.replace(/‧/g, "")).join("");
         coreUnderlyingRealization += (pattern.type === "doubleInitial") ? root[0] + root[0] : root[0];
-        coreUnderlyingRealization += affixes.infixal.map((affix) => affix.replace(/-/g, "")).join("");
+        coreUnderlyingRealization += affixes.infixal.map((affix) => affix.replace(/‧/g, "")).join("");
         coreUnderlyingRealization += theme + "\u0302";
         coreUnderlyingRealization += (pattern.type === "doubleMedial") ? root[1] + root[1] : root[1];
         coreUnderlyingRealization += "а";
         coreUnderlyingRealization += (pattern.type === "doubleFinal") ? root[2] + root[2] : root[2];
-        coreUnderlyingRealization += affixes.suffixal.map((affix) => affix.replace(/-/g, "")).join("");
+        coreUnderlyingRealization += affixes.suffixal.map((affix) => affix.replace(/‧/g, "")).join("");
         return coreUnderlyingRealization;
       } else {
         pattern satisfies never;
@@ -168,29 +168,29 @@ function getStemUnderlyingForm(anatomy: Anatomy, inflection: Inflection): string
     } else {
       if (pattern.sort === "verbant") {
         let coreUnderlyingRealization = "";
-        coreUnderlyingRealization += affixes.prefixal.map((affix) => affix.replace(/-/g, "")).join("");
+        coreUnderlyingRealization += affixes.prefixal.map((affix) => affix.replace(/‧/g, "")).join("");
         coreUnderlyingRealization += root[0];
         coreUnderlyingRealization += "а";
         coreUnderlyingRealization += root[1];
         coreUnderlyingRealization += "а";
         coreUnderlyingRealization += root[2];
-        coreUnderlyingRealization += affixes.infixal.map((affix) => affix.replace(/-/g, "")).join("");
+        coreUnderlyingRealization += affixes.infixal.map((affix) => affix.replace(/‧/g, "")).join("");
         coreUnderlyingRealization += theme + "\u0302";
         coreUnderlyingRealization += root[3];
-        coreUnderlyingRealization += affixes.suffixal.map((affix) => affix.replace(/-/g, "")).join("");
+        coreUnderlyingRealization += affixes.suffixal.map((affix) => affix.replace(/‧/g, "")).join("");
         return coreUnderlyingRealization;
       } else if (pattern.sort === "substant") {
         let coreUnderlyingRealization = "";
-        coreUnderlyingRealization += affixes.prefixal.map((affix) => affix.replace(/-/g, "")).join("");
+        coreUnderlyingRealization += affixes.prefixal.map((affix) => affix.replace(/‧/g, "")).join("");
         coreUnderlyingRealization += root[0];
-        coreUnderlyingRealization += affixes.infixal.map((affix) => affix.replace(/-/g, "")).join("");
+        coreUnderlyingRealization += affixes.infixal.map((affix) => affix.replace(/‧/g, "")).join("");
         coreUnderlyingRealization += theme + "\u0302";
         coreUnderlyingRealization += root[1];
         coreUnderlyingRealization += "а";
         coreUnderlyingRealization += root[2];
         coreUnderlyingRealization += "а";
         coreUnderlyingRealization += root[3];
-        coreUnderlyingRealization += affixes.suffixal.map((affix) => affix.replace(/-/g, "")).join("");
+        coreUnderlyingRealization += affixes.suffixal.map((affix) => affix.replace(/‧/g, "")).join("");
         return coreUnderlyingRealization;
       } else {
         pattern satisfies never;
