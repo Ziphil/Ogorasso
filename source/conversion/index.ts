@@ -1,3 +1,0 @@
-//
-
-export {convertEntry} from "./word";

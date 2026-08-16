@@ -16,9 +16,12 @@
     "removeComments": true,
     "resolveJsonModule": true,
     "useUnknownInCatchVariables": false,
+    "ignoreDeprecations": "6.0"
   },
   "include": [
     "source/**/*",
-    "test/**/*"
+    "test/**/*",
+    "script/**/*",
+    "vitest.config.mts"
   ]
 }
