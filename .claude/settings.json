@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "deny": [
+      "Read(**/*.env)",
+      "Read(**/.env)",
+      "Read(**/.env.*)",
+      "Read(**/*.kdbx)",
+      "Read(~/.keepass-secrets/**)",
+      "Bash(keepassxc-cli *)",
+      "Bash(*keepassxc-cli*)",
+      "PowerShell(keepassxc-cli *)",
+      "PowerShell(*keepassxc-cli*)"
+    ]
+  }
+}
