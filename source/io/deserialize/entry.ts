@@ -124,7 +124,7 @@ export function deserializeSection(rawSection: any): Section {
   const rawRelations = rawSection["relations"] as Array<any>;
   const section = {
     equivalents: rawSection["equivalents"].map(deserializeEquivalent),
-    information: rawSection["informations"].map(deserializeInformation),
+    informations: rawSection["informations"].map(deserializeInformation),
     phrases: rawSection["phrases"].map(deserializePhrase),
     relations: rawRelations.filter((rawRelation) => !rawRelation["spelling"].includes("√") && !rawRelation["spelling"].includes("‹")).map(deserializeRelation)
   } satisfies Section;

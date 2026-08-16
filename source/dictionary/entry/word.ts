@@ -42,7 +42,7 @@ export class Word extends SimpleWord implements Kind<"word"> {
 export interface Section {
 
   readonly equivalents: ReadonlyArray<Equivalent>;
-  readonly information: ReadonlyArray<Information>;
+  readonly informations: ReadonlyArray<Information>;
   readonly phrases: ReadonlyArray<Phrase>;
   readonly relations: ReadonlyArray<Relation>;
 
