@@ -14,13 +14,13 @@ export function getPatternType(spelling: PatternSpelling): PatternType | null {
 }
 
 export function getAffixType(spelling: AffixSpelling): AffixType | null {
-  if (spelling.match(/^([^-]+?)-$/)) {
+  if (spelling.match(/^([^‧]+?)‧$/)) {
     return "prefixal";
-  } else if (spelling.match(/^-(е|о)([^-]+?)-$/)) {
+  } else if (spelling.match(/^‧(е|о)([^‧]+?)‧$/)) {
     return "infixal";
-  } else if (spelling.match(/^-(а)([^-]+?)-$/)) {
+  } else if (spelling.match(/^‧(а)([^‧]+?)$/)) {
     return "suffixal";
-  } else if (spelling.match(/^-([^-]+?)$/)) {
+  } else if (spelling.match(/^‧([^‧]+?)$/)) {
     return "terminal";
   } else {
     return null;

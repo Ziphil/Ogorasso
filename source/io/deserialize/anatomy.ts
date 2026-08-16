@@ -140,7 +140,7 @@ export function parseAffixEntries(rawRelations: Array<any>): Record<AffixType, R
 
 export function checkAffixSpelling(rawSpelling: string): boolean {
   const match = rawSpelling.match(/^‹(?!=)(.*)›$/);
-  return match !== null && match[1].includes("-");
+  return match !== null && match[1].includes("‧");
 }
 
 export function extractAffixSpelling(rawSpelling: string): AffixSpelling | null {

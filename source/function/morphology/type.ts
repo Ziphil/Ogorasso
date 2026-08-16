@@ -42,7 +42,7 @@ export type SubstantInflection = {
   category: "prepositional",
   gender: Gender
 };
-export type substantInflectionDescriptor =
+export type SubstantInflectionDescriptor =
   `substant.${"base" | "adjective"}.${Phoricity}.${Gender}.${Case}.${Definiteness}` |
   `substant.${"adverb"}.${AdverbType}` |
   `substant.${"prepositional"}.${Gender}`;
@@ -68,4 +68,4 @@ export type VerbantInflectionDescriptor =
   `verbant.${"noun" | "adjective"}.${Voice}.${Phoricity}.${Gender}.${Case}.${Definiteness}`;
 
 export type Inflection = VerbantInflection | SubstantInflection;
-export type InflectionDescriptor = VerbantInflectionDescriptor | substantInflectionDescriptor;
+export type InflectionDescriptor = VerbantInflectionDescriptor | SubstantInflectionDescriptor;

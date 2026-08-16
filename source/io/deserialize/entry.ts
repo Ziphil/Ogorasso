@@ -75,7 +75,7 @@ export function deserializeRootEntry(rawEntry: any): RootEntry {
     });
     return root;
   } else {
-    throw new Error("invalid root entry");
+    throw new Error(`invalid root entry: \`${rawEntry["spelling"]}\``);
   }
 }
 
@@ -88,7 +88,7 @@ export function deserializePatternEntry(rawEntry: any): PatternEntry {
     });
     return pattern;
   } else {
-    throw new Error("invalid pattern entry");
+    throw new Error(`invalid pattern entry: \`${rawEntry["spelling"]}\``);
   }
 }
 
@@ -103,7 +103,7 @@ export function deserializeAffixEntry(rawEntry: any): AffixEntry {
     });
     return affix;
   } else {
-    throw new Error("invalid affix entry");
+    throw new Error(`invalid affix entry: \`${rawEntry["spelling"]}\``);
   }
 }
 
@@ -116,7 +116,7 @@ export function deserializeThemeEntry(rawEntry: any): ThemeEntry {
     });
     return theme;
   } else {
-    throw new Error("invalid theme entry");
+    throw new Error(`invalid theme entry: \`${rawEntry["spelling"]}\``);
   }
 }
 
